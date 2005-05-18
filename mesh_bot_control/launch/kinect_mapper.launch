@@ -1,81 +1,84 @@
 <launch>
-
+    
+    
+    
     <!-- Define arguments and defaults  -->
     <arg name="usb" default="0" />
-    <arg name="display" default="0" />
     <arg name="robot" default="1" />
     <arg name="kinect" default="1" />
     <arg name="joint_gui" default="0" />
     <arg name="rviz" default="1" />
     <arg name="config" default="1" />
+    <arg name="mesh_bot_addr" default="10.0.1.204" />
+    <arg name="mesh_bot_user" default="robot" />
+    <arg name="mesh_bot_psw" default="?" />
     
-    <!-- launch kinect drivers    -->
-    <group if="$(arg kinect)">
     
-        <include file="$(find mesh_bot_control)/launch/kinect.launch" />
+    <!-- Define machines-->
+    <machine name="mesh_bot" address="$(arg mesh_bot_addr)" user="$(arg mesh_bot_user)" />
+    
+    <!-- launch on local -->
+    <group>
+    
+        <!--rviz-->
+        <node name="rviz" pkg="rviz" type="rviz" args="-d $(find mesh_bot_control)/vcg/mesh_bot.vcg" if="$(arg rviz)"/>
         
-
+        <!-- launch soud play for speach syth -->
+        <node pkg="sound_play" type="soundplay_node.py" name="sound_play_local" machine="mesh_bot"/>
         
-        <node pkg="kinect_aux" type="kinect_aux_node" name="kinect_aux_node" />
         
     </group>
     
+    <!-- launch on robot -->
+    <group >
     
     
-    
-    <!-- launch control node    -->
-    <node pkg="mesh_bot_control" type="control" name="control"  required="true" args="nav_twist:=cmd_vel" >
+        <!-- launch kinect drivers    -->
+        <group if="$(arg kinect)">
         
-        <!-- rosparam file="$(find mesh_bot_control)/yaml/Control.yaml" command="load" / -->
+            <include file="$(find mesh_bot_control)/launch/kinect.launch" />
+            
+            <node pkg="kinect_aux" type="kinect_aux_node" name="kinect_aux_node" machine="mesh_bot"/>
+            
+        </group>
         
-        <!-- param name = "minus_sound" value = "$(find mesh_bot_control)/sounds/Ahooga_Car_Horn.wav" / -->
         
-    </node>
-    
-    
-    
-    <!-- creat robot descrition and decide if gui wil launch -->
-    <param name="robot_description" command="$(find xacro)/xacro.py '$(find mesh_bot_description)/urdf/mesh_bot.urdf.xacro'" />
-    <param name="use_gui" value="$(arg joint_gui)"/>
-    
-    
-    <!-- lauch the joint state publisher and robot state publisher -->
-    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" >
-    
-        <rosparam param="source_list">['kinect_state']</rosparam>
-    
-    </node>
-    
-    <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
-    
-    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find mesh_bot_control)/vcg/mesh_bot.vcg" if="$(arg rviz)"/>
-    
-    <!-- launch wiimote node -->
-    <node pkg="wiimote" type="wiimote_node.py" name="wiimote" respawn="true" />
-    
-    <!-- launch soud play for speach syth -->
-    <node pkg="sound_play" type="soundplay_node.py" name="sound_play" />
-    
-    <!-- run motor drivers    -->
-    <node pkg="hardware_interface" type="hardware_interface" name="hardware_interface" args="twist:=con_vel" />
-    
-    <!-- launch the dynamic reconfigure gui  -->
-    <node pkg="dynamic_reconfigure" type="reconfigure_gui" name="reconfigure_gui" if="$(arg config)" />
-    
-    
-    <!-- launch debugging displays -->
-    <group if="$(arg display)" >
+        <!-- launch control node    -->
+        <node pkg="mesh_bot_control" type="control" name="control"  required="true" args="nav_twist:=cmd_vel" machine="mesh_bot">
+            
+            <!-- rosparam file="$(find mesh_bot_control)/yaml/Control.yaml" command="load" / -->
+            
+            <!-- param name = "minus_sound" value = "$(find mesh_bot_control)/sounds/Ahooga_Car_Horn.wav" / -->
+            
+        </node>
         
-        <node pkg="image_view" type="disparity_view" name="disparity_image" args="image:=/camera/depth_registered/disparity" />
+        <!-- creat robot descrition and decide if gui wil launch -->
+        <param name="robot_description" command="$(find xacro)/xacro.py '$(find mesh_bot_description)/urdf/mesh_bot.urdf.xacro'" />
+        <param name="use_gui" value="$(arg joint_gui)"/>
         
-        <node pkg="image_view" type="image_view" name="depth_image" args="image:=/camera/depth_registered/image_rect" />
         
-        <node pkg="image_view" type="image_view" name="y_sobel_image" args="image:=/pre_vis_proc/y_sobel" />
+        <!-- lauch the joint state publisher and robot state publisher -->
+        <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" machine="mesh_bot">
         
-        <node pkg="image_view" type="image_view" name="color_image" args="image:=/camera/rgb/image_rect_color" />
+            <rosparam param="source_list">['kinect_state']</rosparam>
         
-        <node pkg="dynamic_reconfigure" type="reconfigure_gui" name="reconfigure_gui" />
-
+        </node>
+        
+        <!--robot state publisher-->
+        <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" machine="mesh_bot"/>
+        
+        <!-- launch wiimote node -->
+        <node pkg="wiimote" type="wiimote_node.py" name="wiimote" respawn="true" machine="mesh_bot"/>
+        
+        <!-- launch soud play for speach syth -->
+        <node pkg="sound_play" type="soundplay_node.py" name="sound_play_robot" machine="mesh_bot"/>
+        
+        <!-- run motor drivers    -->
+        <node pkg="hardware_interface" type="hardware_interface" name="hardware_interface" args="twist:=con_vel" machine="mesh_bot"/>
+        
+        <!-- launch the dynamic reconfigure gui  -->
+        <node pkg="dynamic_reconfigure" type="reconfigure_gui" name="reconfigure_gui" if="$(arg config)" machine="mesh_bot"/>
+        
     </group>
     
 </launch>
