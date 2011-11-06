@@ -1,0 +1,9 @@
+<stack>
+  <description brief="mesh_mapper">mesh_mapper</description>
+  <author>Maintained by James Anderson</author>
+  <license>BSD</license>  
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/mesh_mapper</url>
+  <depend stack="ros" />
+
+</stack>
