@@ -9,6 +9,18 @@
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/kinect_mapper</url>
 
+  <!-- depends for using cv_bridge -->  
+  <depend package = "sensor_msgs"/>
+  <depend package = "opencv2"/>
+  <depend package = "cv_bridge"/>
+  <depend package = "roscpp"/>
+  <depend package = "std_msgs"/>
+  <depend package = "image_transport"/>
+
+  <!-- depends for using dynamic reconfigure gui -->
+  <depend package="dynamic_reconfigure" />
+  <depend package="driver_base" />
+
 </package>
 
 
