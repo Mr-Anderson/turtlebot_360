@@ -1,0 +1,14 @@
+<package>
+  <description brief="pre_vis_proc">
+
+     pre_vis_proc
+
+  </description>
+  <author>James Anderson</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/pre_vis_proc</url>
+
+</package>
+
+
