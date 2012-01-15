@@ -1,8 +1,10 @@
 /*******************************************************************************
- * @file kinect_mapper.h
+ * @file pre_vis_proc.h
  * @author James Anderson <jra798>
+ * @date 1/14/12
  * @version 1.0
- * @brief main file to exstract a mesh from RGBD camera
+ * @brief pre vision dose simple vision processing needed by multipule uper 
+ level modules.
  ******************************************************************************/
 
 

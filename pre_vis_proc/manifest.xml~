@@ -2,6 +2,7 @@
   <description brief="pre_vis_proc">
 
      pre_vis_proc
+     This module handels simple vision procesing needed by higher levle modules
 
   </description>
   <author>James Anderson</author>

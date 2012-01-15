@@ -1,29 +1,33 @@
 /*******************************************************************************
- * @file kinect_mapper.cpp
- * @author James Anderson <jra798>
- * @version 1.0
- * @brief main file to exstract a mesh from RGBD camera
- ******************************************************************************/
- 
+* @file pre_vis_proc.h
+* @author James Anderson <jra798>
+* @date 1/14/12
+* @version 1.0
+* @brief pre vision dose simple vision processing needed by multipule uper 
+level modules.
+******************************************************************************/
+#include "pre_vis_proc.h"
+
 /***********************************************************
-* @fn imageCallback(const sensor_msgs::ImageConstPtr& msg)
-* @brief preforms sobel edge detection on image
+* Message Callbacks
+***********************************************************/
+/***********************************************************
+* @fn depthCallback(const sensor_msgs::ImageConstPtr& msg)
+* @brief preforms x and y sobel on images
 * @pre takes in a ros message of a raw or cv image
 * @post publishes a CV_32FC1 image using cv_bridge
 * @param takes in a ros message of a raw or cv image 
 ***********************************************************/
-void imageCallback(const sensor_msgs::ImageConstPtr& msg)
+void depthCallback(const sensor_msgs::ImageConstPtr& msg)
 {
-    //ROS_INFO("Edge_Detection: Image receieved");
 
     cv_bridge::CvImagePtr cv_ptr_src;
 
     //takes in the image
-
+    //the dept image type is unint16 so mono should work
     try
     {
-      cv_ptr_src = cv_bridge::toCvCopy(msg, "rgb8");
-      
+      cv_ptr_src = cv_bridge::toCvCopy(msg, "mono16");
     }
     catch (cv_bridge::Exception& e)
     {
@@ -31,211 +35,153 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg)
       return;
     }
     
-    //creates internal images
-    cv::Mat sobel_x(cv_ptr_src->image.size(),CV_32FC1);
-    cv::Mat sobel_y(cv_ptr_src->image.size(),CV_32FC1);
-    cv::Mat sobel(cv_ptr_src->image.size(),CV_32FC1);
-    cv::Mat laplace(cv_ptr_src->image.size(),CV_32FC1);
-    cv::Mat canny(cv_ptr_src->image.size(),CV_32FC1);
-    std::vector<cv::Mat> Chanels;
-    cv::Mat out(cv_ptr_src->image.size(), CV_32FC1);
+    //create internal images
+    cv::Mat sobel_x(cv_ptr_src->image.size(), CV_16U);
+    cv::Mat sobel_y(cv_ptr_src->image.size(), CV_16U);
     cv_bridge::CvImage out_msg;
     
-    //sets out to zeros so it can be added to 
-    out = cv::Mat::zeros(cv_ptr_src->image.size(),CV_32FC1);
     
-    int order;
-    if(params.second_order)
-    {
-    	order = 5;
-    	if(params.third_order)
-    	{
-    		order = 7;
-    	}
-    }
-    else
-    {
-    	order = 3;
-    }
-    
-    if(params.sobel)
-    {
-        //preforms x and y sobels
-        cv::Sobel(cv_ptr_src->image, sobel_x, 3, 1, 0, order, .3);
-        cv::Sobel(cv_ptr_src->image, sobel_y, 3, 0, 1, order , .3);
+    //preforms x and y sobels
+    cv::Sobel(cv_ptr_src->image, sobel_x, 1, 1, 0, params.sobel_size);
+    cv::Sobel(cv_ptr_src->image, sobel_y, 1, 0, 1, params.sobel_size);
 
-        sobel_x = cv::abs(sobel_x );
-        sobel_y = cv::abs(sobel_y );
-
-        //adds them together
-        cv::add(sobel_x, sobel_y, sobel);
-
-        sobel = sobel/pow(order,2);
-
-        //splits into three chanels
-        cv::split(sobel , Chanels);
-
-
-        //ads the sqares of the chanels together
-        for(int i = 0 ; i < 3; i++)
-        {
-            Chanels[i].convertTo(Chanels[i],CV_32FC1);
-            cv::pow(Chanels[i] , 2 ,Chanels[i] );
-
-            cv::addWeighted(Chanels[i], params.sobel_per_add/100 , out, (100-params.sobel_per_add)/100  ,1/3, out);
-
-        } 
-
-        //multiply by scaler
-        out = out * (params.scaler_percent/100);
-
-        //takes the square root to get the magnitude
-        if(params.square_root)
-        {	
-            sqrt(out,out);
-        }
-    }
-    
-    if(params.laplace)
-    {
-        cv::Laplacian(cv_ptr_src->image,laplace,3);
-
-        //splits into three chanels
-        cv::split(laplace , Chanels);
-
-
-        //ads the sqares of the chanels together
-        for(int i = 0 ; i < 3; i++)
-        {
-            Chanels[i].convertTo(Chanels[i],CV_32FC1);
-            cv::pow(Chanels[i] , 2 ,Chanels[i] );
-
-            cv::addWeighted(Chanels[i], params.laplace_per_add/100 , out, (100-params.laplace_per_add)/100 ,1/3, out);
-
-        } 
-
-        //multiply by scaler
-        out = out * (params.scaler_percent/100);
-
-        //takes the square root to get the magnitude
-        if(params.square_root)
-        {
-            sqrt(out,out);
-        }
-    }
-    
-    int canny_order;
-    if(params.canny_second_order)
-    {
-        canny_order = 5;
-        if(params.canny_third_order)
-        {
-            canny_order = 7;
-        }
-    }
-    else
-    {
-        canny_order = 3;
-    }
-    
-    if(params.canny)
-    {
-    
-        cv::split(cv_ptr_src->image , Chanels);
-   
-        //ads the sqares of the chanels together
-        for(int i = 0 ; i < 3; i++)
-        {
-            Chanels[i].convertTo(Chanels[i],CV_8UC1);
-
-            cv::Canny(Chanels[i], Chanels[i], params.canny_thresh_1 , params.canny_thresh_2, canny_order);
-
-            cv::pow(Chanels[i] , 2 ,Chanels[i] );
-
-            Chanels[i].convertTo(Chanels[i],CV_32FC1);
-
-            Chanels[i] = Chanels[i] * params.canny_val;
-
-            cv::addWeighted(Chanels[i], params.canny_per_add/100 , out, (100-params.canny_per_add)/100 ,1/3, out);
-
-        }
-
-        //multiply by scaler
-        out = out * (params.scaler_percent/100);
-
-        //takes the square root to get the magnitude
-        if(params.square_root)
-        {
-            sqrt(out,out);
-        }
-
-    }
     
 
-    //changes it back to a cv image then publishes message
+    //setup and publish message for sobel_x
     out_msg.header = cv_ptr_src->header;
-    out_msg.encoding = "32FC1";
-    out_msg.image = out ;
+    out_msg.encoding = "CV_16U1";
+    out_msg.image = sobel_x ;
     
-    image_pub.publish(out_msg.toImageMsg());
-
+    x_sobel_pub.publish(out_msg.toImageMsg());
+    
+    //setup and publish message for sobel_y
+    out_msg.header = cv_ptr_src->header;
+    out_msg.encoding = "CV_16U1";
+    out_msg.image = sobel_y ;
+    
+    y_sobel_pub.publish(out_msg.toImageMsg());
+    
+    //feed through the depth image if not turned off
+    if(params.output_depth)
+    {
+        //setup and publish message for depth image
+        out_msg.header = cv_ptr_src->header;
+        out_msg.encoding = "CV_16U1";
+        out_msg.image = cv_ptr_src->image ;
+        
+        depth_pub.publish(out_msg.toImageMsg());
+    }
 }
 
+/***********************************************************
+* @fn colorCallback(const sensor_msgs::ImageConstPtr& msg)
+* @brief preforms x and y sobel on images
+* @pre takes in a ros message of a raw or cv image
+* @post publishes a CV_32FC1 image using cv_bridge
+* @param takes in a ros message of a raw or cv image 
+***********************************************************/
+void colorCallback(const sensor_msgs::ImageConstPtr& msg)
+{
+
+    cv_bridge::CvImagePtr cv_ptr_src;
+
+    //takes in the image
+    //the dept image type is unint16 so mono should work
+    try
+    {
+      cv_ptr_src = cv_bridge::toCvCopy(msg, "mono16");
+    }
+    catch (cv_bridge::Exception& e)
+    {
+      ROS_ERROR("cv_bridge exception: %s", e.what());
+      return;
+    }
+    
+    cv_bridge::CvImage out_msg;
+    
+    //feed through the color image if not turned off
+    if(params.output_color)
+    {
+        //setup and publish message for depth image
+        out_msg.header = cv_ptr_src->header;
+        out_msg.encoding = "CV_16U1";
+        out_msg.image = cv_ptr_src->image ;
+        
+        color_pub.publish(out_msg.toImageMsg());
+    }
+}
+
+/***********************************************************
+* Parameter Callbacks
+***********************************************************/
 /***********************************************************
 * @fn setparamsCallback(const sensor_msgs::ImageConstPtr& msg)
 * @brief callback for the reconfigure gui
 * @pre has to have the setup for the reconfigure gui
 * @post changes the parameters
 ***********************************************************/
-void setparamsCallback(MST_Edge_Detection::Edge_Detection_ParamsConfig &config, uint32_t level)
+void setparamsCallback(pre_vis_proc::pre_vis_proc_paramsConfig &config, uint32_t level)
 {
-  
-  
-  if(config.third_order && !config.second_order)
-  {
-    config.third_order = false; 
-  }
-  
-  // set params
-  params = config;
-  
+    
+    // set params
+    params = config;
 }
 
 
 /***********************************************************
+* Main
+***********************************************************/
+/***********************************************************
 * @fn main(int argc, char **argv)
-* @brief starts the Edge_Detection node
+* @brief starts the pre processing node
 ***********************************************************/
 int main(int argc, char **argv)
 {
-    ros::init(argc, argv, "Edge_Detection");
-    ros::NodeHandle n;
-    image_transport::ImageTransport it(n);
+    std::string depth_topic;
+    std::string color_topic;
+    
+    ros::init(argc, argv, "pre_vis_proc");
+    ros::NodeHandle node;
+    image_transport::ImageTransport it(node);
     
     //setup dynamic reconfigure gui
-
-    dynamic_reconfigure::Server<MST_Edge_Detection::Edge_Detection_ParamsConfig> srv;
-    dynamic_reconfigure::Server<MST_Edge_Detection::Edge_Detection_ParamsConfig>::CallbackType f;
+    dynamic_reconfigure::Server<pre_vis_proc::pre_vis_proc_paramsConfig> srv;
+    dynamic_reconfigure::Server<pre_vis_proc::pre_vis_proc_paramsConfig>::CallbackType f;
     f = boost::bind(&setparamsCallback, _1, _2);
     srv.setCallback(f);
     
     
-    
-    //get topic name
-    topic = n.resolveName("image");
+    //get depth topic name
+    depth_topic = node.resolveName("depth");
 
     //check to see if user has defined an image to subscribe to 
-    if (topic == "/image") 
+    if (depth_topic == "/depth") 
     {
-        ROS_WARN("Edge_Detection: image has not been remapped! Typical command-line usage:\n"
-                 "\t$ ./Edge_Detection image:=<image topic> [transport]");
+        ROS_WARN("pre_vis_proc: image has not been remapped! Typical command-line usage:\n"
+                 "\t$ ./pre_vis_proc depth:=<image topic> [transport]");
     }
     
+    //get color topic name
+    color_topic = node.resolveName("color");
 
-    image_sub = it.subscribe( topic , 1, imageCallback  );
+    //check to see if user has defined an image to subscribe to 
+    if (color_topic == "/color") 
+    {
+        ROS_WARN("pre_vis_proc: image has not been remapped! Typical command-line usage:\n"
+                 "\t$ ./pre_vis_proc color:=<image topic> [transport]");
+    }
+    
+    //create image subscriptions
+    depth_sub = it.subscribe( depth_topic , 1, depthCallback  );
+    color_sub = it.subscribe( depth_topic , 1, colorCallback  );
 
-    image_pub = it.advertise( "image_edges" , 5 );
+    //create image publishers
+    x_sobel_pub = it.advertise( "pre_vis_proc/x_sobel" , 5 );
+    y_sobel_pub = it.advertise( "pre_vis_proc/y_sobel" , 5 );
+    depth_pub = it.advertise( "pre_vis_proc/depth" , 5 );
+    color_pub = it.advertise( "pre_vis_proc/color" , 5 );
 
+    //start node
     ros::spin();
     
     return 0;

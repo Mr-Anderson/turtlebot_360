@@ -26,27 +26,40 @@
 #include <iostream>
 #include <fstream>
 #include <cv_bridge/cv_bridge.h>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/highgui/highgui.hpp>
+#include <cv.h>
+#include <highgui.h>
 #include <dynamic_reconfigure/server.h>
-#include <MST_Edge_Detection/Edge_Detection_ParamsConfig.h>
+#include <pre_vis_proc/pre_vis_proc_paramsConfig.h>
 
 
 /***********************************************************
 * Global variables
 ***********************************************************/
 
-sensor_msgs::Image              image;
-
-unsigned char*                  g_output_image;
-
-image_transport::Subscriber     image_sub;
-image_transport::Publisher      image_pub;
-
-std::string                     topic;
 
 
-MST_Edge_Detection::Edge_Detection_ParamsConfig params;
+/***********************************************************
+* Parameters
+***********************************************************/
+
+pre_vis_proc::pre_vis_proc_paramsConfig params;
+
+/***********************************************************
+* Subscribers
+***********************************************************/
+
+image_transport::Subscriber     color_sub;
+image_transport::Subscriber     depth_sub;
+
+
+/***********************************************************
+* Publishers
+***********************************************************/
+
+image_transport::Publisher      x_sobel_pub;
+image_transport::Publisher      y_sobel_pub;
+image_transport::Publisher      depth_pub;
+image_transport::Publisher      color_pub;
 
 /***********************************************************
 * Function prototypes
@@ -58,6 +71,4 @@ MST_Edge_Detection::Edge_Detection_ParamsConfig params;
 namespace enc = sensor_msgs::image_encodings;
 
 
-/***********************************************************
-* Message Callbacks
-***********************************************************/
+

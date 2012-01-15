@@ -1,25 +1,27 @@
 /*******************************************************************************
- * @file kinect_mapper.cpp
- * @author James Anderson <jra798>
- * @version 1.0
- * @brief main file to exstract a mesh from RGBD camera
- ******************************************************************************/
+* @file pre_vis_proc.h
+* @author James Anderson <jra798>
+* @date 1/14/12
+* @version 1.0
+* @brief pre vision dose simple vision processing needed by multipule uper 
+level modules.
+******************************************************************************/
  
 /***********************************************************
-* @fn imageCallback(const sensor_msgs::ImageConstPtr& msg)
-* @brief preforms sobel edge detection on image
+* @fn colorCallback(const sensor_msgs::ImageConstPtr& msg)
+* @brief preforms x and y sobel on images
 * @pre takes in a ros message of a raw or cv image
 * @post publishes a CV_32FC1 image using cv_bridge
 * @param takes in a ros message of a raw or cv image 
 ***********************************************************/
-void imageCallback(const sensor_msgs::ImageConstPtr& msg)
+void colorCallback(const sensor_msgs::ImageConstPtr& msg)
 {
-	//ROS_INFO("Edge_Detection: Image receieved");
-	
-	cv_bridge::CvImagePtr cv_ptr_src;
-	
-	//takes in the image
-	
+    //ROS_INFO("Edge_Detection: Image receieved");
+
+    cv_bridge::CvImagePtr cv_ptr_src;
+
+    //takes in the image
+
     try
     {
       cv_ptr_src = cv_bridge::toCvCopy(msg, "rgb8");
@@ -60,115 +62,114 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg)
     
     if(params.sobel)
     {
-		//preforms x and y sobels
-		cv::Sobel(cv_ptr_src->image, sobel_x, 3, 1, 0, order, .3);
-		cv::Sobel(cv_ptr_src->image, sobel_y, 3, 0, 1, order , .3);
-		
-		sobel_x = cv::abs(sobel_x );
-		sobel_y = cv::abs(sobel_y );
-		
-		//adds them together
-		cv::add(sobel_x, sobel_y, sobel);
-		
-		sobel = sobel/pow(order,2);
-		
-		//splits into three chanels
-		cv::split(sobel , Chanels);
-		
+        //preforms x and y sobels
+        cv::Sobel(cv_ptr_src->image, sobel_x, 3, 1, 0, order, .3);
+        cv::Sobel(cv_ptr_src->image, sobel_y, 3, 0, 1, order , .3);
 
-		//ads the sqares of the chanels together
-		for(int i = 0 ; i < 3; i++)
-		{
-			Chanels[i].convertTo(Chanels[i],CV_32FC1);
-			cv::pow(Chanels[i] , 2 ,Chanels[i] );
-		
-			cv::addWeighted(Chanels[i], params.sobel_per_add/100 , out, (100-params.sobel_per_add)/100  ,1/3, out);
+        sobel_x = cv::abs(sobel_x );
+        sobel_y = cv::abs(sobel_y );
 
-		} 
-		
-		//multiply by scaler
-		out = out * (params.scaler_percent/100);
-		
-		//takes the square root to get the magnitude
-		if(params.square_root)
-		{	
-			sqrt(out,out);
-		}
+        //adds them together
+        cv::add(sobel_x, sobel_y, sobel);
+
+        sobel = sobel/pow(order,2);
+
+        //splits into three chanels
+        cv::split(sobel , Chanels);
+
+
+        //ads the sqares of the chanels together
+        for(int i = 0 ; i < 3; i++)
+        {
+            Chanels[i].convertTo(Chanels[i],CV_32FC1);
+            cv::pow(Chanels[i] , 2 ,Chanels[i] );
+
+            cv::addWeighted(Chanels[i], params.sobel_per_add/100 , out, (100-params.sobel_per_add)/100  ,1/3, out);
+
+        } 
+
+        //multiply by scaler
+        out = out * (params.scaler_percent/100);
+
+        //takes the square root to get the magnitude
+        if(params.square_root)
+        {	
+            sqrt(out,out);
+        }
     }
     
     if(params.laplace)
     {
-    	cv::Laplacian(cv_ptr_src->image,laplace,3);
-    	
-    	//splits into three chanels
-		cv::split(laplace , Chanels);
-		
+        cv::Laplacian(cv_ptr_src->image,laplace,3);
 
-		//ads the sqares of the chanels together
-		for(int i = 0 ; i < 3; i++)
-		{
-			Chanels[i].convertTo(Chanels[i],CV_32FC1);
-			cv::pow(Chanels[i] , 2 ,Chanels[i] );
-		
-			cv::addWeighted(Chanels[i], params.laplace_per_add/100 , out, (100-params.laplace_per_add)/100 ,1/3, out);
+        //splits into three chanels
+        cv::split(laplace , Chanels);
 
-		} 
-		
-		//multiply by scaler
-		out = out * (params.scaler_percent/100);
-		
-		//takes the square root to get the magnitude
-		if(params.square_root)
-		{	
-			sqrt(out,out);
-		}
+
+        //ads the sqares of the chanels together
+        for(int i = 0 ; i < 3; i++)
+        {
+            Chanels[i].convertTo(Chanels[i],CV_32FC1);
+            cv::pow(Chanels[i] , 2 ,Chanels[i] );
+
+            cv::addWeighted(Chanels[i], params.laplace_per_add/100 , out, (100-params.laplace_per_add)/100 ,1/3, out);
+
+        } 
+
+        //multiply by scaler
+        out = out * (params.scaler_percent/100);
+
+        //takes the square root to get the magnitude
+        if(params.square_root)
+        {
+            sqrt(out,out);
+        }
     }
     
     int canny_order;
     if(params.canny_second_order)
     {
-    	canny_order = 5;
-    	if(params.canny_third_order)
-    	{
-    		canny_order = 7;
-    	}
+        canny_order = 5;
+        if(params.canny_third_order)
+        {
+            canny_order = 7;
+        }
     }
     else
     {
-    	canny_order = 3;
+        canny_order = 3;
     }
     
     if(params.canny)
     {
     
-    	cv::split(cv_ptr_src->image , Chanels);
-    	    	
+        cv::split(cv_ptr_src->image , Chanels);
    
-		//ads the sqares of the chanels together
-		for(int i = 0 ; i < 3; i++)
-		{
-			Chanels[i].convertTo(Chanels[i],CV_8UC1);
-			
-			cv::Canny(Chanels[i], Chanels[i], params.canny_thresh_1 , params.canny_thresh_2, canny_order);
-			
-			cv::pow(Chanels[i] , 2 ,Chanels[i] );
-			
-			Chanels[i].convertTo(Chanels[i],CV_32FC1);
-			
-			Chanels[i] = Chanels[i] * params.canny_val;
-		
-			cv::addWeighted(Chanels[i], params.canny_per_add/100 , out, (100-params.canny_per_add)/100 ,1/3, out);
+        //ads the sqares of the chanels together
+        for(int i = 0 ; i < 3; i++)
+        {
+            Chanels[i].convertTo(Chanels[i],CV_8UC1);
 
-		} 
-		
-		//multiply by scaler
-		out = out * (params.scaler_percent/100);
-		
-		//takes the square root to get the magnitude
-		if(params.square_root)
-		{	
-			sqrt(out,out);
-		}
+            cv::Canny(Chanels[i], Chanels[i], params.canny_thresh_1 , params.canny_thresh_2, canny_order);
+
+            cv::pow(Chanels[i] , 2 ,Chanels[i] );
+
+            Chanels[i].convertTo(Chanels[i],CV_32FC1);
+
+            Chanels[i] = Chanels[i] * params.canny_val;
+
+            cv::addWeighted(Chanels[i], params.canny_per_add/100 , out, (100-params.canny_per_add)/100 ,1/3, out);
+
+        }
+
+        //multiply by scaler
+        out = out * (params.scaler_percent/100);
+
+        //takes the square root to get the magnitude
+        if(params.square_root)
+        {
+            sqrt(out,out);
+        }
 
     }
     
