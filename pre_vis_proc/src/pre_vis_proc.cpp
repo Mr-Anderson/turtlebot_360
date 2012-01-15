@@ -24,10 +24,10 @@ void depthCallback(const sensor_msgs::ImageConstPtr& msg)
     cv_bridge::CvImagePtr cv_ptr_src;
 
     //takes in the image
-    //the dept image type is unint16 so mono should work
+    //the dept image type is uint16 16UC1 so mono should work
     try
     {
-      cv_ptr_src = cv_bridge::toCvCopy(msg, "mono16");
+      cv_ptr_src = cv_bridge::toCvCopy(msg, "16UC1");
     }
     catch (cv_bridge::Exception& e)
     {
@@ -35,81 +35,37 @@ void depthCallback(const sensor_msgs::ImageConstPtr& msg)
       return;
     }
     
+    
     //create internal images
-    cv::Mat sobel_x(cv_ptr_src->image.size(), CV_16U);
-    cv::Mat sobel_y(cv_ptr_src->image.size(), CV_16U);
+    cv::Mat sobel_x(cv_ptr_src->image.size(), CV_32FC1);
+    cv::Mat sobel_y(cv_ptr_src->image.size(), CV_32FC1);
     cv_bridge::CvImage out_msg;
     
     
+    
     //preforms x and y sobels
-    cv::Sobel(cv_ptr_src->image, sobel_x, 1, 1, 0, params.sobel_size);
-    cv::Sobel(cv_ptr_src->image, sobel_y, 1, 0, 1, params.sobel_size);
+    cv::Sobel(cv_ptr_src->image, sobel_x, 5, params.sobel_order, 0, params.sobel_size, params.sobel_scaler);
+    cv::Sobel(cv_ptr_src->image, sobel_y, 5, 0, params.sobel_order, params.sobel_size, params.sobel_scaler);
 
     
-
+    
     //setup and publish message for sobel_x
     out_msg.header = cv_ptr_src->header;
-    out_msg.encoding = "CV_16U1";
+    out_msg.encoding = "32FC1";
     out_msg.image = sobel_x ;
     
     x_sobel_pub.publish(out_msg.toImageMsg());
     
     //setup and publish message for sobel_y
     out_msg.header = cv_ptr_src->header;
-    out_msg.encoding = "CV_16U1";
+    out_msg.encoding = "32FC1";
     out_msg.image = sobel_y ;
     
     y_sobel_pub.publish(out_msg.toImageMsg());
     
-    //feed through the depth image if not turned off
-    if(params.output_depth)
-    {
-        //setup and publish message for depth image
-        out_msg.header = cv_ptr_src->header;
-        out_msg.encoding = "CV_16U1";
-        out_msg.image = cv_ptr_src->image ;
-        
-        depth_pub.publish(out_msg.toImageMsg());
-    }
 }
 
-/***********************************************************
-* @fn colorCallback(const sensor_msgs::ImageConstPtr& msg)
-* @brief preforms x and y sobel on images
-* @pre takes in a ros message of a raw or cv image
-* @post publishes a CV_32FC1 image using cv_bridge
-* @param takes in a ros message of a raw or cv image 
-***********************************************************/
-void colorCallback(const sensor_msgs::ImageConstPtr& msg)
-{
 
-    cv_bridge::CvImagePtr cv_ptr_src;
-
-    //takes in the image
-    //the dept image type is unint16 so mono should work
-    try
-    {
-      cv_ptr_src = cv_bridge::toCvCopy(msg, "mono16");
-    }
-    catch (cv_bridge::Exception& e)
-    {
-      ROS_ERROR("cv_bridge exception: %s", e.what());
-      return;
-    }
-    
-    cv_bridge::CvImage out_msg;
-    
-    //feed through the color image if not turned off
-    if(params.output_color)
-    {
-        //setup and publish message for depth image
-        out_msg.header = cv_ptr_src->header;
-        out_msg.encoding = "CV_16U1";
-        out_msg.image = cv_ptr_src->image ;
-        
-        color_pub.publish(out_msg.toImageMsg());
-    }
-}
 
 /***********************************************************
 * Parameter Callbacks
@@ -137,9 +93,11 @@ void setparamsCallback(pre_vis_proc::pre_vis_proc_paramsConfig &config, uint32_t
 ***********************************************************/
 int main(int argc, char **argv)
 {
+    //setup topic names
     std::string depth_topic;
     std::string color_topic;
     
+    //setup node and image transport
     ros::init(argc, argv, "pre_vis_proc");
     ros::NodeHandle node;
     image_transport::ImageTransport it(node);
@@ -161,25 +119,13 @@ int main(int argc, char **argv)
                  "\t$ ./pre_vis_proc depth:=<image topic> [transport]");
     }
     
-    //get color topic name
-    color_topic = node.resolveName("color");
-
-    //check to see if user has defined an image to subscribe to 
-    if (color_topic == "/color") 
-    {
-        ROS_WARN("pre_vis_proc: image has not been remapped! Typical command-line usage:\n"
-                 "\t$ ./pre_vis_proc color:=<image topic> [transport]");
-    }
     
     //create image subscriptions
     depth_sub = it.subscribe( depth_topic , 1, depthCallback  );
-    color_sub = it.subscribe( depth_topic , 1, colorCallback  );
 
     //create image publishers
     x_sobel_pub = it.advertise( "pre_vis_proc/x_sobel" , 5 );
     y_sobel_pub = it.advertise( "pre_vis_proc/y_sobel" , 5 );
-    depth_pub = it.advertise( "pre_vis_proc/depth" , 5 );
-    color_pub = it.advertise( "pre_vis_proc/color" , 5 );
 
     //start node
     ros::spin();

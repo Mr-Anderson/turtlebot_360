@@ -48,7 +48,6 @@ pre_vis_proc::pre_vis_proc_paramsConfig params;
 * Subscribers
 ***********************************************************/
 
-image_transport::Subscriber     color_sub;
 image_transport::Subscriber     depth_sub;
 
 
@@ -58,8 +57,7 @@ image_transport::Subscriber     depth_sub;
 
 image_transport::Publisher      x_sobel_pub;
 image_transport::Publisher      y_sobel_pub;
-image_transport::Publisher      depth_pub;
-image_transport::Publisher      color_pub;
+
 
 /***********************************************************
 * Function prototypes
