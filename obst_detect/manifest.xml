@@ -1,0 +1,14 @@
+<package>
+  <description brief="obst_detect">
+
+     obst_detect
+
+  </description>
+  <author>James Anderson</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/obst_detect</url>
+
+</package>
+
+
