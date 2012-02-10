@@ -130,7 +130,7 @@ bool setVelocity(double x_base, double y_base, double theta_base)
                           - (.5 * y_base);
         
         //display wheel velocitys
-        ROS_INFO("Driving Motors 0:%f 1:%f 2%f m/s", 
+        ROS_INFO("Driving Motors 0:%f 1:%f 2:%f m/s", 
                   wheel_speed[0], 
                   wheel_speed[1], 
                   wheel_speed[2]);

@@ -1,0 +1,49 @@
+<launch>
+
+    <!-- Define arguments and defaults  -->
+    <arg name="usb" default="0" />
+    <arg name="display" default="1" />
+    <arg name="robot" default="1" />
+    
+    <!-- launch kinect drivers    -->
+    <group >
+    
+        <include file="$(find openni_launch)/launch/openni.launch" />
+        
+        <param name="/camera/driver/depth_registration" type="bool" value="true" />
+        
+        <node pkg="kinect_aux" type="kinect_aux_node" name="kinect_aux_node" />
+        
+    </group>
+    
+    
+    <!-- launch control node    -->
+    <node pkg="mesh_bot_control" type="control" name="control"  required="true" >
+        
+        <rosparam file="$(mesh_bot_control)/yaml/Control.yaml" command="load" />
+        
+        <param name = "minus_sound" value = "$(mesh_bot_control)/sounds/Ahooga_Car_Horn.wav" />
+        
+
+    </node>
+    
+    
+    <!-- launch program nodes    -->
+    <node pkg="pre_vis_proc" type="pre_vis_proc" name="pre_vis_proc" args="depth:=/camera/depth_registered/image_raw " />
+    
+    <!-- launch debugging displays -->
+    <group if="$(arg display)" >
+        
+        <node pkg="image_view" type="disparity_view" name="disparity_image" args="image:=/camera/depth_registered/disparity" />
+        
+        <node pkg="image_view" type="image_view" name="depth_image" args="image:=/camera/depth_registered/image_rect" />
+        
+        <node pkg="image_view" type="image_view" name="y_sobel_image" args="image:=/pre_vis_proc/y_sobel" />
+        
+        <node pkg="image_view" type="image_view" name="color_image" args="image:=/camera/rgb/image_rect_color" />
+        
+        <node pkg="dynamic_reconfigure" type="reconfigure_gui" name="reconfigure_gui" />
+
+    </group>
+    
+</launch>

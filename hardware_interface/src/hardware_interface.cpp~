@@ -170,10 +170,12 @@ bool setVelocity(double x_base, double y_base, double theta_base)
 
 //sets the specified motors speed in tics/sec 
 //returns true if success
-bool setMotor(int &motor_num, double &ticks_per_sec)
+bool setMotor(int &motor_num, double& ticks_per_sec)
 {
     //@TODO Adam this is for your code 
     // the motors are numbered counter clockwise with 0 at the front 
+    
+    return true;
 }
 
 //disables motors during ideling returns true on success
@@ -201,7 +203,7 @@ void publishSensorData()
     hardware_interface::BaseData msg;
     
     
-    sensor_pub.publish(msg)
+    sensor_pub.publish(msg);
     
 }
 
