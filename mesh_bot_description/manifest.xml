@@ -1,0 +1,14 @@
+<package>
+  <description brief="mesh_bot_description">
+
+     mesh_bot_description
+
+  </description>
+  <author>James Anderson</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/mesh_bot_description</url>
+
+</package>
+
+
