@@ -1,60 +1,55 @@
 <?xml version="1.0"?>
+<!-- Writen by James Anderson 3/13/12-->
 <robot name="jomegatron"
     xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
     xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
     xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface" >
 
-    <!-- all values are in inches and are converted to meters bellow -->
+    <!-- all values are in inches -->
     <property name="pi" value="3.1415"/>
     <property name="in_m" value="0.0254"/>
-    
-    <property name="base_width" value="28"/>
-    <property name="base_length" value="40"/>
-    <property name="base_height" value="24"/>
-    <property name="base_clearance" value="9.5"/>
-    
-    <property name="wheel_radius" value="8"/>
-    <property name="wheel_width" value="5"/>
-    <property name="wheel_setback" value="10"/>
-    <property name="wheel_block_height" value="1.5"/>
-    <property name="wheel_separation" value="21"/>
-    
-    <property name="castor_bar_height" value="6"/>
-    <property name="castor_bar_width" value="4"/>
-    <property name="castor_bar_length" value="5"/>
-    <property name="castor_bar_setback" value="25"/>
-    
-    <property name="castor_radius" value="3"/>
-    <property name="castor_width" value="3"/>
-    <property name="castor_radius" value="4"/>
+    <property name="cos_2_3_pi" value="-0.5"/>
+    <property name="sin_2_3_pi" value="0.866025"/>
+    <property name="cos_4_3_pi" value="-0.5"/>
+    <property name="sin_4_3_pi" value="-0.866025"/>
+    <property name="cos_1_3_pi" value="0.5"/>
+    <property name="sin_1_3_pi" value="0.866"/>
+    <property name="cos_pi" value="-1"/>
+    <property name="sin_pi" value="0"/>
+    <property name="cos_5_3_pi" value="0.5"/>
+    <property name="sin_5_3_pi" value="-0.866"/>
+   
+   
+    <property name="base_radius" value="10"/>
+    <property name="base_height" value=".5"/>
+    <property name="platform_1_height" value="5"/>
+    <property name="platform_2_height" value="19"/>
+    <property name="platform_3_height" value="23.5"/>
+   
     
     
-    <property name="mast_base_height" value="16"/>
-    <property name="mast_base_width" value="28"/>
-    <property name="mast_base_length" value="1"/>
-    <property name="mast_base_setback" value="13"/>
+    <property name="motor_height" value="2"/>
+    <property name="motor_width" value="2"/>
+    <property name="motor_length" value="4"/>
+    <property name="motor_placement_radius" value="5"/>
     
-    <property name="mast_vertical_height" value="5"/>
-    <property name="mast_vertical_width" value="1"/>
-    <property name="mast_vertical_length" value="1"/>
     
-    <property name="mast_horizontal_height" value="1"/>
-    <property name="mast_horizontal_width" value="1"/>
-    <property name="mast_horizontal_length" value="12"/>
-    <property name="mast_horizontal_setback" value="8"/>
     
-    <property name="camera_mount_height" value="3.5"/>
-    <property name="camera_mount_width" value="3.5"/>
-    <property name="camera_mount_length" value="1"/>
-    <property name="camera_mount_setback" value="1"/>
-    
-    <property name="pt_grey_height" value="2"/>
-    <property name="pt_grey_width" value="3"/>
-    <property name="pt_grey_length" value="1.5"/>
+    <property name="wheel_radius" value="2"/>
+    <property name="wheel_width" value="1"/>
+    <property name="wheel_axil_offset" value="1.5"/>
 
+    <property name="rod_height" value="24"/>
+    <property name="rod_radius" value="0.25"/>
+    <property name="rod_placement_radius" value="9"/>
     
-
-
+    
+    <property name="kinect_base_height" value="1"/>
+    <property name="kinect_joint_height" value="1"/>
+    <property name="kinect_joint_setback" value="1"/>
+    <property name="kinect_placement_radius" value="8"/>
+    
+    
     <material name="Green">
         <color rgba="0.0 0.8 0.0 1.0"/>
     </material>
@@ -82,17 +77,17 @@
         </inertial>
         
         <visual>
-            <origin xyz="${-(base_length/2-wheel_setback)*in_m} 0 0" rpy="0 0 0" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <box size="${base_length*in_m} ${base_width*in_m} 0.001" />
+                <cylinder radius="${base_radius*in_m}" length = ".001"/>
             </geometry>
             <material name="Shadow" />
         </visual>
 
         <collision>
-            <origin xyz="${-(base_length/2-wheel_setback)*in_m} 0 0" rpy="0 0 0" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <box size="${base_length*in_m} ${base_width*in_m} 0.001" />
+                <cylinder radius="${base_radius*in_m}" length = ".001"/>
             </geometry>
         </collision>
     </link>
@@ -101,262 +96,398 @@
     <!-- robot base -->
     <link name="base_link">
         <inertial>
-            <mass value="50" />
-            <origin xyz="0 0 0.0" />
-            <inertia ixx="0.01" ixy="0.0" ixz="0.0"
-            iyy="0.01" iyz="0.0" izz="0.5" />
+          <mass value="5" />
+          <origin xyz="0 0 0" />
+          <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+                  iyy="0.0001" iyz="0.0" 
+                  izz="0.0001" />
         </inertial>
-
+        
         <visual>
-            <origin xyz="${-(base_length/2-wheel_setback)*in_m} 0 ${base_height/2*in_m}" rpy="0 0 0" />
+            <origin xyz="0 0 ${(base_height/2)*in_m}" rpy="0 0 0" />
             <geometry>
-                <box size="${base_length*in_m} ${base_width*in_m} ${base_height*in_m}" />
+                <cylinder radius="${base_radius*in_m}" length = "${base_height*in_m}"/>
             </geometry>
-            <material name="Green" />
+            <material name="Grey" />
         </visual>
 
         <collision>
-            <origin xyz="${-(base_length/2-wheel_setback)*in_m} 0 ${base_height/2*in_m}" rpy="0 0 0" />
+            <origin xyz="0 0 ${(base_height/2)*in_m}" rpy="0 0 0" />
             <geometry>
-                <box size="${base_length*in_m} ${base_width*in_m} ${base_height*in_m}" />
+                <cylinder radius="${base_radius*in_m}" length = "${base_height*in_m}"/>
             </geometry>
         </collision>
     </link>
     
     <joint name="base_footprint_joint" type="fixed">
-        <origin xyz="0 0 ${base_clearance*in_m}" rpy="0 0 0" />
+        <origin xyz="0 0 ${(motor_height/2 + wheel_radius)*in_m}" rpy="0 0 0" />
         <parent link="base_footprint"/>
         <child link="base_link" />
     </joint>
     
     
-    <!-- left wheel -->
-    <link name="left_wheel_link">
+    <!-- platform 1 -->
+    <link name="platform_1_link">
+        <inertial>
+          <mass value="5" />
+          <origin xyz="0 0 0" />
+          <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+                  iyy="0.0001" iyz="0.0" 
+                  izz="0.0001" />
+        </inertial>
+        
+        <visual>
+            <origin xyz="0 0 ${(base_height/2)*in_m}" rpy="0 0 0" />
+            <geometry>
+                <cylinder radius="${base_radius*in_m}" length = "${base_height*in_m}"/>
+            </geometry>
+            <material name="Grey" />
+        </visual>
+
+        <collision>
+            <origin xyz="0 0 ${(base_height/2)*in_m}" rpy="0 0 0" />
+            <geometry>
+                <cylinder radius="${base_radius*in_m}" length = "${base_height*in_m}"/>
+            </geometry>
+        </collision>
+    </link>
+    
+    <joint name="platform_1_joint" type="fixed">
+        <origin xyz="0 0 ${platform_1_height*in_m}" rpy="0 0 0" />
+        <parent link="base_link"/>
+        <child link="platform_1_link" />
+    </joint>
+    
+    <!-- platform 2 -->
+    <link name="platform_2_link">
+        <inertial>
+          <mass value="5" />
+          <origin xyz="0 0 0" />
+          <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+                  iyy="0.0001" iyz="0.0" 
+                  izz="0.0001" />
+        </inertial>
+        
+        <visual>
+            <origin xyz="0 0 ${(base_height/2)*in_m}" rpy="0 0 0" />
+            <geometry>
+                <cylinder radius="${base_radius*in_m}" length = "${base_height*in_m}"/>
+            </geometry>
+            <material name="Grey" />
+        </visual>
+
+        <collision>
+            <origin xyz="0 0 ${(base_height/2)*in_m}" rpy="0 0 0" />
+            <geometry>
+                <cylinder radius="${base_radius*in_m}" length = "${base_height*in_m}"/>
+            </geometry>
+        </collision>
+    </link>
+    
+    <joint name="platform_2_joint" type="fixed">
+        <origin xyz="0 0 ${platform_2_height*in_m}" rpy="0 0 0" />
+        <parent link="base_link"/>
+        <child link="platform_2_link" />
+    </joint>
+    
+    <!-- kinect -->
+    <link name="kinect_link">
+        <inertial>
+            <mass value="0.01" />
+            <origin xyz="0 0 0" />
+            <inertia ixx="0.001" ixy="0.0" ixz="0.0"
+                     iyy="0.001" iyz="0.0"
+                     izz="0.001" />
+        </inertial>
+
+        <visual>
+            <origin xyz=" ${kinect_joint_setback * in_m} 0 ${kinect_joint_height * in_m} " rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://mesh_bot_description/meshes/kinect.dae"/>
+            </geometry>
+        </visual>
+
+        <collision>
+            <origin xyz="${kinect_joint_setback * in_m} 0.0 ${kinect_joint_height * in_m}" rpy="0 0 0" />
+            <geometry>
+                <box size="0.0730 .2760 0.0720"/>
+            </geometry>
+        </collision>
+        
+    </link>
+    
+    <joint name="base_kinect_joint" type="continuous">
+        <origin xyz="${(kinect_placement_radius) * in_m} 0 ${(kinect_base_height + base_height)* in_m}" 
+                rpy="0 0 0" />
+        <parent link="platform_2_link" />
+        <child link="kinect_link" />
+        <axis xyz="0 1 0"/>
+    </joint>
+    
+    
+    <joint name="kinect_depth_joint" type="fixed">
+        <origin xyz="${kinect_joint_setback * in_m} 0.018 ${kinect_joint_height * in_m}" rpy="0 0 0" />
+        <parent link="kinect_link" />
+        <child link="kinect_depth_frame" />
+    </joint>
+
+    <link name="kinect_depth_frame">
+        <inertial>
+            <mass value="0.01" />
+            <origin xyz="0 0 0" />
+            <inertia ixx="0.001" ixy="0.0" ixz="0.0"
+                     iyy="0.001" iyz="0.0"
+                     izz="0.001" />
+        </inertial>
+    </link>
+
+    <joint name="kinect_depth_optical_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}" />
+        <parent link="kinect_depth_frame" />
+        <child link="kinect_depth_optical_frame" />
+    </joint>
+
+    <link name="kinect_depth_optical_frame">
+        <inertial>
+            <mass value="0.001" />
+            <origin xyz="0 0 0" />
+            <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+                     iyy="0.0001" iyz="0.0"
+                     izz="0.0001" />
+        </inertial>
+    </link>
+
+
+    <joint name="kinect_rgb_joint" type="fixed">
+        <origin xyz="${kinect_joint_setback * in_m} -0.005 ${kinect_joint_height * in_m}" rpy="0 0 0" />
+        <parent link="kinect_link" />
+        <child link="kinect_rgb_frame" />
+    </joint>
+
+    <link name="kinect_rgb_frame">
+        <inertial>
+            <mass value="0.001" />
+            <origin xyz="0 0 0" />
+            <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+                     iyy="0.0001" iyz="0.0"
+                     izz="0.0001" />
+        </inertial>
+    </link>
+
+
+    <joint name="kinect_rgb_optical_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}" />
+        <parent link="kinect_rgb_frame" />
+        <child link="kinect_rgb_optical_frame" />
+    </joint>
+
+    <link name="kinect_rgb_optical_frame">
+        <inertial>
+            <mass value="0.001" />
+            <origin xyz="0 0 0" />
+            <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+                     iyy="0.0001" iyz="0.0"
+                     izz="0.0001" />
+        </inertial>
+    </link>
+    
+    
+    <!-- platform 3 -->
+    <link name="platform_3_link">
+        <inertial>
+          <mass value="5" />
+          <origin xyz="0 0 0" />
+          <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+                  iyy="0.0001" iyz="0.0" 
+                  izz="0.0001" />
+        </inertial>
+        
+        <visual>
+            <origin xyz="0 0 ${(base_height/2)*in_m}" rpy="0 0 0" />
+            <geometry>
+                <cylinder radius="${base_radius*in_m}" length = "${base_height*in_m}"/>
+            </geometry>
+            <material name="Grey" />
+        </visual>
+
+        <collision>
+            <origin xyz="0 0 ${(base_height/2)*in_m}" rpy="0 0 0" />
+            <geometry>
+                <cylinder radius="${base_radius*in_m}" length = "${base_height*in_m}"/>
+            </geometry>
+        </collision>
+    </link>
+    
+    <joint name="platform_3_joint" type="fixed">
+        <origin xyz="0 0 ${platform_3_height*in_m}" rpy="0 0 0" />
+        <parent link="base_link"/>
+        <child link="platform_3_link" />
+    </joint>
+    
+    <!-- motor 0 -->
+    <link name="motor_0_link">
+        <inertial>
+          <mass value="2" />
+          <origin xyz="0 0 0" />
+          <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+                  iyy="0.0001" iyz="0.0" 
+                  izz="0.0001" />
+        </inertial>
+        
+        <visual>
+            <origin xyz="${-motor_length/2 * in_m} 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="${motor_length *in_m} ${motor_width*in_m} ${motor_height*in_m}" />
+            </geometry>
+            <material name="Black" />
+        </visual>
+
+        <collision>
+            <origin xyz="${-motor_length/2 * in_m} 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="${motor_length *in_m} ${motor_width*in_m} ${motor_height*in_m}" />
+            </geometry>
+        </collision>
+    </link>
+    
+    <joint name="motor_0_joint" type="fixed">
+        <origin xyz="${motor_placement_radius * in_m} 0 ${-motor_height/2 *in_m}" rpy="0 0 0" />
+        <parent link="base_link"/>
+        <child link="motor_0_link" />
+    </joint>
+    
+    <!-- wheel 0 -->
+    <link name="wheel_0_link">
         <inertial>
             <origin xyz="0 0 0"/>
-            <mass value="2" />
+            <mass value=".5" />
             <inertia ixx="0.001" ixy="0.0" ixz="0.0"
             iyy="0.001" iyz="0.0" izz="0.001" />
         </inertial>
 
         <visual>
-            <origin xyz="0 0 0" rpy="0 ${pi/2} ${pi/2}" />
+            <origin xyz="0 0 0" rpy="0 ${pi/2} 0" />
             <geometry>
                 <cylinder radius="${wheel_radius*in_m}" length = "${wheel_width*in_m}"/>
             </geometry>
-            <material name="Black" />
+            <material name="Green" />
         </visual>
 
         <collision>
-            <origin xyz="0 0 0" rpy="0 ${pi/2} ${pi/2}" />
+            <origin xyz="0 0 0" rpy="0 ${pi/2} 0" />
             <geometry>
                 <cylinder radius="${wheel_radius*in_m}" length = "${wheel_width*in_m}"/>
             </geometry>
         </collision>
     </link>
     
-    <joint name="left_wheel_joint" type="continuous">
-        <origin xyz="0 ${-wheel_separation/2*in_m} ${-wheel_block_height*in_m} " rpy="0 0 0"/>
-        <parent link="base_link"/>
-        <child link="left_wheel_link"/>
-        <axis xyz="0 1 0"/>
+    <joint name="wheel_0_joint" type="continuous">
+        <origin xyz="${wheel_axil_offset * in_m} 0 0" rpy="0 0 0"/>
+        <parent link="motor_0_link"/>
+        <child link="wheel_0_link"/>
+        <axis xyz="1 0 0"/>
     </joint>
     
     
-    <!-- right wheel -->
-    <link name="right_wheel_link">
+    
+    <!-- motor 1 -->
+    <link name="motor_1_link">
+        <inertial>
+          <mass value="2" />
+          <origin xyz="0 0 0" />
+          <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+                  iyy="0.0001" iyz="0.0" 
+                  izz="0.0001" />
+        </inertial>
+        
+        <visual>
+            <origin xyz="${-motor_length/2 * in_m} 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="${motor_length *in_m} ${motor_width*in_m} ${motor_height*in_m}" />
+            </geometry>
+            <material name="Black" />
+        </visual>
+
+        <collision>
+            <origin xyz="${-motor_length/2 * in_m} 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="${motor_length *in_m} ${motor_width*in_m} ${motor_height*in_m}" />
+            </geometry>
+        </collision>
+    </link>
+    
+    <joint name="motor_1_joint" type="fixed">
+        <origin xyz="${motor_placement_radius * cos_2_3_pi * in_m} ${motor_placement_radius * sin_2_3_pi *in_m} ${-motor_height/2 *in_m}" rpy="0 0 ${(2*pi)/3}" />
+        <parent link="base_link"/>
+        <child link="motor_1_link" />
+    </joint>
+    
+    <!-- wheel 1 -->
+    <link name="wheel_1_link">
         <inertial>
             <origin xyz="0 0 0"/>
-            <mass value="2" />
+            <mass value=".5" />
             <inertia ixx="0.001" ixy="0.0" ixz="0.0"
             iyy="0.001" iyz="0.0" izz="0.001" />
         </inertial>
 
         <visual>
-            <origin xyz="0 0 0" rpy="0 ${pi/2} ${pi/2}" />
+            <origin xyz="0 0 0" rpy="0 ${pi/2} 0" />
             <geometry>
                 <cylinder radius="${wheel_radius*in_m}" length = "${wheel_width*in_m}"/>
             </geometry>
-            <material name="Black" />
+            <material name="Green" />
         </visual>
 
         <collision>
-            <origin xyz="0 0 0" rpy="0 ${pi/2} ${pi/2}" />
+            <origin xyz="0 0 0" rpy="0 ${pi/2} 0" />
             <geometry>
                 <cylinder radius="${wheel_radius*in_m}" length = "${wheel_width*in_m}"/>
             </geometry>
         </collision>
     </link>
     
-    <joint name="right_wheel_joint" type="continuous">
-        <origin xyz="0 ${wheel_separation/2*in_m} ${-wheel_block_height*in_m} " rpy="0 0 0"/>
-        <parent link="base_link"/>
-        <child link="right_wheel_link"/>
-        <axis xyz="0 1 0"/>
+    <joint name="wheel_1_joint" type="continuous">
+        <origin xyz="${wheel_axil_offset * in_m} 0 0" rpy="0 0 0"/>
+        <parent link="motor_1_link"/>
+        <child link="wheel_1_link"/>
+        <axis xyz="1 0 0"/>
     </joint>
     
-    <!-- right castor bar -->
-    <link name="right_castor_bar_link">
+    <!-- motor 2 -->
+    <link name="motor_2_link">
         <inertial>
-            <origin xyz="0 0 0"/>
-            <mass value=".5" />
-            <inertia ixx="0.001" ixy="0.0" ixz="0.0"
-            iyy="0.001" iyz="0.0" izz="0.001" />
+          <mass value="2" />
+          <origin xyz="0 0 0" />
+          <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+                  iyy="0.0001" iyz="0.0" 
+                  izz="0.0001" />
         </inertial>
-
+        
         <visual>
-            <origin xyz="0 0 ${-castor_bar_height/2*in_m}" rpy="0 0 0" />
+            <origin xyz="${-motor_length/2 * in_m} 0 0" rpy="0 0 0" />
             <geometry>
-                <box size="${castor_bar_length*in_m} ${castor_bar_width*in_m} ${castor_bar_height*in_m}" />
-            </geometry>
-            <material name="Grey" />
-        </visual>
-
-        <collision>
-            <origin xyz="0 0 ${castor_bar_height/2*in_m}" rpy="0 0 0" />
-            <geometry>
-                <box size="${castor_bar_length*in_m} ${castor_bar_width*in_m} ${castor_bar_height*in_m}" />
-            </geometry>
-        </collision>
-    </link>
-    
-    <joint name="right_castor_bar_joint" type="fixed">
-        <origin xyz="${-castor_bar_setback*in_m} ${wheel_separation/2*in_m} 0" rpy="0 0 0"/>
-        <parent link="base_link"/>
-        <child link="right_castor_bar_link"/>
-        <axis xyz="0 0 1"/>
-    </joint>
-    
-    <!-- left castor bar -->
-    <link name="left_castor_bar_link">
-        <inertial>
-            <origin xyz="0 0 0"/>
-            <mass value=".5" />
-            <inertia ixx="0.001" ixy="0.0" ixz="0.0"
-            iyy="0.001" iyz="0.0" izz="0.001" />
-        </inertial>
-
-        <visual>
-            <origin xyz="0 0 ${-castor_bar_height/2*in_m}" rpy="0 0 0" />
-            <geometry>
-                <box size="${castor_bar_length*in_m} ${castor_bar_width*in_m} ${castor_bar_height*in_m}" />
-            </geometry>
-            <material name="Grey" />
-        </visual>
-
-        <collision>
-            <origin xyz="0 0 ${castor_bar_height/2*in_m}" rpy="0 0 0" />
-            <geometry>
-                <box size="${castor_bar_length*in_m} ${castor_bar_width*in_m} ${castor_bar_height*in_m}" />
-            </geometry>
-        </collision>
-    </link>
-    
-    <joint name="left_castor_bar_joint" type="fixed">
-        <origin xyz="${-castor_bar_setback*in_m} ${-wheel_separation/2*in_m} 0" rpy="0 0 0"/>
-        <parent link="base_link"/>
-        <child link="left_castor_bar_link"/>
-        <axis xyz="0 0 1"/>
-    </joint>
-
-    <!-- right castor -->
-    <link name="right_castor_link">
-        <inertial>
-            <origin xyz="0 0 0"/>
-            <mass value="2" />
-            <inertia ixx="0.001" ixy="0.0" ixz="0.0"
-            iyy="0.001" iyz="0.0" izz="0.001" />
-        </inertial>
-
-        <visual>
-            <origin xyz="0 0 0" rpy="0 ${pi/2} ${pi/2}" />
-            <geometry>
-                <cylinder radius="${castor_radius*in_m}" length = "${castor_width*in_m}"/>
+                <box size="${motor_length *in_m} ${motor_width*in_m} ${motor_height*in_m}" />
             </geometry>
             <material name="Black" />
         </visual>
 
         <collision>
-            <origin xyz="0 0 0" rpy="0 ${pi/2} ${pi/2}" />
+            <origin xyz="${-motor_length/2 * in_m} 0 0" rpy="0 0 0" />
             <geometry>
-                <cylinder radius="${castor_radius*in_m}" length = "${castor_width*in_m}"/>
+                <box size="${motor_length *in_m} ${motor_width*in_m} ${motor_height*in_m}" />
             </geometry>
         </collision>
     </link>
     
-    <joint name="right_castor_joint" type="fixed">
-        <origin xyz="0 0 ${(.5-castor_bar_height)*in_m} " rpy="0 0 0"/>
-        <parent link="right_castor_bar_link"/>
-        <child link="right_castor_link"/>
-        <axis xyz="0 1 0"/>
-    </joint>
-
-    <!-- left castor -->
-    <link name="left_castor_link">
-        <inertial>
-            <origin xyz="0 0 0"/>
-            <mass value="2" />
-            <inertia ixx="0.001" ixy="0.0" ixz="0.0"
-            iyy="0.001" iyz="0.0" izz="0.001" />
-        </inertial>
-
-        <visual>
-            <origin xyz="0 0 0" rpy="0 ${pi/2} ${pi/2}" />
-            <geometry>
-                <cylinder radius="${castor_radius*in_m}" length = "${castor_width*in_m}"/>
-            </geometry>
-            <material name="Black" />
-        </visual>
-
-        <collision>
-            <origin xyz="0 0 0" rpy="0 ${pi/2} ${pi/2}" />
-            <geometry>
-                <cylinder radius="${castor_radius*in_m}" length = "${castor_width*in_m}"/>
-            </geometry>
-        </collision>
-    </link>
-    
-    <joint name="left_castor_joint" type="fixed">
-        <origin xyz="0 0 ${(.5-castor_bar_height)*in_m} " rpy="0 0 0"/>
-        <parent link="left_castor_bar_link"/>
-        <child link="left_castor_link"/>
-        <axis xyz="0 1 0"/>
-    </joint>
-    
-    <!-- mast base -->
-    <link name="mast_base_link">
-        <inertial>
-            <origin xyz="0 0 0"/>
-            <mass value=".5" />
-            <inertia ixx="0.001" ixy="0.0" ixz="0.0"
-            iyy="0.001" iyz="0.0" izz="0.001" />
-        </inertial>
-
-        <visual>
-            <origin xyz="0 0 ${(mast_base_height/2)*in_m}" rpy="0 0 0" />
-            <geometry>
-                <box size="${mast_base_length*in_m} ${mast_base_width*in_m} ${mast_base_height*in_m}" />
-            </geometry>
-            <material name="Grey" />
-        </visual>
-
-        <collision>
-            <origin xyz="${(mast_base_height/2)*in_m} 0 0" rpy="0 0 0" />
-            <geometry>
-                <box size="${mast_base_length*in_m} ${mast_base_width*in_m} ${mast_base_height*in_m}" />
-            </geometry>
-        </collision>
-    </link>
-    
-    <joint name="mast_base_joint" type="fixed">
-        <origin xyz="${-mast_base_setback*in_m} 0 ${base_height*in_m}" rpy="0 0 0"/>
+    <joint name="motor_2_joint" type="fixed">
+        <origin xyz="${motor_placement_radius * cos_4_3_pi * in_m} ${motor_placement_radius * sin_4_3_pi *in_m} ${-motor_height/2 *in_m}" rpy="0 0 ${(4*pi)/3}" />
         <parent link="base_link"/>
-        <child link="mast_base_link"/>
-        <axis xyz="0 1 0"/>
+        <child link="motor_2_link" />
     </joint>
     
-    <!-- mast vertical -->
-    <link name="mast_vertical_link">
+    <!-- wheel 2 -->
+    <link name="wheel_2_link">
         <inertial>
             <origin xyz="0 0 0"/>
             <mass value=".5" />
@@ -365,30 +496,30 @@
         </inertial>
 
         <visual>
-            <origin xyz="0 0 ${(mast_vertical_height/2)*in_m}" rpy="0 0 0" />
+            <origin xyz="0 0 0" rpy="0 ${pi/2} 0" />
             <geometry>
-                <box size="${mast_vertical_length*in_m} ${mast_vertical_width*in_m} ${mast_vertical_height*in_m}" />
+                <cylinder radius="${wheel_radius*in_m}" length = "${wheel_width*in_m}"/>
             </geometry>
-            <material name="Grey" />
+            <material name="Green" />
         </visual>
 
         <collision>
-            <origin xyz="0 0 ${(mast_vertical_height/2)*in_m}" rpy="0 0 0" />
+            <origin xyz="0 0 0" rpy="0 ${pi/2} 0" />
             <geometry>
-                <box size="${mast_vertical_length*in_m} ${mast_vertical_width*in_m} ${mast_vertical_height*in_m}" />
+                <cylinder radius="${wheel_radius*in_m}" length = "${wheel_width*in_m}"/>
             </geometry>
         </collision>
     </link>
     
-    <joint name="mast_vertical_joint" type="fixed">
-        <origin xyz="0 0 ${mast_base_height*in_m}" rpy="0 0 0"/>
-        <parent link="mast_base_link"/>
-        <child link="mast_vertical_link"/>
-        <axis xyz="0 0 1"/>
+    <joint name="wheel_2_joint" type="continuous">
+        <origin xyz="${wheel_axil_offset * in_m} 0 0" rpy="0 0 0"/>
+        <parent link="motor_2_link"/>
+        <child link="wheel_2_link"/>
+        <axis xyz="1 0 0"/>
     </joint>
     
-    <!-- mast horizontal -->
-    <link name="mast_horizontal_link">
+    <!-- rod 0 -->
+    <link name="rod_0_link">
         <inertial>
             <origin xyz="0 0 0"/>
             <mass value=".5" />
@@ -397,90 +528,93 @@
         </inertial>
 
         <visual>
-            <origin xyz="${(mast_horizontal_setback - (mast_horizontal_length/2))*in_m} 0 ${mast_horizontal_height/2*in_m}" rpy="0 0 0" />
+            <origin xyz="0 0 ${rod_height/2 * in_m}" rpy="0 0 0" />
             <geometry>
-                <box size="${mast_horizontal_length*in_m} ${mast_horizontal_width*in_m} ${mast_horizontal_height*in_m}" />
+                <cylinder radius="${rod_radius*in_m}" length = "${rod_height*in_m}"/>
             </geometry>
             <material name="Grey" />
         </visual>
 
         <collision>
-            <origin xyz="${(mast_horizontal_setback - (mast_horizontal_length/2))*in_m} 0 ${mast_horizontal_height/2*in_m}" rpy="0 0 0" />
+            <origin xyz="0 0 ${rod_height/2 * in_m}" rpy="0 0 0" />
             <geometry>
-                <box size="${mast_horizontal_length*in_m} ${mast_horizontal_width*in_m} ${mast_horizontal_height*in_m}" />
+                <cylinder radius="${rod_radius*in_m}" length = "${rod_height*in_m}"/>
             </geometry>
         </collision>
     </link>
     
-    <joint name="mast_horizontal_joint" type="fixed">
-        <origin xyz="0 0 ${mast_vertical_height*in_m}" rpy="0 0 0"/>
-        <parent link="mast_vertical_link"/>
-        <child link="mast_horizontal_link"/>
+    <joint name="rod_0_joint" type="fixed">
+        <origin xyz="${rod_placement_radius * cos_1_3_pi * in_m} ${rod_placement_radius * sin_1_3_pi * in_m} 0" rpy="0 0 0"/>
+        <parent link="base_link"/>
+        <child link="rod_0_link"/>
         <axis xyz="0 0 1"/>
     </joint>
     
-    <!-- camera mount -->
-    <link name="camera_mount_link">
+    
+    <!-- rod 1 -->
+    <link name="rod_1_link">
         <inertial>
             <origin xyz="0 0 0"/>
-            <mass value=".3" />
+            <mass value=".5" />
             <inertia ixx="0.001" ixy="0.0" ixz="0.0"
             iyy="0.001" iyz="0.0" izz="0.001" />
         </inertial>
 
         <visual>
-            <origin xyz="0 0 ${-((camera_mount_height/2)-0.5)*in_m}" rpy="0 0 0" />
+            <origin xyz="0 0 ${rod_height/2 * in_m}" rpy="0 0 0" />
             <geometry>
-                <box size="${camera_mount_length*in_m} ${camera_mount_width*in_m} ${camera_mount_height*in_m}" />
+                <cylinder radius="${rod_radius*in_m}" length = "${rod_height*in_m}"/>
             </geometry>
             <material name="Grey" />
         </visual>
 
         <collision>
-            <origin xyz="0 0 ${-((camera_mount_height/2)-0.5)*in_m}" rpy="0 0 0" />
+            <origin xyz="0 0 ${rod_height/2 * in_m}" rpy="0 0 0" />
             <geometry>
-                <box size="${camera_mount_length*in_m} ${camera_mount_width*in_m} ${camera_mount_height*in_m}" />
+                <cylinder radius="${rod_radius*in_m}" length = "${rod_height*in_m}"/>
             </geometry>
         </collision>
     </link>
     
-    <joint name="camera_mount_joint" type="fixed">
-        <origin xyz="${(mast_horizontal_setback-camera_mount_setback)*in_m} 0 ${mast_horizontal_height/2*in_m}" rpy="0 0 0"/>
-        <parent link="mast_horizontal_link"/>
-        <child link="camera_mount_link"/>
-        <axis xyz="0 1 0"/>
+    <joint name="rod_1_joint" type="fixed">
+        <origin xyz="${-rod_placement_radius * in_m} 0 0" rpy="0 0 0"/>
+        <parent link="base_link"/>
+        <child link="rod_1_link"/>
+        <axis xyz="0 0 1"/>
     </joint>
     
-    <!-- pt_grey -->
-    <link name="pt_grey_link">
+    
+    <!-- rod 2 -->
+    <link name="rod_2_link">
         <inertial>
             <origin xyz="0 0 0"/>
-            <mass value=".3" />
+            <mass value=".5" />
             <inertia ixx="0.001" ixy="0.0" ixz="0.0"
             iyy="0.001" iyz="0.0" izz="0.001" />
         </inertial>
 
         <visual>
-            <origin xyz="0 0 0" rpy="0 0 0" />
+            <origin xyz="0 0 ${rod_height/2 * in_m}" rpy="0 0 0" />
             <geometry>
-                <box size="${pt_grey_length*in_m} ${pt_grey_width*in_m} ${pt_grey_height*in_m}" />
+                <cylinder radius="${rod_radius*in_m}" length = "${rod_height*in_m}"/>
             </geometry>
-            <material name="Black" />
+            <material name="Grey" />
         </visual>
 
         <collision>
-            <origin xyz="0 0 0" rpy="0 0 0" />
+            <origin xyz="0 0 ${rod_height/2 * in_m}" rpy="0 0 0" />
             <geometry>
-                <box size="${pt_grey_length*in_m} ${pt_grey_width*in_m} ${pt_grey_height*in_m}" />
+                <cylinder radius="${rod_radius*in_m}" length = "${rod_height*in_m}"/>
             </geometry>
         </collision>
     </link>
     
-    <joint name="pt_grey_joint" type="continuous">
-        <origin xyz="0 0 ${-(camera_mount_height-1)*in_m}" rpy="0 0 0"/>
-        <parent link="camera_mount_link"/>
-        <child link="pt_grey_link"/>
-        <axis xyz="0 1 0"/>
+    <joint name="rod_2_joint" type="fixed">
+        <origin xyz="${rod_placement_radius * cos_5_3_pi * in_m} ${rod_placement_radius * sin_5_3_pi * in_m} 0" rpy="0 0 0"/>
+        <parent link="base_link"/>
+        <child link="rod_2_link"/>
+        <axis xyz="0 0 1"/>
     </joint>
+
 
 </robot>
