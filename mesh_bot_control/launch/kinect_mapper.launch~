@@ -4,9 +4,10 @@
     <arg name="usb" default="0" />
     <arg name="display" default="1" />
     <arg name="robot" default="1" />
+    <arg name="kinect" default="1" />
     
     <!-- launch kinect drivers    -->
-    <group >
+    <group if="$(arg kinect)">
     
         <include file="$(find openni_launch)/launch/openni.launch" />
         
@@ -17,13 +18,13 @@
     </group>
     
     
+    <!-- launch control node    -->
     <node pkg="mesh_bot_control" type="control" name="control"  required="true" >
         
         <rosparam file="$(mesh_bot_control)/yaml/Control.yaml" command="load" />
         
         <param name = "minus_sound" value = "$(mesh_bot_control)/sounds/Ahooga_Car_Horn.wav" />
         
-
     </node>
     
     

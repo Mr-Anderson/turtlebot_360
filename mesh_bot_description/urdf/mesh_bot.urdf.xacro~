@@ -28,12 +28,14 @@
    
     
     
-    <property name="motor_height" value="2"/>
-    <property name="motor_width" value="2"/>
-    <property name="motor_length" value="4"/>
+    <property name="motor_height" value="0.0564 "/>
+    <property name="motor_width" value="0.0564 "/>
+    <property name="motor_length" value="0.082 "/>
     <property name="motor_placement_radius" value="5"/>
     
-    
+    <property name="laptop_height" value="13"/>
+    <property name="laptop_width" value="16"/>
+    <property name="laptop_length" value="12"/>
     
     <property name="wheel_radius" value="2"/>
     <property name="wheel_width" value="1"/>
@@ -158,6 +160,38 @@
         <child link="platform_1_link" />
     </joint>
     
+    <!-- laptop -->
+    <link name="motor_0_link">
+        <inertial>
+          <mass value="2" />
+          <origin xyz="0 0 0" />
+          <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+                  iyy="0.0001" iyz="0.0" 
+                  izz="0.0001" />
+        </inertial>
+        
+        <visual>
+            <origin xyz="${(laptop_height/2) * in_m} 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="${laptop_length * in_m} ${laptop_width * in_m} ${laptop_height * in_m}" />
+            </geometry>
+            <material name="Black" />
+        </visual>
+
+        <collision>
+            <origin xyz="${(laptop_height/2) * in_m} 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="${laptop_length * in_m} ${laptop_width * in_m} ${laptop_height * in_m}" />
+            </geometry>
+        </collision>
+    </link>
+    
+    <joint name="laptop_joint" type="fixed">
+        <origin xyz="0 0 ${base_height *in_m}" rpy="0 0 0" />
+        <parent link="platform_1_link"/>
+        <child link="laptop_link" />
+    </joint>
+    
     <!-- platform 2 -->
     <link name="platform_2_link">
         <inertial>
@@ -208,7 +242,7 @@
         </visual>
 
         <collision>
-            <origin xyz="${kinect_joint_setback * in_m} 0.0 ${kinect_joint_height * in_m}" rpy="0 0 0" />
+            <origin xyz="0 0.0 ${kinect_joint_height * in_m}" rpy="0 0 0" />
             <geometry>
                 <box size="0.0730 .2760 0.0720"/>
             </geometry>
@@ -335,23 +369,23 @@
         </inertial>
         
         <visual>
-            <origin xyz="${-motor_length/2 * in_m} 0 0" rpy="0 0 0" />
+            <origin xyz="${-motor_length/2 } 0 0" rpy="0 0 0" />
             <geometry>
-                <box size="${motor_length *in_m} ${motor_width*in_m} ${motor_height*in_m}" />
+                <box size="${motor_length } ${motor_width} ${motor_height}" />
             </geometry>
             <material name="Black" />
         </visual>
 
         <collision>
-            <origin xyz="${-motor_length/2 * in_m} 0 0" rpy="0 0 0" />
+            <origin xyz="${-motor_length/2 } 0 0" rpy="0 0 0" />
             <geometry>
-                <box size="${motor_length *in_m} ${motor_width*in_m} ${motor_height*in_m}" />
+                <box size="${motor_length } ${motor_width} ${motor_height}" />
             </geometry>
         </collision>
     </link>
     
     <joint name="motor_0_joint" type="fixed">
-        <origin xyz="${motor_placement_radius * in_m} 0 ${-motor_height/2 *in_m}" rpy="0 0 0" />
+        <origin xyz="${motor_placement_radius * in_m} 0 ${-motor_height/2 }" rpy="0 0 0" />
         <parent link="base_link"/>
         <child link="motor_0_link" />
     </joint>
@@ -401,23 +435,23 @@
         </inertial>
         
         <visual>
-            <origin xyz="${-motor_length/2 * in_m} 0 0" rpy="0 0 0" />
+            <origin xyz="${-motor_length/2 } 0 0" rpy="0 0 0" />
             <geometry>
-                <box size="${motor_length *in_m} ${motor_width*in_m} ${motor_height*in_m}" />
+                <box size="${motor_length } ${motor_width} ${motor_height}" />
             </geometry>
             <material name="Black" />
         </visual>
 
         <collision>
-            <origin xyz="${-motor_length/2 * in_m} 0 0" rpy="0 0 0" />
+            <origin xyz="${-motor_length/2 } 0 0" rpy="0 0 0" />
             <geometry>
-                <box size="${motor_length *in_m} ${motor_width*in_m} ${motor_height*in_m}" />
+                <box size="${motor_length } ${motor_width} ${motor_height}" />
             </geometry>
         </collision>
     </link>
     
     <joint name="motor_1_joint" type="fixed">
-        <origin xyz="${motor_placement_radius * cos_2_3_pi * in_m} ${motor_placement_radius * sin_2_3_pi *in_m} ${-motor_height/2 *in_m}" rpy="0 0 ${(2*pi)/3}" />
+        <origin xyz="${motor_placement_radius * cos_2_3_pi * in_m} ${motor_placement_radius * sin_2_3_pi *in_m} ${-motor_height/2 }" rpy="0 0 ${(2*pi)/3}" />
         <parent link="base_link"/>
         <child link="motor_1_link" />
     </joint>
@@ -465,23 +499,23 @@
         </inertial>
         
         <visual>
-            <origin xyz="${-motor_length/2 * in_m} 0 0" rpy="0 0 0" />
+            <origin xyz="${-motor_length/2 } 0 0" rpy="0 0 0" />
             <geometry>
-                <box size="${motor_length *in_m} ${motor_width*in_m} ${motor_height*in_m}" />
+                <box size="${motor_length } ${motor_width} ${motor_height}" />
             </geometry>
             <material name="Black" />
         </visual>
 
         <collision>
-            <origin xyz="${-motor_length/2 * in_m} 0 0" rpy="0 0 0" />
+            <origin xyz="${-motor_length/2 } 0 0" rpy="0 0 0" />
             <geometry>
-                <box size="${motor_length *in_m} ${motor_width*in_m} ${motor_height*in_m}" />
+                <box size="${motor_length } ${motor_width} ${motor_height}" />
             </geometry>
         </collision>
     </link>
     
     <joint name="motor_2_joint" type="fixed">
-        <origin xyz="${motor_placement_radius * cos_4_3_pi * in_m} ${motor_placement_radius * sin_4_3_pi *in_m} ${-motor_height/2 *in_m}" rpy="0 0 ${(4*pi)/3}" />
+        <origin xyz="${motor_placement_radius * cos_4_3_pi * in_m} ${motor_placement_radius * sin_4_3_pi *in_m} ${-motor_height/2 }" rpy="0 0 ${(4*pi)/3}" />
         <parent link="base_link"/>
         <child link="motor_2_link" />
     </joint>
