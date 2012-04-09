@@ -2,9 +2,10 @@
 
 Reads and maintains the following parameters on the ROS server
 
-- \b "~watchdog_timeout" : \b [double] The time in seconds between watchdog timeouts min: 0.0, default: 1.0, max: 10.0
+- \b "~watchdog_timeout" : \b [double] The time in seconds between watchdog timeouts min: 0.0, default: 5.0, max: 10.0
 - \b "~max_speed" : \b [double] Top motor speed in ticks/second min: 0.0, default: 1.0, max: 5.0
-- \b "~motor_res" : \b [double] Motor resolutin in tics/revolution min: 0.0, default: 16.0, max: 100.0
+- \b "~min_speed" : \b [double] Stop motor threshold speed in ticks/second min: 0.0, default: 1.0, max: 5.0
+- \b "~motor_res" : \b [double] Motor resolutin in tics/revolution min: 0.0, default: 200.0, max: 100.0
 - \b "~base_radius" : \b [double] Radius of the robot base in meters min: 0.0, default: 0.25, max: 1.0
 - \b "~wheel_radius" : \b [double] Radius of the robot wheels in meters min: 0.0, default: 0.1016, max: 1.0
 - \b "~tilt_enable" : \b [bool] Enable control of kintect tilt angle min: False, default: False, max: True

@@ -1,9 +1,10 @@
 \subsubsection usage Usage
 \verbatim
 <node name="dynamic_reconfigure_node" pkg="hardware_interface" type="dynamic_reconfigure_node">
-  <param name="watchdog_timeout" type="double" value="1.0" />
+  <param name="watchdog_timeout" type="double" value="5.0" />
   <param name="max_speed" type="double" value="1.0" />
-  <param name="motor_res" type="double" value="16.0" />
+  <param name="min_speed" type="double" value="1.0" />
+  <param name="motor_res" type="double" value="200.0" />
   <param name="base_radius" type="double" value="0.25" />
   <param name="wheel_radius" type="double" value="0.1016" />
   <param name="tilt_enable" type="bool" value="False" />

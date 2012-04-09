@@ -148,12 +148,8 @@ namespace mesh_bot_control
 //#line 19 "../cfg/mesh_bot_control.cfg"
       std::string minus_sound;
 //#line 20 "../cfg/mesh_bot_control.cfg"
-      std::string autonomous_waypoints;
-//#line 21 "../cfg/mesh_bot_control.cfg"
-      std::string navigation_waypoints;
-//#line 22 "../cfg/mesh_bot_control.cfg"
       std::string waypoint_sound;
-//#line 23 "../cfg/mesh_bot_control.cfg"
+//#line 21 "../cfg/mesh_bot_control.cfg"
       std::string done_sound;
 //#line 138 "/opt/ros/electric/stacks/driver_common/dynamic_reconfigure/templates/ConfigType.h"
 
@@ -312,36 +308,20 @@ namespace mesh_bot_control
 //#line 19 "../cfg/mesh_bot_control.cfg"
       __param_descriptions__.push_back(mesh_bot_control_ParamsConfig::AbstractParamDescriptionConstPtr(new mesh_bot_control_ParamsConfig::ParamDescription<std::string>("minus_sound", "str", 0, "sound to play when minus button is pressed", "", &mesh_bot_control_ParamsConfig::minus_sound)));
 //#line 20 "../cfg/mesh_bot_control.cfg"
-      __min__.autonomous_waypoints = "";
-//#line 20 "../cfg/mesh_bot_control.cfg"
-      __max__.autonomous_waypoints = "";
-//#line 20 "../cfg/mesh_bot_control.cfg"
-      __default__.autonomous_waypoints = "/home/robot/Documents/Joemegatron_IGVC_2011/yaml/Autonomous_Waypoints.yaml";
-//#line 20 "../cfg/mesh_bot_control.cfg"
-      __param_descriptions__.push_back(mesh_bot_control_ParamsConfig::AbstractParamDescriptionConstPtr(new mesh_bot_control_ParamsConfig::ParamDescription<std::string>("autonomous_waypoints", "str", 0, ".yaml file with autonomous waypoints", "", &mesh_bot_control_ParamsConfig::autonomous_waypoints)));
-//#line 21 "../cfg/mesh_bot_control.cfg"
-      __min__.navigation_waypoints = "";
-//#line 21 "../cfg/mesh_bot_control.cfg"
-      __max__.navigation_waypoints = "";
-//#line 21 "../cfg/mesh_bot_control.cfg"
-      __default__.navigation_waypoints = "/home/robot/Documents/Joemegatron_IGVC_2011/yaml/Navigation_Waypoints.yaml";
-//#line 21 "../cfg/mesh_bot_control.cfg"
-      __param_descriptions__.push_back(mesh_bot_control_ParamsConfig::AbstractParamDescriptionConstPtr(new mesh_bot_control_ParamsConfig::ParamDescription<std::string>("navigation_waypoints", "str", 0, ".yaml file with autonomous waypoints", "", &mesh_bot_control_ParamsConfig::navigation_waypoints)));
-//#line 22 "../cfg/mesh_bot_control.cfg"
       __min__.waypoint_sound = "";
-//#line 22 "../cfg/mesh_bot_control.cfg"
+//#line 20 "../cfg/mesh_bot_control.cfg"
       __max__.waypoint_sound = "";
-//#line 22 "../cfg/mesh_bot_control.cfg"
+//#line 20 "../cfg/mesh_bot_control.cfg"
       __default__.waypoint_sound = "/home/robot/Documents/Joemegatron_IGVC_2011/sounds/Ahooga_Car_Horn.wav";
-//#line 22 "../cfg/mesh_bot_control.cfg"
+//#line 20 "../cfg/mesh_bot_control.cfg"
       __param_descriptions__.push_back(mesh_bot_control_ParamsConfig::AbstractParamDescriptionConstPtr(new mesh_bot_control_ParamsConfig::ParamDescription<std::string>("waypoint_sound", "str", 0, "sound to play when minus button is pressed", "", &mesh_bot_control_ParamsConfig::waypoint_sound)));
-//#line 23 "../cfg/mesh_bot_control.cfg"
+//#line 21 "../cfg/mesh_bot_control.cfg"
       __min__.done_sound = "";
-//#line 23 "../cfg/mesh_bot_control.cfg"
+//#line 21 "../cfg/mesh_bot_control.cfg"
       __max__.done_sound = "";
-//#line 23 "../cfg/mesh_bot_control.cfg"
+//#line 21 "../cfg/mesh_bot_control.cfg"
       __default__.done_sound = "/home/robot/Documents/Joemegatron_IGVC_2011/sounds/Ahooga_Car_Horn.wav";
-//#line 23 "../cfg/mesh_bot_control.cfg"
+//#line 21 "../cfg/mesh_bot_control.cfg"
       __param_descriptions__.push_back(mesh_bot_control_ParamsConfig::AbstractParamDescriptionConstPtr(new mesh_bot_control_ParamsConfig::ParamDescription<std::string>("done_sound", "str", 0, "sound to play when minus button is pressed", "", &mesh_bot_control_ParamsConfig::done_sound)));
 //#line 239 "/opt/ros/electric/stacks/driver_common/dynamic_reconfigure/templates/ConfigType.h"
     

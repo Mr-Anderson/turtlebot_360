@@ -25,7 +25,7 @@ void motionCallback(const geometry_msgs::Twist::ConstPtr& msg)
     }
     
     //calculate and set motor speeds
-    setVelocity(msg->linear.x, msg->linear.x, msg->angular.z );
+    setVelocity(msg->linear.x, msg->linear.y, msg->angular.z );
 }
 
 
@@ -89,7 +89,7 @@ int main(int argc, char **argv)
         ros::spinOnce();
         
         //handel timeout
-        if( watchdog_timer_ < ros::Time::now() )
+        if( watchdog_timer_ < ros::Time::now() && motors_enabled_)
         {
             //have not receved a new message so stop robot
             ROS_WARN("Watchdog timed out!");
@@ -120,13 +120,14 @@ bool setVelocity(double x_base, double y_base, double theta_base)
         
         //x is forward y is left z is counter clockwise
         //calculate velocity at each wheel
+        //sqrt of 3/3 is .866025
         wheel_speed[0] = (theta_base * params.base_radius) 
                           + y_base;
         wheel_speed[1] = (theta_base * params.base_radius) 
-                          - (.5 * x_base) 
+                          - (.866025 * x_base) 
                           - (.5 * y_base);
         wheel_speed[2] = (theta_base * params.base_radius) 
-                          + (.5 * x_base) 
+                          + (.866025 * x_base) 
                           - (.5 * y_base);
         
         //display wheel velocitys
@@ -161,8 +162,11 @@ bool setVelocity(double x_base, double y_base, double theta_base)
                 //scale back motors
                 wheel_speed[i] *= speed_scaler;
                 
-                //set motor ticks_per_sec
-                success &= setMotor(i, wheel_speed[i]);
+                if(wheel_speed[i] < params.min_speed)
+                {
+                    //set motor ticks_per_sec
+                    success &= setMotor(i, wheel_speed[i]);
+                }
         }
         
         return success;
@@ -174,6 +178,7 @@ bool setMotor(int &motor_num, double& ticks_per_sec)
 {
     //@TODO Adam this is for your code 
     // the motors are numbered counter clockwise with 0 at the front 
+    //params.min_speed acceses min speed param in ticks
     
     return true;
 }

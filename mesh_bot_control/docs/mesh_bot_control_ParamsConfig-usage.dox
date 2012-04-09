@@ -8,8 +8,6 @@
   <param name="d_pad_percent" type="double" value="50.0" />
   <param name="plus_mesage" type="str" value="Pardon me. coming through." />
   <param name="minus_sound" type="str" value="/home/robot/Documents/Joemegatron_IGVC_2011/sounds/Ahooga_Car_Horn.wav" />
-  <param name="autonomous_waypoints" type="str" value="/home/robot/Documents/Joemegatron_IGVC_2011/yaml/Autonomous_Waypoints.yaml" />
-  <param name="navigation_waypoints" type="str" value="/home/robot/Documents/Joemegatron_IGVC_2011/yaml/Navigation_Waypoints.yaml" />
   <param name="waypoint_sound" type="str" value="/home/robot/Documents/Joemegatron_IGVC_2011/sounds/Ahooga_Car_Horn.wav" />
   <param name="done_sound" type="str" value="/home/robot/Documents/Joemegatron_IGVC_2011/sounds/Ahooga_Car_Horn.wav" />
 </node>

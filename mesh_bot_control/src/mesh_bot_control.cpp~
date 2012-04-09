@@ -419,7 +419,7 @@ int main(int argc, char **argv)
     
     bool stopped = true; 
     mode_ = standby;
-    system("rosrun dynamic_reconfigure dynparam set /Position go_to_waypoints false");
+    
     
     //initalize toggles 
     for (int i = 0; i < 30 ; i++)

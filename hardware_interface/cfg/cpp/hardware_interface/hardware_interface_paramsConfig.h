@@ -138,12 +138,14 @@ namespace hardware_interface
 //#line 16 "../cfg/hardware_interface.cfg"
       double max_speed;
 //#line 17 "../cfg/hardware_interface.cfg"
-      double motor_res;
+      double min_speed;
 //#line 18 "../cfg/hardware_interface.cfg"
-      double base_radius;
+      double motor_res;
 //#line 19 "../cfg/hardware_interface.cfg"
-      double wheel_radius;
+      double base_radius;
 //#line 20 "../cfg/hardware_interface.cfg"
+      double wheel_radius;
+//#line 21 "../cfg/hardware_interface.cfg"
       bool tilt_enable;
 //#line 138 "/opt/ros/electric/stacks/driver_common/dynamic_reconfigure/templates/ConfigType.h"
 
@@ -250,7 +252,7 @@ namespace hardware_interface
 //#line 15 "../cfg/hardware_interface.cfg"
       __max__.watchdog_timeout = 10.0;
 //#line 15 "../cfg/hardware_interface.cfg"
-      __default__.watchdog_timeout = 1.0;
+      __default__.watchdog_timeout = 5.0;
 //#line 15 "../cfg/hardware_interface.cfg"
       __param_descriptions__.push_back(hardware_interface_paramsConfig::AbstractParamDescriptionConstPtr(new hardware_interface_paramsConfig::ParamDescription<double>("watchdog_timeout", "double", 0, "The time in seconds between watchdog timeouts", "", &hardware_interface_paramsConfig::watchdog_timeout)));
 //#line 16 "../cfg/hardware_interface.cfg"
@@ -262,36 +264,44 @@ namespace hardware_interface
 //#line 16 "../cfg/hardware_interface.cfg"
       __param_descriptions__.push_back(hardware_interface_paramsConfig::AbstractParamDescriptionConstPtr(new hardware_interface_paramsConfig::ParamDescription<double>("max_speed", "double", 0, "Top motor speed in ticks/second", "", &hardware_interface_paramsConfig::max_speed)));
 //#line 17 "../cfg/hardware_interface.cfg"
+      __min__.min_speed = 0.0;
+//#line 17 "../cfg/hardware_interface.cfg"
+      __max__.min_speed = 5.0;
+//#line 17 "../cfg/hardware_interface.cfg"
+      __default__.min_speed = 1.0;
+//#line 17 "../cfg/hardware_interface.cfg"
+      __param_descriptions__.push_back(hardware_interface_paramsConfig::AbstractParamDescriptionConstPtr(new hardware_interface_paramsConfig::ParamDescription<double>("min_speed", "double", 0, "Stop motor threshold speed in ticks/second", "", &hardware_interface_paramsConfig::min_speed)));
+//#line 18 "../cfg/hardware_interface.cfg"
       __min__.motor_res = 0.0;
-//#line 17 "../cfg/hardware_interface.cfg"
+//#line 18 "../cfg/hardware_interface.cfg"
       __max__.motor_res = 100.0;
-//#line 17 "../cfg/hardware_interface.cfg"
-      __default__.motor_res = 16.0;
-//#line 17 "../cfg/hardware_interface.cfg"
+//#line 18 "../cfg/hardware_interface.cfg"
+      __default__.motor_res = 200.0;
+//#line 18 "../cfg/hardware_interface.cfg"
       __param_descriptions__.push_back(hardware_interface_paramsConfig::AbstractParamDescriptionConstPtr(new hardware_interface_paramsConfig::ParamDescription<double>("motor_res", "double", 0, "Motor resolutin in tics/revolution", "", &hardware_interface_paramsConfig::motor_res)));
-//#line 18 "../cfg/hardware_interface.cfg"
+//#line 19 "../cfg/hardware_interface.cfg"
       __min__.base_radius = 0.0;
-//#line 18 "../cfg/hardware_interface.cfg"
+//#line 19 "../cfg/hardware_interface.cfg"
       __max__.base_radius = 1.0;
-//#line 18 "../cfg/hardware_interface.cfg"
+//#line 19 "../cfg/hardware_interface.cfg"
       __default__.base_radius = 0.25;
-//#line 18 "../cfg/hardware_interface.cfg"
+//#line 19 "../cfg/hardware_interface.cfg"
       __param_descriptions__.push_back(hardware_interface_paramsConfig::AbstractParamDescriptionConstPtr(new hardware_interface_paramsConfig::ParamDescription<double>("base_radius", "double", 0, "Radius of the robot base in meters", "", &hardware_interface_paramsConfig::base_radius)));
-//#line 19 "../cfg/hardware_interface.cfg"
+//#line 20 "../cfg/hardware_interface.cfg"
       __min__.wheel_radius = 0.0;
-//#line 19 "../cfg/hardware_interface.cfg"
+//#line 20 "../cfg/hardware_interface.cfg"
       __max__.wheel_radius = 1.0;
-//#line 19 "../cfg/hardware_interface.cfg"
+//#line 20 "../cfg/hardware_interface.cfg"
       __default__.wheel_radius = 0.1016;
-//#line 19 "../cfg/hardware_interface.cfg"
+//#line 20 "../cfg/hardware_interface.cfg"
       __param_descriptions__.push_back(hardware_interface_paramsConfig::AbstractParamDescriptionConstPtr(new hardware_interface_paramsConfig::ParamDescription<double>("wheel_radius", "double", 0, "Radius of the robot wheels in meters", "", &hardware_interface_paramsConfig::wheel_radius)));
-//#line 20 "../cfg/hardware_interface.cfg"
+//#line 21 "../cfg/hardware_interface.cfg"
       __min__.tilt_enable = 0;
-//#line 20 "../cfg/hardware_interface.cfg"
+//#line 21 "../cfg/hardware_interface.cfg"
       __max__.tilt_enable = 1;
-//#line 20 "../cfg/hardware_interface.cfg"
+//#line 21 "../cfg/hardware_interface.cfg"
       __default__.tilt_enable = 0;
-//#line 20 "../cfg/hardware_interface.cfg"
+//#line 21 "../cfg/hardware_interface.cfg"
       __param_descriptions__.push_back(hardware_interface_paramsConfig::AbstractParamDescriptionConstPtr(new hardware_interface_paramsConfig::ParamDescription<bool>("tilt_enable", "bool", 0, "Enable control of kintect tilt angle", "", &hardware_interface_paramsConfig::tilt_enable)));
 //#line 239 "/opt/ros/electric/stacks/driver_common/dynamic_reconfigure/templates/ConfigType.h"
     
