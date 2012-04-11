@@ -27,7 +27,7 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <dynamic_reconfigure/server.h>
-//#include <MST_Edge_Detection/Edge_Detection_ParamsConfig.h>
+#include <MST_Edge_Detection/Edge_Detection_ParamsConfig.h>
 
 
 /***********************************************************
