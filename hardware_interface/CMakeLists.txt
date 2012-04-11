@@ -32,6 +32,7 @@ rosbuild_genmsg()
 
 #add executables
 rosbuild_add_executable(hardware_interface src/hardware_interface.cpp)
+rosbuild_add_executable(hardware_interface src/serial_port.cpp)
 
 #dynamic reconfigure stuff
 rosbuild_find_ros_package(dynamic_reconfigure)

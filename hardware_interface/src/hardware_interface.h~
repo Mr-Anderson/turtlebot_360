@@ -25,6 +25,7 @@
 #include <fstream>
 #include <dynamic_reconfigure/server.h>
 #include <hardware_interface/hardware_interface_paramsConfig.h>
+#include "serial_port.h"
 
 /***********************************************************
 * defines
@@ -63,7 +64,7 @@ ros::Publisher      sensor_pub;
 * Function prototypes
 ***********************************************************/
 static bool setVelocity(double x_base, double y_base, double theta_base);
-static bool setMotor(int &motor_num, float &ticks_per_sec);
+static bool setMotor(int &motor_num, double &ticks_per_sec);
 static bool killMotors();
 static bool initMotors();
 static void publishSensorData();

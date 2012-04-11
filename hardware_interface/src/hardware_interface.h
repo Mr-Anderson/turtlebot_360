@@ -25,6 +25,7 @@
 #include <fstream>
 #include <dynamic_reconfigure/server.h>
 #include <hardware_interface/hardware_interface_paramsConfig.h>
+#include "serial_port.h"
 
 /***********************************************************
 * defines
@@ -38,6 +39,7 @@
 bool watchdog_tripped_ = false;
 ros::Time watchdog_timer_;
 bool motors_enabled_ = false;
+serial_port motor_port;
 
 /***********************************************************
 * Parameters

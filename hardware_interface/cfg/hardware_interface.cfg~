@@ -12,13 +12,13 @@ gen = ParameterGenerator()
 
 
 #       Name                    Type      Reconfiguration level    Description                                        Default    Min   Max
-gen.add("watchdog_timeout",     double_t, 0,                       "The time in seconds between watchdog timeouts",   1.0,       0,    10)
-gen.add("max_speed",            double_t, 0,                       "Top motor speed in ticks/second",                 1,         0,    5)
-gen.add("min_speed",            double_t, 0,                       "Stop motor threshold speed in ticks/second",      1,         0,    5)
-gen.add("motor_res",            double_t, 0,                       "Motor resolutin in tics/revolution",              200,       0,    100)
+gen.add("watchdog_timeout",     double_t, 0,                       "The time in seconds between watchdog timeouts",   5,         0,    10)
+gen.add("max_speed",            double_t, 0,                       "Top motor speed in ticks/second",                 24000,     0,    48000)
+gen.add("min_speed",            double_t, 0,                       "Stop motor threshold speed in ticks/second",      5000,      0,    48000)
+gen.add("motor_res",            double_t, 0,                       "Motor resolutin in tics/revolution",              200,       0,    500)
 gen.add("base_radius",          double_t, 0,                       "Radius of the robot base in meters",              0.25,      0,    1)
 gen.add("wheel_radius",         double_t, 0,                       "Radius of the robot wheels in meters",            0.1016,    0,    1)
-gen.add("tilt_enable",          bool_t,   0,                       "Enable control of kintect tilt angle",            False)
+gen.add("tilt_enable",          bool_t,   0,                       "Enable control of Kinect tilt angle",             False)
 
 exit(gen.generate(PACKAGE, "dynamic_reconfigure_node", "hardware_interface_params"))
 

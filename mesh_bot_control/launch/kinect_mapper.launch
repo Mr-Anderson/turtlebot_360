@@ -4,7 +4,7 @@
     <arg name="usb" default="0" />
     <arg name="display" default="1" />
     <arg name="robot" default="1" />
-    <arg name="kinect" default="1" />
+    <arg name="kinect" default="0" />
     
     <!-- launch kinect drivers    -->
     <group if="$(arg kinect)">
@@ -30,8 +30,8 @@
     </node>
     
     
-    <!-- launch program nodes    -->
-    <node pkg="pre_vis_proc" type="pre_vis_proc" name="pre_vis_proc" args="depth:=/camera/depth_registered/image_raw " />
+    <!-- run motor drivers    -->
+    <node pkg="hardware_interface" type="hardware_interface" name="hardware_interface" args="twist:=cmd_vel" />
     
     <!-- launch debugging displays -->
     <group if="$(arg display)" >

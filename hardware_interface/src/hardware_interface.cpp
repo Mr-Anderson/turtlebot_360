@@ -1,6 +1,6 @@
 /*******************************************************************************
 * @file hardware_interface.h
-* @author James Anderson <jra798>
+* @author James Anderson <jra798>, Adam Honse <amhb59, calcprogrammer1@gmail.com>
 * @date 1/28/12
 * @version 1.0
 * @computes and sends velocity comands to motors based off x y and rotation will
@@ -54,6 +54,8 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "hardware_interface");
     ros::NodeHandle node;
 
+    //Initialize serial port
+    motor_port.serial_open("/dev/ttyUSB1", 19200); //params.serial_port.c_str(), 19200);
     
     //setup dynamic reconfigure gui
     dynamic_reconfigure::Server<hardware_interface::hardware_interface_paramsConfig> srv;
@@ -131,10 +133,10 @@ bool setVelocity(double x_base, double y_base, double theta_base)
                           - (.5 * y_base);
         
         //display wheel velocitys
-        ROS_INFO("Driving Motors 0:%f 1:%f 2:%f m/s", 
-                  wheel_speed[0], 
-                  wheel_speed[1], 
-                  wheel_speed[2]);
+//        ROS_INFO("Driving Motors 0:%f 1:%f 2:%f m/s", 
+//                  wheel_speed[0], 
+//                  wheel_speed[1], 
+//                  wheel_speed[2]);
         
         for(int i = 0; i < 3; i++)
         {
@@ -162,11 +164,11 @@ bool setVelocity(double x_base, double y_base, double theta_base)
                 //scale back motors
                 wheel_speed[i] *= speed_scaler;
                 
-                if(wheel_speed[i] < params.min_speed)
-                {
+                //if(wheel_speed[i] < params.min_speed)
+                //{
                     //set motor ticks_per_sec
                     success &= setMotor(i, wheel_speed[i]);
-                }
+                //}
         }
         
         return success;
@@ -179,7 +181,49 @@ bool setMotor(int &motor_num, double& ticks_per_sec)
     //@TODO Adam this is for your code 
     // the motors are numbered counter clockwise with 0 at the front 
     //params.min_speed acceses min speed param in ticks
-    
+    char serial_cmd[6] = {0x24,0x03,(char)motor_num+1};
+
+    int step_length = (312500.0 / abs(ticks_per_sec)); //timer frequency
+
+    ROS_INFO("Motor %u: %f ticks per sec, output %x\n", motor_num, ticks_per_sec, step_length);
+    //Step Length (16 bits)
+    serial_cmd[3] = 0x01;
+    serial_cmd[4] = step_length >> 8;
+    serial_cmd[5] = step_length;
+    motor_port.serial_write(serial_cmd, 6);
+
+    //Step Count (16 bits)
+    serial_cmd[3] = 0x02;
+    serial_cmd[4] = 0x00;
+    serial_cmd[5] = 0x38;
+    motor_port.serial_write(serial_cmd, 6);
+
+    //Step Direction
+    serial_cmd[3] = 0x03;
+    if(ticks_per_sec > 0)
+    {
+        serial_cmd[4] = 0x01;
+    }
+    else
+    {
+        serial_cmd[4] = 0x00;
+    }
+    serial_cmd[5] = 0x00;
+    motor_port.serial_write(serial_cmd, 6);
+
+    //Enable Motor if speed is greater than minimum
+    serial_cmd[3] = 0x04;
+    if(abs(ticks_per_sec) > 25)
+    {
+        serial_cmd[4] = 0x01;
+    }
+    else
+    {
+        serial_cmd[4] = 0x00;
+    }
+    serial_cmd[5] = 0x00;
+    motor_port.serial_write(serial_cmd, 6);
+
     return true;
 }
 
@@ -190,6 +234,9 @@ bool killMotors()
     //you can remove the following motor stop if not needed
     setVelocity(0, 0, 0 );
     
+    char serial_cmd[6] = {0x21,0x01,0x00,0x04,0x00,0x00};
+    motor_port.serial_write(serial_cmd, 6);
+
     return true;
 }
 
@@ -198,6 +245,19 @@ bool initMotors()
 {
     //@TODO Adam put motor initialization code here
     
+    //Put serial-connected board into I2C Master mode
+    char serial_cmd[6] = {0x21,0x01,0x00};
+    motor_port.serial_write(serial_cmd, 3);
+
+    //Test motor
+    serial_cmd[0] = 0x24;
+    serial_cmd[1] = 0x03;
+    serial_cmd[2] = 0x01;
+    serial_cmd[3] = 0x04;
+    serial_cmd[4] = 0x01;
+    serial_cmd[5] = 0x00;
+    motor_port.serial_write(serial_cmd, 6);
+
     return true;
 }
 

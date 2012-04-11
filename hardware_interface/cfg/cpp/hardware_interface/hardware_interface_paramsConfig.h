@@ -147,6 +147,8 @@ namespace hardware_interface
       double wheel_radius;
 //#line 21 "../cfg/hardware_interface.cfg"
       bool tilt_enable;
+//#line 22 "../cfg/hardware_interface.cfg"
+      std::string serial_port;
 //#line 138 "/opt/ros/electric/stacks/driver_common/dynamic_reconfigure/templates/ConfigType.h"
 
     bool __fromMessage__(dynamic_reconfigure::Config &msg)
@@ -258,23 +260,23 @@ namespace hardware_interface
 //#line 16 "../cfg/hardware_interface.cfg"
       __min__.max_speed = 0.0;
 //#line 16 "../cfg/hardware_interface.cfg"
-      __max__.max_speed = 5.0;
+      __max__.max_speed = 48000.0;
 //#line 16 "../cfg/hardware_interface.cfg"
-      __default__.max_speed = 1.0;
+      __default__.max_speed = 24000.0;
 //#line 16 "../cfg/hardware_interface.cfg"
       __param_descriptions__.push_back(hardware_interface_paramsConfig::AbstractParamDescriptionConstPtr(new hardware_interface_paramsConfig::ParamDescription<double>("max_speed", "double", 0, "Top motor speed in ticks/second", "", &hardware_interface_paramsConfig::max_speed)));
 //#line 17 "../cfg/hardware_interface.cfg"
       __min__.min_speed = 0.0;
 //#line 17 "../cfg/hardware_interface.cfg"
-      __max__.min_speed = 5.0;
+      __max__.min_speed = 48000.0;
 //#line 17 "../cfg/hardware_interface.cfg"
-      __default__.min_speed = 1.0;
+      __default__.min_speed = 5000.0;
 //#line 17 "../cfg/hardware_interface.cfg"
       __param_descriptions__.push_back(hardware_interface_paramsConfig::AbstractParamDescriptionConstPtr(new hardware_interface_paramsConfig::ParamDescription<double>("min_speed", "double", 0, "Stop motor threshold speed in ticks/second", "", &hardware_interface_paramsConfig::min_speed)));
 //#line 18 "../cfg/hardware_interface.cfg"
       __min__.motor_res = 0.0;
 //#line 18 "../cfg/hardware_interface.cfg"
-      __max__.motor_res = 100.0;
+      __max__.motor_res = 500.0;
 //#line 18 "../cfg/hardware_interface.cfg"
       __default__.motor_res = 200.0;
 //#line 18 "../cfg/hardware_interface.cfg"
@@ -302,7 +304,15 @@ namespace hardware_interface
 //#line 21 "../cfg/hardware_interface.cfg"
       __default__.tilt_enable = 0;
 //#line 21 "../cfg/hardware_interface.cfg"
-      __param_descriptions__.push_back(hardware_interface_paramsConfig::AbstractParamDescriptionConstPtr(new hardware_interface_paramsConfig::ParamDescription<bool>("tilt_enable", "bool", 0, "Enable control of kintect tilt angle", "", &hardware_interface_paramsConfig::tilt_enable)));
+      __param_descriptions__.push_back(hardware_interface_paramsConfig::AbstractParamDescriptionConstPtr(new hardware_interface_paramsConfig::ParamDescription<bool>("tilt_enable", "bool", 0, "Enable control of Kinect tilt angle", "", &hardware_interface_paramsConfig::tilt_enable)));
+//#line 22 "../cfg/hardware_interface.cfg"
+      __min__.serial_port = "";
+//#line 22 "../cfg/hardware_interface.cfg"
+      __max__.serial_port = "";
+//#line 22 "../cfg/hardware_interface.cfg"
+      __default__.serial_port = "/dev/ttyUSB0";
+//#line 22 "../cfg/hardware_interface.cfg"
+      __param_descriptions__.push_back(hardware_interface_paramsConfig::AbstractParamDescriptionConstPtr(new hardware_interface_paramsConfig::ParamDescription<std::string>("serial_port", "str", 0, "Serial port for motor controller", "", &hardware_interface_paramsConfig::serial_port)));
 //#line 239 "/opt/ros/electric/stacks/driver_common/dynamic_reconfigure/templates/ConfigType.h"
     
       for (std::vector<hardware_interface_paramsConfig::AbstractParamDescriptionConstPtr>::const_iterator i = __param_descriptions__.begin(); i != __param_descriptions__.end(); i++)

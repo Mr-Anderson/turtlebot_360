@@ -4,7 +4,6 @@
  * @version 1.0
  * @brief main file to exstract a mesh from RGBD camera
  ******************************************************************************/
- #include "kinect_mapper.h"
  
 /***********************************************************
 * @fn imageCallback(const sensor_msgs::ImageConstPtr& msg)
