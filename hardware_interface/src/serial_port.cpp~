@@ -20,14 +20,14 @@ serial_port::serial_port(const char * name, unsigned int baud)
 //	Closes the port before destroying the object
 serial_port::~serial_port()
 {
-	close();
+	serial_close();
 }
 
 //open
 //	Opens the serial port using stored information
 //	Sets the baud rate to the stored baud rate
 //	8 data bits, no parity, one stop bit
-void serial_port::open()
+void serial_port::serial_open()
 {
 	//Open the port
 	#ifdef WINDOWS
@@ -61,28 +61,44 @@ void serial_port::open()
 	#ifdef LINUX
 	file_descriptor = open(port_name, O_RDWR | O_NOCTTY | O_NDELAY);
 	fcntl(file_descriptor, F_SETFL, 0);
+
+    //Set the baud rate on the new port to 19200
+    struct termios tty;
+    bzero(&tty, sizeof(tty));
+    tty.c_cflag = B19200 | CS8 | CLOCAL | CREAD;
+    tty.c_iflag = ICRNL;
+    tty.c_oflag = 0;
+    tty.c_lflag = ICANON;
+    if( tcflush(m_fd, TCIFLUSH) < 0 )
+    {
+        return;
+    }
+    if( tcsetattr(m_fd, TCSANOW, &tty) )
+    {
+        return;
+    }
 	#endif
 }
 
 //open
 //	Opens the serial port <name> without changing stored baud rate
-void serial_port::open(const char * name)
+void serial_port::serial_open(const char * name)
 {
-	open(name, baud_rate);
+	serial_open(name, baud_rate);
 }
 
 //open
 //	Opens the serial port <name> at baud rate <baud>
-void serial_port::open(const char* name, unsigned int baud)
+void serial_port::serial_open(const char* name, unsigned int baud)
 {
 	strcpy(port_name, name);
 	baud_rate = baud;
-	open();
+	serial_open();
 }
 
 //close
 //	Closes the serial port
-void serial_port::close()
+void serial_port::serial_close()
 {
 	#ifdef WINDOWS
 	#endif
@@ -97,7 +113,7 @@ void serial_port::close()
 //	Returns the number of bytes actually read
 //	If less than <length> bytes are available, it will read all
 //	available bytes
-int serial_port::read(char * buffer, int length)
+int serial_port::serial_read(char * buffer, int length)
 {
 	#ifdef WINDOWS
 	DWORD bytesread;
@@ -116,7 +132,7 @@ int serial_port::read(char * buffer, int length)
 //	Does not check for null-termination, so if <length> is
 //	greater than the number of bytes in <buffer>, it will read
 //	past <buffer> and may cause a segfault
-int serial_port::write(char * buffer, int length)
+int serial_port::serial_write(char * buffer, int length)
 {
 	#ifdef WINDOWS
 	DWORD byteswritten;

@@ -61,6 +61,22 @@ void serial_port::serial_open()
 	#ifdef LINUX
 	file_descriptor = open(port_name, O_RDWR | O_NOCTTY | O_NDELAY);
 	fcntl(file_descriptor, F_SETFL, 0);
+
+    //Set the baud rate on the new port to 19200
+    struct termios tty;
+    bzero(&tty, sizeof(tty));
+    tty.c_cflag = B19200 | CS8 | CLOCAL | CREAD;
+    tty.c_iflag = ICRNL;
+    tty.c_oflag = 0;
+    tty.c_lflag = ICANON;
+    if( tcflush(file_descriptor, TCIFLUSH) < 0 )
+    {
+        return;
+    }
+    if( tcsetattr(file_descriptor, TCSANOW, &tty) )
+    {
+        return;
+    }
 	#endif
 }
 
