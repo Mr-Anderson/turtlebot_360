@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/ros-pkg/!svn/ver/30362/stacks/joystick_drivers/trunk/spacenav
+END
+manifest.xml
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/ros-pkg/!svn/ver/29655/stacks/joystick_drivers/trunk/spacenav/manifest.xml
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/ros-pkg/!svn/ver/30362/stacks/joystick_drivers/trunk/spacenav/Makefile
+END

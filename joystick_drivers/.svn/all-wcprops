@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/ros-pkg/!svn/ver/38438/stacks/joystick_drivers/trunk
+END
+stack.xml
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/ros-pkg/!svn/ver/37466/stacks/joystick_drivers/trunk/stack.xml
+END
+CMakeLists.txt
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/ros-pkg/!svn/ver/38384/stacks/joystick_drivers/trunk/CMakeLists.txt
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/ros-pkg/!svn/ver/23884/stacks/joystick_drivers/trunk/Makefile
+END
+rosdep.yaml
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/ros-pkg/!svn/ver/38398/stacks/joystick_drivers/trunk/rosdep.yaml
+END

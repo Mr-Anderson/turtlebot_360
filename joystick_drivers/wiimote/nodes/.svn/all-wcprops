@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/ros-pkg/!svn/ver/38438/stacks/joystick_drivers/trunk/wiimote/nodes
+END
+ledTester.py
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/ros-pkg/!svn/ver/26945/stacks/joystick_drivers/trunk/wiimote/nodes/ledTester.py
+END
+rumbleTester.py
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/ros-pkg/!svn/ver/35254/stacks/joystick_drivers/trunk/wiimote/nodes/rumbleTester.py
+END
+wiimote_node.py
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/ros-pkg/!svn/ver/38438/stacks/joystick_drivers/trunk/wiimote/nodes/wiimote_node.py
+END

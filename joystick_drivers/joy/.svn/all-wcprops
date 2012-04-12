@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/ros-pkg/!svn/ver/38436/stacks/joystick_drivers/trunk/joy
+END
+joy
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/ros-pkg/!svn/ver/24085/stacks/joystick_drivers/trunk/joy/joy
+END
+manifest.xml
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ros-pkg/!svn/ver/37286/stacks/joystick_drivers/trunk/joy/manifest.xml
+END
+joy_node.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ros-pkg/!svn/ver/37286/stacks/joystick_drivers/trunk/joy/joy_node.cpp
+END
+mainpage.dox
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/ros-pkg/!svn/ver/24299/stacks/joystick_drivers/trunk/joy/mainpage.dox
+END
+CMakeLists.txt
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/ros-pkg/!svn/ver/37469/stacks/joystick_drivers/trunk/joy/CMakeLists.txt
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/ros-pkg/!svn/ver/23884/stacks/joystick_drivers/trunk/joy/Makefile
+END
+txjoy
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/ros-pkg/!svn/ver/24086/stacks/joystick_drivers/trunk/joy/txjoy
+END
