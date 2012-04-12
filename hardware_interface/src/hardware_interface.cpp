@@ -52,18 +52,18 @@ int main(int argc, char **argv)
     
     //setup node and image transport
     ros::init(argc, argv, "hardware_interface");
+
     ros::NodeHandle node;
 
-    //Initialize serial port
-    motor_port.serial_open("/dev/ttyUSB1", 19200); //params.serial_port.c_str(), 19200);
-    
     //setup dynamic reconfigure gui
     dynamic_reconfigure::Server<hardware_interface::hardware_interface_paramsConfig> srv;
     dynamic_reconfigure::Server<hardware_interface::hardware_interface_paramsConfig>::CallbackType f;
     f = boost::bind(&setparamsCallback, _1, _2);
     srv.setCallback(f);
     
-    
+    //Initialize serial port
+    motor_port.serial_open(params.serial_port.c_str(), 19200);
+            
     //get twist topic name
     twist_topic = node.resolveName("twist");
 
@@ -213,7 +213,7 @@ bool setMotor(int &motor_num, double& ticks_per_sec)
 
     //Enable Motor if speed is greater than minimum
     serial_cmd[3] = 0x04;
-    if(abs(ticks_per_sec) > 25)
+    if(abs(ticks_per_sec) > params.min_speed)
     {
         serial_cmd[4] = 0x01;
     }
