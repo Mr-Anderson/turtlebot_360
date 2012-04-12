@@ -1,13 +1,13 @@
 K 25
 svn:wc:ra_dav:version-url
 V 65
-/svn/ros-pkg/!svn/ver/39065/stacks/joystick_drivers/trunk/wiimote
+/svn/ros-pkg/!svn/ver/38438/stacks/joystick_drivers/trunk/wiimote
 END
 manifest.xml
 K 25
 svn:wc:ra_dav:version-url
 V 78
-/svn/ros-pkg/!svn/ver/39047/stacks/joystick_drivers/trunk/wiimote/manifest.xml
+/svn/ros-pkg/!svn/ver/38398/stacks/joystick_drivers/trunk/wiimote/manifest.xml
 END
 mainpage.dox
 K 25

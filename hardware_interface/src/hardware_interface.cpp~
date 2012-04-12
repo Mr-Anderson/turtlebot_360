@@ -61,6 +61,15 @@ int main(int argc, char **argv)
 
     ros::NodeHandle node;
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+    //Initialize serial port
+    motor_port.serial_open("/dev/ttyUSB0", 19200); //params.serial_port.c_str(), 19200);
+    
+=======
+>>>>>>> 98318c48f403e5cdc1bb6ce73636b8bd42b4992d
+>>>>>>> 42a74d34319b2ff49f4e7b5ce24cacc444f30850
     //setup dynamic reconfigure gui
     dynamic_reconfigure::Server<hardware_interface::hardware_interface_paramsConfig> srv;
     dynamic_reconfigure::Server<hardware_interface::hardware_interface_paramsConfig>::CallbackType f;
@@ -191,7 +200,7 @@ bool setMotor(int &motor_num, double& ticks_per_sec)
 
     int step_length = (312500.0 / abs(ticks_per_sec)); //timer frequency
 
-    ROS_INFO("Motor %u: %f ticks per sec, output %x\n", motor_num, ticks_per_sec, step_length);
+    ROS_INFO("Motor %u: %f ticks per sec, output %x\n, addr %X", motor_num, ticks_per_sec, step_length, serial_cmd[2]);
     //Step Length (16 bits)
     serial_cmd[3] = 0x01;
     serial_cmd[4] = step_length >> 8;

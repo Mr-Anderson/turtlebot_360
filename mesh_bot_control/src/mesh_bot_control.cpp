@@ -455,7 +455,7 @@ int main(int argc, char **argv)
 
     wiimote_sub = n.subscribe("wiimote/state" ,100,wiimote_callback);
     
-    wiimote_sub = n.subscribe("wiimote/classic" ,100,classic_callback);
+    classic_sub = n.subscribe("wiimote/classic" ,100,classic_callback);
     
     
     //create publications

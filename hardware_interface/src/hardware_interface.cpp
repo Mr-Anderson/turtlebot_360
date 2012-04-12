@@ -61,6 +61,7 @@ int main(int argc, char **argv)
 
     ros::NodeHandle node;
 
+
     //setup dynamic reconfigure gui
     dynamic_reconfigure::Server<hardware_interface::hardware_interface_paramsConfig> srv;
     dynamic_reconfigure::Server<hardware_interface::hardware_interface_paramsConfig>::CallbackType f;
