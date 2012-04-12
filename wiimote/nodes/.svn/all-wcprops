@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/ros-pkg/!svn/ver/39063/stacks/joystick_drivers/trunk/wiimote/nodes
+END
+feedbackTester.py
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/ros-pkg/!svn/ver/39063/stacks/joystick_drivers/trunk/wiimote/nodes/feedbackTester.py
+END
+wiimote_node.py
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/ros-pkg/!svn/ver/39063/stacks/joystick_drivers/trunk/wiimote/nodes/wiimote_node.py
+END
