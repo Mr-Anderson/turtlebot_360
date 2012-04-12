@@ -146,8 +146,14 @@ namespace hardware_interface
 //#line 20 "../cfg/hardware_interface.cfg"
       double wheel_radius;
 //#line 21 "../cfg/hardware_interface.cfg"
-      bool tilt_enable;
+      int motor1_i2c_addr;
 //#line 22 "../cfg/hardware_interface.cfg"
+      int motor2_i2c_addr;
+//#line 23 "../cfg/hardware_interface.cfg"
+      int motor3_i2c_addr;
+//#line 24 "../cfg/hardware_interface.cfg"
+      bool tilt_enable;
+//#line 25 "../cfg/hardware_interface.cfg"
       std::string serial_port;
 //#line 138 "/opt/ros/electric/stacks/driver_common/dynamic_reconfigure/templates/ConfigType.h"
 
@@ -260,17 +266,17 @@ namespace hardware_interface
 //#line 16 "../cfg/hardware_interface.cfg"
       __min__.max_speed = 0.0;
 //#line 16 "../cfg/hardware_interface.cfg"
-      __max__.max_speed = 48000.0;
+      __max__.max_speed = 800.0;
 //#line 16 "../cfg/hardware_interface.cfg"
-      __default__.max_speed = 24000.0;
+      __default__.max_speed = 600.0;
 //#line 16 "../cfg/hardware_interface.cfg"
       __param_descriptions__.push_back(hardware_interface_paramsConfig::AbstractParamDescriptionConstPtr(new hardware_interface_paramsConfig::ParamDescription<double>("max_speed", "double", 0, "Top motor speed in ticks/second", "", &hardware_interface_paramsConfig::max_speed)));
 //#line 17 "../cfg/hardware_interface.cfg"
       __min__.min_speed = 0.0;
 //#line 17 "../cfg/hardware_interface.cfg"
-      __max__.min_speed = 48000.0;
+      __max__.min_speed = 800.0;
 //#line 17 "../cfg/hardware_interface.cfg"
-      __default__.min_speed = 5000.0;
+      __default__.min_speed = 5.0;
 //#line 17 "../cfg/hardware_interface.cfg"
       __param_descriptions__.push_back(hardware_interface_paramsConfig::AbstractParamDescriptionConstPtr(new hardware_interface_paramsConfig::ParamDescription<double>("min_speed", "double", 0, "Stop motor threshold speed in ticks/second", "", &hardware_interface_paramsConfig::min_speed)));
 //#line 18 "../cfg/hardware_interface.cfg"
@@ -280,7 +286,7 @@ namespace hardware_interface
 //#line 18 "../cfg/hardware_interface.cfg"
       __default__.motor_res = 200.0;
 //#line 18 "../cfg/hardware_interface.cfg"
-      __param_descriptions__.push_back(hardware_interface_paramsConfig::AbstractParamDescriptionConstPtr(new hardware_interface_paramsConfig::ParamDescription<double>("motor_res", "double", 0, "Motor resolutin in tics/revolution", "", &hardware_interface_paramsConfig::motor_res)));
+      __param_descriptions__.push_back(hardware_interface_paramsConfig::AbstractParamDescriptionConstPtr(new hardware_interface_paramsConfig::ParamDescription<double>("motor_res", "double", 0, "Motor resolution in ticks/revolution", "", &hardware_interface_paramsConfig::motor_res)));
 //#line 19 "../cfg/hardware_interface.cfg"
       __min__.base_radius = 0.0;
 //#line 19 "../cfg/hardware_interface.cfg"
@@ -298,20 +304,44 @@ namespace hardware_interface
 //#line 20 "../cfg/hardware_interface.cfg"
       __param_descriptions__.push_back(hardware_interface_paramsConfig::AbstractParamDescriptionConstPtr(new hardware_interface_paramsConfig::ParamDescription<double>("wheel_radius", "double", 0, "Radius of the robot wheels in meters", "", &hardware_interface_paramsConfig::wheel_radius)));
 //#line 21 "../cfg/hardware_interface.cfg"
+      __min__.motor1_i2c_addr = 1;
+//#line 21 "../cfg/hardware_interface.cfg"
+      __max__.motor1_i2c_addr = 127;
+//#line 21 "../cfg/hardware_interface.cfg"
+      __default__.motor1_i2c_addr = 3;
+//#line 21 "../cfg/hardware_interface.cfg"
+      __param_descriptions__.push_back(hardware_interface_paramsConfig::AbstractParamDescriptionConstPtr(new hardware_interface_paramsConfig::ParamDescription<int>("motor1_i2c_addr", "int", 0, "I2C address of motor 1 controller", "", &hardware_interface_paramsConfig::motor1_i2c_addr)));
+//#line 22 "../cfg/hardware_interface.cfg"
+      __min__.motor2_i2c_addr = 1;
+//#line 22 "../cfg/hardware_interface.cfg"
+      __max__.motor2_i2c_addr = 127;
+//#line 22 "../cfg/hardware_interface.cfg"
+      __default__.motor2_i2c_addr = 1;
+//#line 22 "../cfg/hardware_interface.cfg"
+      __param_descriptions__.push_back(hardware_interface_paramsConfig::AbstractParamDescriptionConstPtr(new hardware_interface_paramsConfig::ParamDescription<int>("motor2_i2c_addr", "int", 0, "I2C address of motor 2 controller", "", &hardware_interface_paramsConfig::motor2_i2c_addr)));
+//#line 23 "../cfg/hardware_interface.cfg"
+      __min__.motor3_i2c_addr = 1;
+//#line 23 "../cfg/hardware_interface.cfg"
+      __max__.motor3_i2c_addr = 127;
+//#line 23 "../cfg/hardware_interface.cfg"
+      __default__.motor3_i2c_addr = 2;
+//#line 23 "../cfg/hardware_interface.cfg"
+      __param_descriptions__.push_back(hardware_interface_paramsConfig::AbstractParamDescriptionConstPtr(new hardware_interface_paramsConfig::ParamDescription<int>("motor3_i2c_addr", "int", 0, "I2C address of motor 3 controller", "", &hardware_interface_paramsConfig::motor3_i2c_addr)));
+//#line 24 "../cfg/hardware_interface.cfg"
       __min__.tilt_enable = 0;
-//#line 21 "../cfg/hardware_interface.cfg"
+//#line 24 "../cfg/hardware_interface.cfg"
       __max__.tilt_enable = 1;
-//#line 21 "../cfg/hardware_interface.cfg"
+//#line 24 "../cfg/hardware_interface.cfg"
       __default__.tilt_enable = 0;
-//#line 21 "../cfg/hardware_interface.cfg"
+//#line 24 "../cfg/hardware_interface.cfg"
       __param_descriptions__.push_back(hardware_interface_paramsConfig::AbstractParamDescriptionConstPtr(new hardware_interface_paramsConfig::ParamDescription<bool>("tilt_enable", "bool", 0, "Enable control of Kinect tilt angle", "", &hardware_interface_paramsConfig::tilt_enable)));
-//#line 22 "../cfg/hardware_interface.cfg"
+//#line 25 "../cfg/hardware_interface.cfg"
       __min__.serial_port = "";
-//#line 22 "../cfg/hardware_interface.cfg"
+//#line 25 "../cfg/hardware_interface.cfg"
       __max__.serial_port = "";
-//#line 22 "../cfg/hardware_interface.cfg"
+//#line 25 "../cfg/hardware_interface.cfg"
       __default__.serial_port = "/dev/ttyUSB0";
-//#line 22 "../cfg/hardware_interface.cfg"
+//#line 25 "../cfg/hardware_interface.cfg"
       __param_descriptions__.push_back(hardware_interface_paramsConfig::AbstractParamDescriptionConstPtr(new hardware_interface_paramsConfig::ParamDescription<std::string>("serial_port", "str", 0, "Serial port for motor controller", "", &hardware_interface_paramsConfig::serial_port)));
 //#line 239 "/opt/ros/electric/stacks/driver_common/dynamic_reconfigure/templates/ConfigType.h"
     

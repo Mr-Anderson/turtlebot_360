@@ -36,7 +36,7 @@ void wiimote_callback(const wiimote::State::ConstPtr& state)
         ros::Duration(3).sleep();
         wiimote_rum_pub.publish(rumble);
         
-        say("wiimote connected. Joe-Mega-Tron standing by");
+        say("wiimote connected. Mesh Bot standing by");
         
         change_mode(standby);
         
