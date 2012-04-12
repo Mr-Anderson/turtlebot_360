@@ -8,6 +8,8 @@ also send back any sensor data pulled from the base
 ******************************************************************************/
 #include "hardware_interface.h"
 
+char motor_address_table[3];
+
 /***********************************************************
 * Message Callbacks
 ***********************************************************/
@@ -38,6 +40,10 @@ void setparamsCallback(hardware_interface::hardware_interface_paramsConfig &conf
 {
     // set params
     params = config;
+    
+    motor_address_table[0] = params.motor1_i2c_addr;
+    motor_address_table[1] = params.motor2_i2c_addr;
+    motor_address_table[2] = params.motor3_i2c_addr;
 }
 
 
@@ -52,18 +58,18 @@ int main(int argc, char **argv)
     
     //setup node and image transport
     ros::init(argc, argv, "hardware_interface");
+
     ros::NodeHandle node;
 
-    //Initialize serial port
-    motor_port.serial_open("/dev/ttyUSB0", 19200); //params.serial_port.c_str(), 19200);
-    
     //setup dynamic reconfigure gui
     dynamic_reconfigure::Server<hardware_interface::hardware_interface_paramsConfig> srv;
     dynamic_reconfigure::Server<hardware_interface::hardware_interface_paramsConfig>::CallbackType f;
     f = boost::bind(&setparamsCallback, _1, _2);
     srv.setCallback(f);
     
-    
+    //Initialize serial port
+    motor_port.serial_open(params.serial_port.c_str(), 19200);
+            
     //get twist topic name
     twist_topic = node.resolveName("twist");
 
@@ -181,7 +187,7 @@ bool setMotor(int &motor_num, double& ticks_per_sec)
     //@TODO Adam this is for your code 
     // the motors are numbered counter clockwise with 0 at the front 
     //params.min_speed acceses min speed param in ticks
-    char serial_cmd[6] = {0x24,0x03,(char)motor_num+1};
+    char serial_cmd[6] = {0x24,0x03,motor_address_table[motor_num]};
 
     int step_length = (312500.0 / abs(ticks_per_sec)); //timer frequency
 
@@ -213,7 +219,7 @@ bool setMotor(int &motor_num, double& ticks_per_sec)
 
     //Enable Motor if speed is greater than minimum
     serial_cmd[3] = 0x04;
-    if(abs(ticks_per_sec) > 25)
+    if(abs(ticks_per_sec) > params.min_speed)
     {
         serial_cmd[4] = 0x01;
     }
