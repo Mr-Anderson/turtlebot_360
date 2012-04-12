@@ -55,7 +55,7 @@ int main(int argc, char **argv)
     ros::NodeHandle node;
 
     //Initialize serial port
-    motor_port.serial_open("/dev/ttyUSB0", 19200); //params.serial_port.c_str(), 19200);
+    motor_port.serial_open(params.serial_port.c_str(), 19200); //params.serial_port.c_str(), 19200);
     
     //setup dynamic reconfigure gui
     dynamic_reconfigure::Server<hardware_interface::hardware_interface_paramsConfig> srv;
