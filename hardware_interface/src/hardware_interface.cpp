@@ -8,6 +8,8 @@ also send back any sensor data pulled from the base
 ******************************************************************************/
 #include "hardware_interface.h"
 
+char motor_address_table[3];
+
 /***********************************************************
 * Message Callbacks
 ***********************************************************/
@@ -38,6 +40,10 @@ void setparamsCallback(hardware_interface::hardware_interface_paramsConfig &conf
 {
     // set params
     params = config;
+    
+    motor_address_table[0] = params.motor1_i2c_addr;
+    motor_address_table[1] = params.motor2_i2c_addr;
+    motor_address_table[2] = params.motor3_i2c_addr;
 }
 
 
@@ -181,11 +187,11 @@ bool setMotor(int &motor_num, double& ticks_per_sec)
     //@TODO Adam this is for your code 
     // the motors are numbered counter clockwise with 0 at the front 
     //params.min_speed acceses min speed param in ticks
-    char serial_cmd[6] = {0x24,0x03,(char)motor_num+1};
+    char serial_cmd[6] = {0x24,0x03,motor_address_table[motor_num]};
 
     int step_length = (312500.0 / abs(ticks_per_sec)); //timer frequency
 
-    ROS_INFO("Motor %u: %f ticks per sec, output %x\n", motor_num, ticks_per_sec, step_length);
+    ROS_INFO("Motor %u: %f ticks per sec, output %x\n, addr %X", motor_num, ticks_per_sec, step_length, serial_cmd[2]);
     //Step Length (16 bits)
     serial_cmd[3] = 0x01;
     serial_cmd[4] = step_length >> 8;
