@@ -161,7 +161,7 @@
     </joint>
     
     <!-- laptop -->
-    <link name="laptop_link">
+    <!--link1 name="laptop_link">
         <inertial>
           <mass value="2" />
           <origin xyz="0 0 0" />
@@ -190,7 +190,7 @@
         <origin xyz="0 0 ${base_height *in_m}" rpy="0 0 0" />
         <parent link="platform_1_link"/>
         <child link="laptop_link" />
-    </joint>
+    </joint-->
     
     <!-- platform 2 -->
     <link name="platform_2_link">

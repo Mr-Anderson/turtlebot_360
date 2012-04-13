@@ -5,7 +5,7 @@
   <param name="max_speed" type="double" value="600.0" />
   <param name="min_speed" type="double" value="5.0" />
   <param name="motor_res" type="double" value="200.0" />
-  <param name="base_radius" type="double" value="0.25" />
+  <param name="base_radius" type="double" value="0.177" />
   <param name="wheel_radius" type="double" value="0.1016" />
   <param name="motor1_i2c_addr" type="int" value="3" />
   <param name="motor2_i2c_addr" type="int" value="1" />

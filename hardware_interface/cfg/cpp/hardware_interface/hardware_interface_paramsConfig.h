@@ -292,7 +292,7 @@ namespace hardware_interface
 //#line 19 "../cfg/hardware_interface.cfg"
       __max__.base_radius = 1.0;
 //#line 19 "../cfg/hardware_interface.cfg"
-      __default__.base_radius = 0.25;
+      __default__.base_radius = 0.177;
 //#line 19 "../cfg/hardware_interface.cfg"
       __param_descriptions__.push_back(hardware_interface_paramsConfig::AbstractParamDescriptionConstPtr(new hardware_interface_paramsConfig::ParamDescription<double>("base_radius", "double", 0, "Radius of the robot base in meters", "", &hardware_interface_paramsConfig::base_radius)));
 //#line 20 "../cfg/hardware_interface.cfg"

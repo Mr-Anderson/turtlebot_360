@@ -16,7 +16,7 @@
 //calback for the wimote state
 void wiimote_callback(const wiimote::State::ConstPtr& state)
 {
-    classic_timeout = ros::Time::now() + ros::Duration(TIMEOUT_TIME);
+    wii_timeout = ros::Time::now() + ros::Duration(TIMEOUT_TIME);
 
     //sets inital conection and resets if node restarted
     //when wiimote is killed and restarted it continuously
@@ -151,7 +151,7 @@ void wiimote_callback(const wiimote::State::ConstPtr& state)
             
             //compute controlls
             wii_twist.linear.x  = state->nunchuk_joystick_zeroed[1] * params.base_linear_speed * turbo_linear;
-            wii_twist.linear.y  = state->nunchuk_joystick_zeroed[0] * params.base_linear_speed * turbo_linear;
+            wii_twist.linear.y  = -state->nunchuk_joystick_zeroed[0] * params.base_linear_speed * turbo_linear;
             
             //controll for the camera
             //down is positive in twist
@@ -201,38 +201,37 @@ void wiimote_callback(const wiimote::State::ConstPtr& state)
             }
             
             //camera control b and tilt
-            else if(state->buttons[MSG_BTN_B])
+            if(state->buttons[MSG_BTN_B])
             {
                 wii_twist.angular.z = (state->linear_acceleration_zeroed.x)/10 * params.base_rot_speed * turbo_angular;
                 wii_twist.angular.y = -(state->linear_acceleration_zeroed.y)/10 * params.base_rot_speed * turbo_angular;
             }
             
+            
             //dpad handlers for movement
-            else
-            { 
-                //buttons are named with the wiimote on the side
-                if(state->buttons[MSG_BTN_LEFT])
-                {
-                    wii_twist.linear.x = params.base_linear_speed * turbo_linear * params.d_pad_percent/100;
-                }
-                else if(state->buttons[MSG_BTN_RIGHT])
-                {
-                    wii_twist.linear.x = -params.base_linear_speed * turbo_linear * params.d_pad_percent/100;
-                }
-                if(state->buttons[MSG_BTN_UP])
-                {
-                    wii_twist.linear.y = -params.base_rot_speed * turbo_angular * params.d_pad_percent/100;
-                }
-                else if(state->buttons[MSG_BTN_DOWN])
-                {
-                    wii_twist.linear.y = params.base_rot_speed * turbo_angular * params.d_pad_percent/100;
-                }
+            //buttons are named with the wiimote on the side
+            if(state->buttons[MSG_BTN_LEFT])
+            {
+                wii_twist.linear.x = params.base_linear_speed * turbo_linear * params.d_pad_percent/100;
             }
+            else if(state->buttons[MSG_BTN_RIGHT])
+            {
+                wii_twist.linear.x = -params.base_linear_speed * turbo_linear * params.d_pad_percent/100;
+            }
+            if(state->buttons[MSG_BTN_UP])
+            {
+                wii_twist.linear.y = -params.base_linear_speed * turbo_angular * params.d_pad_percent/100;
+            }
+            else if(state->buttons[MSG_BTN_DOWN])
+            {
+                wii_twist.linear.y = params.base_linear_speed * turbo_angular * params.d_pad_percent/100;
+            }
+          
             
         }
         else
         {
-            if(wii_timeout < ros::Time::now())
+            if(classic_timeout < ros::Time::now())
             {
                 //havent received a message from classic in a while
                 classic_connected = false;
@@ -455,7 +454,7 @@ int main(int argc, char **argv)
 
     wiimote_sub = n.subscribe("wiimote/state" ,100,wiimote_callback);
     
-    wiimote_sub = n.subscribe("wiimote/classic" ,100,classic_callback);
+    classic_sub = n.subscribe("wiimote/classic" ,100,classic_callback);
     
     
     //create publications
@@ -469,8 +468,8 @@ int main(int argc, char **argv)
     
 
     
-    //set rate to 30 hz
-    ros::Rate loop_rate(30);
+    //set rate to 10 hz
+    ros::Rate loop_rate(10);
     
     
     
@@ -504,10 +503,12 @@ int main(int argc, char **argv)
             motor_pub.publish(wii_twist);
             stopped = false;
             
+            
             if(wii_timeout < ros::Time::now())
             {
                 change_mode(standby);
             }
+            
         }
         else if(mode_ == autonomous_mapping)
         {

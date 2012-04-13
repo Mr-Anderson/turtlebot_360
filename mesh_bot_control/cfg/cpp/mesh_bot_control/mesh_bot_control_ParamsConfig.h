@@ -136,11 +136,11 @@ namespace mesh_bot_control
 //#line 13 "../cfg/mesh_bot_control.cfg"
       double base_linear_speed;
 //#line 14 "../cfg/mesh_bot_control.cfg"
-      double base_rot_speed;
-//#line 15 "../cfg/mesh_bot_control.cfg"
-      double turbo_angular;
-//#line 16 "../cfg/mesh_bot_control.cfg"
       double turbo_linear;
+//#line 15 "../cfg/mesh_bot_control.cfg"
+      double base_rot_speed;
+//#line 16 "../cfg/mesh_bot_control.cfg"
+      double turbo_angular;
 //#line 17 "../cfg/mesh_bot_control.cfg"
       double d_pad_percent;
 //#line 18 "../cfg/mesh_bot_control.cfg"
@@ -256,33 +256,33 @@ namespace mesh_bot_control
 //#line 13 "../cfg/mesh_bot_control.cfg"
       __max__.base_linear_speed = 10.0;
 //#line 13 "../cfg/mesh_bot_control.cfg"
-      __default__.base_linear_speed = 1.0;
+      __default__.base_linear_speed = 0.05;
 //#line 13 "../cfg/mesh_bot_control.cfg"
       __param_descriptions__.push_back(mesh_bot_control_ParamsConfig::AbstractParamDescriptionConstPtr(new mesh_bot_control_ParamsConfig::ParamDescription<double>("base_linear_speed", "double", 0, "max robot speed in lineardirection", "", &mesh_bot_control_ParamsConfig::base_linear_speed)));
 //#line 14 "../cfg/mesh_bot_control.cfg"
-      __min__.base_rot_speed = 0.0;
-//#line 14 "../cfg/mesh_bot_control.cfg"
-      __max__.base_rot_speed = 4.0;
-//#line 14 "../cfg/mesh_bot_control.cfg"
-      __default__.base_rot_speed = 1.0;
-//#line 14 "../cfg/mesh_bot_control.cfg"
-      __param_descriptions__.push_back(mesh_bot_control_ParamsConfig::AbstractParamDescriptionConstPtr(new mesh_bot_control_ParamsConfig::ParamDescription<double>("base_rot_speed", "double", 0, "max robot speed in angular direction", "", &mesh_bot_control_ParamsConfig::base_rot_speed)));
-//#line 15 "../cfg/mesh_bot_control.cfg"
-      __min__.turbo_angular = 0.0;
-//#line 15 "../cfg/mesh_bot_control.cfg"
-      __max__.turbo_angular = 5.0;
-//#line 15 "../cfg/mesh_bot_control.cfg"
-      __default__.turbo_angular = 1.5;
-//#line 15 "../cfg/mesh_bot_control.cfg"
-      __param_descriptions__.push_back(mesh_bot_control_ParamsConfig::AbstractParamDescriptionConstPtr(new mesh_bot_control_ParamsConfig::ParamDescription<double>("turbo_angular", "double", 0, "multiplyer of turbo button x", "", &mesh_bot_control_ParamsConfig::turbo_angular)));
-//#line 16 "../cfg/mesh_bot_control.cfg"
       __min__.turbo_linear = 0.0;
-//#line 16 "../cfg/mesh_bot_control.cfg"
+//#line 14 "../cfg/mesh_bot_control.cfg"
       __max__.turbo_linear = 5.0;
-//#line 16 "../cfg/mesh_bot_control.cfg"
-      __default__.turbo_linear = 2.0;
-//#line 16 "../cfg/mesh_bot_control.cfg"
+//#line 14 "../cfg/mesh_bot_control.cfg"
+      __default__.turbo_linear = 0.1;
+//#line 14 "../cfg/mesh_bot_control.cfg"
       __param_descriptions__.push_back(mesh_bot_control_ParamsConfig::AbstractParamDescriptionConstPtr(new mesh_bot_control_ParamsConfig::ParamDescription<double>("turbo_linear", "double", 0, "multiplyer of turbo button y", "", &mesh_bot_control_ParamsConfig::turbo_linear)));
+//#line 15 "../cfg/mesh_bot_control.cfg"
+      __min__.base_rot_speed = 0.0;
+//#line 15 "../cfg/mesh_bot_control.cfg"
+      __max__.base_rot_speed = 4.0;
+//#line 15 "../cfg/mesh_bot_control.cfg"
+      __default__.base_rot_speed = 0.3;
+//#line 15 "../cfg/mesh_bot_control.cfg"
+      __param_descriptions__.push_back(mesh_bot_control_ParamsConfig::AbstractParamDescriptionConstPtr(new mesh_bot_control_ParamsConfig::ParamDescription<double>("base_rot_speed", "double", 0, "max robot speed in angular direction", "", &mesh_bot_control_ParamsConfig::base_rot_speed)));
+//#line 16 "../cfg/mesh_bot_control.cfg"
+      __min__.turbo_angular = 0.0;
+//#line 16 "../cfg/mesh_bot_control.cfg"
+      __max__.turbo_angular = 5.0;
+//#line 16 "../cfg/mesh_bot_control.cfg"
+      __default__.turbo_angular = 0.6;
+//#line 16 "../cfg/mesh_bot_control.cfg"
+      __param_descriptions__.push_back(mesh_bot_control_ParamsConfig::AbstractParamDescriptionConstPtr(new mesh_bot_control_ParamsConfig::ParamDescription<double>("turbo_angular", "double", 0, "multiplyer of turbo button x", "", &mesh_bot_control_ParamsConfig::turbo_angular)));
 //#line 17 "../cfg/mesh_bot_control.cfg"
       __min__.d_pad_percent = 0.0;
 //#line 17 "../cfg/mesh_bot_control.cfg"

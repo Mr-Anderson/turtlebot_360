@@ -138,8 +138,8 @@ bool                            classic_connected = false;
 bool                            wiimote_init = true;
 bool                            robot_init = true;
 
-ros::Time                       wii_timeout = ros::Time::now();
-ros::Time                       classic_timeout = ros::Time::now();
+ros::Time                       wii_timeout ;
+ros::Time                       classic_timeout ;
 
 
 mesh_bot_control::mesh_bot_control_ParamsConfig params;

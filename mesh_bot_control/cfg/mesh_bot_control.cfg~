@@ -17,8 +17,6 @@ gen.add("turbo_linear",              double_t, 0,    "multiplyer of turbo button
 gen.add("d_pad_percent",        double_t, 0,    "the percent that the dpad is scaled down",        50,        0,    100)
 gen.add("plus_mesage",          str_t, 0,       "phrase to say when plus button is pressed",       "Pardon me. coming through.")
 gen.add("minus_sound",          str_t, 0,       "sound to play when minus button is pressed",      "/home/robot/Documents/Joemegatron_IGVC_2011/sounds/Ahooga_Car_Horn.wav")
-gen.add("autonomous_waypoints", str_t, 0,       ".yaml file with autonomous waypoints",            "/home/robot/Documents/Joemegatron_IGVC_2011/yaml/Autonomous_Waypoints.yaml")
-gen.add("navigation_waypoints", str_t, 0,       ".yaml file with autonomous waypoints",            "/home/robot/Documents/Joemegatron_IGVC_2011/yaml/Navigation_Waypoints.yaml")
 gen.add("waypoint_sound",          str_t, 0,       "sound to play when minus button is pressed",      "/home/robot/Documents/Joemegatron_IGVC_2011/sounds/Ahooga_Car_Horn.wav")
 gen.add("done_sound",          str_t, 0,       "sound to play when minus button is pressed",      "/home/robot/Documents/Joemegatron_IGVC_2011/sounds/Ahooga_Car_Horn.wav")
 

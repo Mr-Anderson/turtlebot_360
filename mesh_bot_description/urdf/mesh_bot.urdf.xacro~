@@ -161,7 +161,7 @@
     </joint>
     
     <!-- laptop -->
-    <link name="motor_0_link">
+    <link name="laptop_link">
         <inertial>
           <mass value="2" />
           <origin xyz="0 0 0" />
