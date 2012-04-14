@@ -12,9 +12,9 @@
     <!-- launch kinect drivers    -->
     <group if="$(arg kinect)">
     
-        <include file="$(find openni_launch)/launch/openni.launch" />
+        <include file="$(find mesh_bot_control)/launch/kinect.launch" />
         
-        <param name="/camera/driver/depth_registration" type="bool" value="true" />
+
         
         <node pkg="kinect_aux" type="kinect_aux_node" name="kinect_aux_node" />
         

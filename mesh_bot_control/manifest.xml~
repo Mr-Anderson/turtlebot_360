@@ -10,8 +10,14 @@
   <url>http://ros.org/wiki/mesh_bot_control</url>
 
 
+  <!--rosdep name = "sound_play" /-->
+  <!--rosdep name = "wiimote" /-->
+  <!--rosdep name = "kinect_aux" /-->
+  <!--rosdep name = "pointcloud_to_laserscan" /-->
+    
   <depend package = "sound_play" />
   <depend package = "wiimote" />
+  <depend package = "joy" />
   
   
   <!-- depends for using dynamic reconfigur gui -->

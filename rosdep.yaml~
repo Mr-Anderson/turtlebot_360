@@ -8,7 +8,7 @@ uvc_camera:
   ubuntu: ros-electric-camera-umd
   
 turtlebot:
-  ubuntu: ros-electric-turtlebot
+ubuntu: ros-electric-turtlebot
 
 camera1394:
   ubuntu: ros-electric-camera-drivers

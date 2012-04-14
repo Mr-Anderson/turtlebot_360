@@ -4,7 +4,7 @@
     <arg name="usb" default="0" />
     <arg name="display" default="0" />
     <arg name="robot" default="1" />
-    <arg name="kinect" default="0" />
+    <arg name="kinect" default="1" />
     <arg name="joint_gui" default="1" />
     <arg name="rviz" default="1" />
     <arg name="config" default="1" />
@@ -12,11 +12,7 @@
     <!-- launch kinect drivers    -->
     <group if="$(arg kinect)">
     
-        <include file="$(find openni_launch)/launch/openni.launch" />
-        
-        <param name="/camera/driver/depth_registration" type="bool" value="true" />
-        
-        <node pkg="kinect_aux" type="kinect_aux_node" name="kinect_aux_node" />
+        <include file="$(find mesh_bot_control)/launch/kinect.launch" />
         
     </group>
     
@@ -31,6 +27,8 @@
         <!-- param name = "minus_sound" value = "$(find mesh_bot_control)/sounds/Ahooga_Car_Horn.wav" / -->
         
     </node>
+    
+    
     
     <!-- creat robot descrition and decide if gui wil launch -->
     <param name="robot_description" command="$(find xacro)/xacro.py '$(find mesh_bot_description)/urdf/mesh_bot.urdf.xacro'" />

@@ -10,6 +10,9 @@
   <url>http://ros.org/wiki/mesh_bot_control</url>
 
 
+  <rosdep name = "sound_play" />
+  <rosdep name = "wiimote" />
+    
   <depend package = "sound_play" />
   <depend package = "wiimote" />
   <depend package = "joy" />
