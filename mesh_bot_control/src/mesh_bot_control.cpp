@@ -356,7 +356,7 @@ void classic_callback(const sensor_msgs::Joy::ConstPtr& joy)
         
         //controll for the camera
         wii_twist.angular.z  = joy->axes[2] * params.base_linear_speed * turbo_linear;
-        wii_twist.angular.y  = -joy->axes[3] * params.base_linear_speed * turbo_linear;
+        wii_twist.angular.y  = -joy->axes[3] * params.base_linear_speed *3 * turbo_linear;
         
     }
     
@@ -429,6 +429,8 @@ int main(int argc, char **argv)
     kinect_tilt_pre_ = 50;
     kinect_last_publish = ros::Time::now();
     
+    joint_state_seq = 0;
+    
     //initalize toggles 
     for (int i = 0; i < 30 ; i++)
     {
@@ -477,7 +479,9 @@ int main(int argc, char **argv)
     
     kinect_led_pub = n.advertise<std_msgs::UInt16>("/led_option" ,100);
     
-    kinect_tilt_pub = n.advertise<std_msgs::Float64>("/tilt_angle" ,100);
+    kinect_tilt_pub = n.advertise<std_msgs::Float64>("/tilt_angle" ,1);
+    
+    joint_state_pub = n.advertise<sensor_msgs::JointState>("/kinect_state" ,100);
     
     //set rate to 10 hz
     ros::Rate loop_rate(10);
@@ -741,7 +745,22 @@ void kinect_tilt()
         
         kinect_tilt_pub.publish(msg);
         
-        //TODO add joint state pub here
+        
     }
+    
+    
+    //joint state publisher
+    sensor_msgs::JointState state;
+    
+    state.header.seq = joint_state_seq;
+    state.header.stamp = ros::Time::now();
+    state.name.push_back( params.kinect_tilt_joint);
+    state.position.push_back( -kinect_tilt_ang_ * (3.14/360));
+    state.velocity.push_back( -kinect_tilt_vel_ * (3.14/360));
+    
+    joint_state_pub.publish(state);
+    
+    joint_state_seq++;
+    
 }
 

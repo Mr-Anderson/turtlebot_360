@@ -25,6 +25,7 @@
 #include <sound_play/SoundRequest.h>
 #include <std_msgs/UInt16.h>
 #include <std_msgs/Float64.h>
+#include <sensor_msgs/JointState.h>
 
 
 /***********************************************************
@@ -103,6 +104,7 @@ ros::Publisher                  motor_pub;
 ros::Publisher                  sound_pub;
 ros::Publisher                  kinect_tilt_pub;
 ros::Publisher                  kinect_led_pub;
+ros::Publisher                  joint_state_pub;
 
 
 
@@ -160,6 +162,8 @@ double           kinect_tilt_ang_;
 double           kinect_tilt_vel_;
 double           kinect_tilt_pre_;
 
+//state seq holder
+int              joint_state_seq;
 
 /***********************************************************
 * Namespace Changes

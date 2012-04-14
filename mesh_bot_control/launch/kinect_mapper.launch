@@ -5,7 +5,7 @@
     <arg name="display" default="0" />
     <arg name="robot" default="1" />
     <arg name="kinect" default="1" />
-    <arg name="joint_gui" default="1" />
+    <arg name="joint_gui" default="0" />
     <arg name="rviz" default="1" />
     <arg name="config" default="1" />
     
@@ -40,8 +40,14 @@
     
     
     <!-- lauch the joint state publisher and robot state publisher -->
-    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" ></node>
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" >
+    
+        <rosparam param="source_list">['kinect_state']</rosparam>
+    
+    </node>
+    
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+    
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(find mesh_bot_control)/vcg/mesh_bot.vcg" if="$(arg rviz)"/>
     
     <!-- launch wiimote node -->
