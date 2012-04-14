@@ -44,6 +44,10 @@ ros::Time watchdog_timer_;
 bool motors_enabled_ = false;
 serial_port motor_port;
 
+//variables for max accel
+ros::Time vel_last_time_;
+double last_wheel_speed_[3];
+
 //odometry stuff
 ros::Time g_odom_last_time;
 double g_odom_x;

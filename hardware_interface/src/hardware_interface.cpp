@@ -85,6 +85,13 @@ int main(int argc, char **argv)
     g_vy = 0.0;
     g_v_theta = 0.0;
     
+    //initalize variables for max accel
+    for(int i = 0; i < 3; i++)
+    {
+        last_wheel_speed_[i] = 0;
+    }
+    
+    vel_last_time_ = ros::Time::now();
     
     //get twist topic name
     twist_topic = node.resolveName("twist");
@@ -179,10 +186,18 @@ bool setVelocity(double x_base, double y_base, double theta_base)
             //calculate ticks per second of each wheel
             wheel_speed[i] *= params.motor_res;
             
-            //see if we need to scale back motors
-            if(wheel_speed[i] > params.max_speed)
+            //find max accelrated speed
+            double max_speed_temp = (params.max_accel * (ros::Time::now() - vel_last_time_).toSec()) + abs(last_wheel_speed_[i]);
+            
+            if(max_speed_temp > params.max_speed)
             {
-                double speed_scaler_temp = params.max_speed / wheel_speed[i];
+                max_speed_temp = params.max_speed;
+            }
+            
+            //see if we need to scale back motors
+            if(abs(wheel_speed[i]) > max_speed_temp)
+            { 
+                double speed_scaler_temp = max_speed_temp / abs(wheel_speed[i]);
                 
                 if (speed_scaler_temp < speed_scaler ) 
                 {
@@ -191,11 +206,15 @@ bool setVelocity(double x_base, double y_base, double theta_base)
             }
         }
         
+        vel_last_time_ = ros::Time::now();
+        
         //scale and set values
         for(int i = 0; i < 3; i++)
         {
                 //scale back motors
                 wheel_speed[i] *= speed_scaler;
+                
+                last_wheel_speed_[i] = wheel_speed[i];
                 
                 //if(wheel_speed[i] < params.min_speed)
                 //{

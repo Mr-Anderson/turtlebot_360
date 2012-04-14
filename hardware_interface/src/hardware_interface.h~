@@ -56,6 +56,9 @@ double g_v_theta;
 
 geometry_msgs::TransformStamped odom_trans;
 
+//create message
+nav_msgs::Odometry odom_msg;
+
 /***********************************************************
 * Parameters
 ***********************************************************/
