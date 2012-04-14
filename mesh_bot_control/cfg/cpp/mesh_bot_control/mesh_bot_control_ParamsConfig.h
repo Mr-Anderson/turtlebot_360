@@ -144,12 +144,14 @@ namespace mesh_bot_control
 //#line 17 "../cfg/mesh_bot_control.cfg"
       double d_pad_percent;
 //#line 18 "../cfg/mesh_bot_control.cfg"
-      std::string plus_mesage;
+      double kinect_reset_ang;
 //#line 19 "../cfg/mesh_bot_control.cfg"
-      std::string minus_sound;
+      std::string plus_mesage;
 //#line 20 "../cfg/mesh_bot_control.cfg"
-      std::string waypoint_sound;
+      std::string minus_sound;
 //#line 21 "../cfg/mesh_bot_control.cfg"
+      std::string waypoint_sound;
+//#line 22 "../cfg/mesh_bot_control.cfg"
       std::string done_sound;
 //#line 138 "/opt/ros/electric/stacks/driver_common/dynamic_reconfigure/templates/ConfigType.h"
 
@@ -292,36 +294,44 @@ namespace mesh_bot_control
 //#line 17 "../cfg/mesh_bot_control.cfg"
       __param_descriptions__.push_back(mesh_bot_control_ParamsConfig::AbstractParamDescriptionConstPtr(new mesh_bot_control_ParamsConfig::ParamDescription<double>("d_pad_percent", "double", 0, "the percent that the dpad is scaled down", "", &mesh_bot_control_ParamsConfig::d_pad_percent)));
 //#line 18 "../cfg/mesh_bot_control.cfg"
+      __min__.kinect_reset_ang = -30.0;
+//#line 18 "../cfg/mesh_bot_control.cfg"
+      __max__.kinect_reset_ang = 30.0;
+//#line 18 "../cfg/mesh_bot_control.cfg"
+      __default__.kinect_reset_ang = 0.0;
+//#line 18 "../cfg/mesh_bot_control.cfg"
+      __param_descriptions__.push_back(mesh_bot_control_ParamsConfig::AbstractParamDescriptionConstPtr(new mesh_bot_control_ParamsConfig::ParamDescription<double>("kinect_reset_ang", "double", 0, "angle to reset the kinect to", "", &mesh_bot_control_ParamsConfig::kinect_reset_ang)));
+//#line 19 "../cfg/mesh_bot_control.cfg"
       __min__.plus_mesage = "";
-//#line 18 "../cfg/mesh_bot_control.cfg"
+//#line 19 "../cfg/mesh_bot_control.cfg"
       __max__.plus_mesage = "";
-//#line 18 "../cfg/mesh_bot_control.cfg"
+//#line 19 "../cfg/mesh_bot_control.cfg"
       __default__.plus_mesage = "Pardon me. coming through.";
-//#line 18 "../cfg/mesh_bot_control.cfg"
+//#line 19 "../cfg/mesh_bot_control.cfg"
       __param_descriptions__.push_back(mesh_bot_control_ParamsConfig::AbstractParamDescriptionConstPtr(new mesh_bot_control_ParamsConfig::ParamDescription<std::string>("plus_mesage", "str", 0, "phrase to say when plus button is pressed", "", &mesh_bot_control_ParamsConfig::plus_mesage)));
-//#line 19 "../cfg/mesh_bot_control.cfg"
+//#line 20 "../cfg/mesh_bot_control.cfg"
       __min__.minus_sound = "";
-//#line 19 "../cfg/mesh_bot_control.cfg"
+//#line 20 "../cfg/mesh_bot_control.cfg"
       __max__.minus_sound = "";
-//#line 19 "../cfg/mesh_bot_control.cfg"
+//#line 20 "../cfg/mesh_bot_control.cfg"
       __default__.minus_sound = "/home/robot/Documents/Joemegatron_IGVC_2011/sounds/Ahooga_Car_Horn.wav";
-//#line 19 "../cfg/mesh_bot_control.cfg"
+//#line 20 "../cfg/mesh_bot_control.cfg"
       __param_descriptions__.push_back(mesh_bot_control_ParamsConfig::AbstractParamDescriptionConstPtr(new mesh_bot_control_ParamsConfig::ParamDescription<std::string>("minus_sound", "str", 0, "sound to play when minus button is pressed", "", &mesh_bot_control_ParamsConfig::minus_sound)));
-//#line 20 "../cfg/mesh_bot_control.cfg"
+//#line 21 "../cfg/mesh_bot_control.cfg"
       __min__.waypoint_sound = "";
-//#line 20 "../cfg/mesh_bot_control.cfg"
+//#line 21 "../cfg/mesh_bot_control.cfg"
       __max__.waypoint_sound = "";
-//#line 20 "../cfg/mesh_bot_control.cfg"
+//#line 21 "../cfg/mesh_bot_control.cfg"
       __default__.waypoint_sound = "/home/robot/Documents/Joemegatron_IGVC_2011/sounds/Ahooga_Car_Horn.wav";
-//#line 20 "../cfg/mesh_bot_control.cfg"
+//#line 21 "../cfg/mesh_bot_control.cfg"
       __param_descriptions__.push_back(mesh_bot_control_ParamsConfig::AbstractParamDescriptionConstPtr(new mesh_bot_control_ParamsConfig::ParamDescription<std::string>("waypoint_sound", "str", 0, "sound to play when minus button is pressed", "", &mesh_bot_control_ParamsConfig::waypoint_sound)));
-//#line 21 "../cfg/mesh_bot_control.cfg"
+//#line 22 "../cfg/mesh_bot_control.cfg"
       __min__.done_sound = "";
-//#line 21 "../cfg/mesh_bot_control.cfg"
+//#line 22 "../cfg/mesh_bot_control.cfg"
       __max__.done_sound = "";
-//#line 21 "../cfg/mesh_bot_control.cfg"
+//#line 22 "../cfg/mesh_bot_control.cfg"
       __default__.done_sound = "/home/robot/Documents/Joemegatron_IGVC_2011/sounds/Ahooga_Car_Horn.wav";
-//#line 21 "../cfg/mesh_bot_control.cfg"
+//#line 22 "../cfg/mesh_bot_control.cfg"
       __param_descriptions__.push_back(mesh_bot_control_ParamsConfig::AbstractParamDescriptionConstPtr(new mesh_bot_control_ParamsConfig::ParamDescription<std::string>("done_sound", "str", 0, "sound to play when minus button is pressed", "", &mesh_bot_control_ParamsConfig::done_sound)));
 //#line 239 "/opt/ros/electric/stacks/driver_common/dynamic_reconfigure/templates/ConfigType.h"
     

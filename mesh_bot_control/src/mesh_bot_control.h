@@ -23,6 +23,8 @@
 #include <joy/Joy.h>
 #include <sensor_msgs/Joy.h>
 #include <sound_play/SoundRequest.h>
+#include <std_msgs/UInt16.h>
+#include <std_msgs/Float64.h>
 
 
 /***********************************************************
@@ -72,6 +74,14 @@
 
 #define TIMEOUT_TIME             5
 
+//kinect led settings
+#define KINECT_LED_OFF           0
+#define KINECT_LED_GREEN         1
+#define KINECT_LED_RED           2
+#define KINECT_LED_ORANGE        3
+#define KINECT_LED_BLINK_GREEN   4
+#define KINECT_LED_BLINK_ORANGE_RED   6
+
 
 /***********************************************************
 * Subscribers
@@ -91,6 +101,8 @@ ros::Publisher                  wiimote_led_pub;
 ros::Publisher                  wiimote_rum_pub;
 ros::Publisher                  motor_pub;
 ros::Publisher                  sound_pub;
+ros::Publisher                  kinect_tilt_pub;
+ros::Publisher                  kinect_led_pub;
 
 
 
@@ -120,9 +132,6 @@ bool wii_togg[30] ;
 
 
 
-                
-
-
 ros::Time                       home_press_begin;
 
 
@@ -145,6 +154,11 @@ ros::Time                       classic_timeout ;
 
 mesh_bot_control::mesh_bot_control_ParamsConfig params;
 
+//kinect tilt in degrees
+ros::Time        kinect_last_publish;
+double           kinect_tilt_ang_;
+double           kinect_tilt_vel_;
+double           kinect_tilt_pre_;
 
 
 /***********************************************************
@@ -160,5 +174,6 @@ static void say(std::string );
 static void play(std::string );
 static void stop_robot();
 static bool check_togg(bool, int);
-
+void kinect_led(unsigned int led);
+void kinect_tilt();
 

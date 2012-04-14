@@ -161,7 +161,7 @@ void wiimote_callback(const wiimote::State::ConstPtr& state)
             //the zeroed one jumped to 1000 because the wimote library is broken
             if(state->nunchuk_buttons[MSG_BTN_C])
             {
-                wii_twist.angular.z = (state->nunchuk_acceleration_raw.x - 127)/50 * params.base_rot_speed * turbo_angular;
+                wii_twist.angular.z = -(state->nunchuk_acceleration_raw.x - 127)/50 * params.base_rot_speed * turbo_angular;
                 wii_twist.angular.y = -(state->nunchuk_acceleration_raw.y - 127)/50 * params.base_rot_speed * turbo_angular;
             }
             else if(state->buttons[MSG_BTN_B])
@@ -423,6 +423,11 @@ int main(int argc, char **argv)
     bool stopped = true; 
     mode_ = standby;
     
+    //reset kinect angle
+    kinect_tilt_ang_ = 0;
+    kinect_tilt_vel_ = 0;
+    kinect_tilt_pre_ = 50;
+    kinect_last_publish = ros::Time::now();
     
     //initalize toggles 
     for (int i = 0; i < 30 ; i++)
@@ -470,7 +475,9 @@ int main(int argc, char **argv)
     
     sound_pub = n.advertise<sound_play::SoundRequest>("robotsound" ,100);
     
-
+    kinect_led_pub = n.advertise<std_msgs::UInt16>("/led_option" ,100);
+    
+    kinect_tilt_pub = n.advertise<std_msgs::Float64>("/tilt_angle" ,100);
     
     //set rate to 10 hz
     ros::Rate loop_rate(10);
@@ -483,8 +490,6 @@ int main(int argc, char **argv)
         //check calbacks
         ros::spinOnce();
         
-        
-
         
         if(robot_init)
         {
@@ -507,6 +512,9 @@ int main(int argc, char **argv)
             motor_pub.publish(wii_twist);
             stopped = false;
             
+            //set tilt velocity in deg/sec
+            kinect_tilt_vel_ = -wii_twist.angular.y * (180/3.14);
+            
             
             if(wii_timeout < ros::Time::now())
             {
@@ -520,6 +528,8 @@ int main(int argc, char **argv)
             stopped = false;
         }
         
+        //publish the tilt message
+        kinect_tilt();
         
         loop_rate.sleep();
     }
@@ -559,6 +569,13 @@ void change_mode(Mode new_mode)
     if (mode_ == standby)
     {
         ROS_INFO("Control: Standby Mode");
+        
+        //set led to green
+        kinect_led(KINECT_LED_GREEN);
+        
+        //reset kinect angle
+        kinect_tilt_ang_ = params.kinect_reset_ang;
+        kinect_tilt_vel_ = 0;
         
         if(!wiimote_init)
         {
@@ -605,7 +622,13 @@ void change_mode(Mode new_mode)
         
         say("mesh bot at your command");
 
-
+        //set led to orange
+        kinect_led(KINECT_LED_ORANGE);
+        
+        //reset kinect angle
+        kinect_tilt_ang_ = params.kinect_reset_ang;
+        kinect_tilt_vel_ = 0;
+        
         //turn on light 1
         int lights[] ={1,0,0,0};
 
@@ -623,6 +646,13 @@ void change_mode(Mode new_mode)
         ROS_INFO("Control: Autonomous Mode");
         
         say("Intializing autonomous navigation");
+        
+        //set led to orange red
+        kinect_led(KINECT_LED_BLINK_ORANGE_RED);
+        
+        //reset kinect angle
+        kinect_tilt_ang_ = params.kinect_reset_ang;
+        kinect_tilt_vel_ = 0;
      
         //turn on light 2
         int lights[] ={0,1,0,0};
@@ -675,5 +705,43 @@ void stop_robot()
     stop_twist.linear.z = 0;
     
     motor_pub.publish(stop_twist);
+}
+
+void kinect_led(unsigned int led)
+{
+    std_msgs::UInt16 msg;
+    
+    msg.data = led;
+    
+    kinect_led_pub.publish(msg);
+}
+
+void kinect_tilt()
+{
+    if( (kinect_tilt_pre_ != kinect_tilt_ang_) || (kinect_tilt_vel_ != 0) )
+    {
+        double new_angle = kinect_tilt_ang_ + ((ros::Time::now()-kinect_last_publish).toSec() * kinect_tilt_vel_);
+        
+        if(new_angle < -31)
+        {
+            new_angle = -31;
+        }
+        else if(new_angle > 31)
+        {
+            new_angle = 31;
+        }
+        
+        kinect_tilt_pre_ = new_angle;
+        kinect_tilt_ang_ = new_angle;
+        kinect_last_publish = ros::Time::now();
+        
+        std_msgs::Float64 msg;
+        
+        msg.data = new_angle;
+        
+        kinect_tilt_pub.publish(msg);
+        
+        //TODO add joint state pub here
+    }
 }
 

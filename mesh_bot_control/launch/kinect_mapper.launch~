@@ -7,6 +7,7 @@
     <arg name="kinect" default="0" />
     <arg name="joint_gui" default="1" />
     <arg name="rviz" default="1" />
+    <arg name="config" default="1" />
     
     <!-- launch kinect drivers    -->
     <group if="$(arg kinect)">
