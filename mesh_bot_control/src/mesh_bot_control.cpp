@@ -108,12 +108,15 @@ void wiimote_callback(const wiimote::State::ConstPtr& state)
     {
     
         //initalize twist
-        wii_twist.angular.x = 0;
-        wii_twist.angular.y = 0;
-        wii_twist.angular.z = 0;
-        wii_twist.linear.x = 0;
-        wii_twist.linear.y = 0;
-        wii_twist.linear.z = 0;
+        if(!classic_connected)
+        {
+            wii_twist.angular.x = 0;
+            wii_twist.angular.y = 0;
+            wii_twist.angular.z = 0;
+            wii_twist.linear.x = 0;
+            wii_twist.linear.y = 0;
+            wii_twist.linear.z = 0;
+        }
     
         //button 1 moves to standby
         if(check_togg(state->buttons[MSG_BTN_1], MSG_BTN_1))
@@ -151,14 +154,15 @@ void wiimote_callback(const wiimote::State::ConstPtr& state)
             
             //compute controlls
             wii_twist.linear.x  = state->nunchuk_joystick_zeroed[1] * params.base_linear_speed * turbo_linear;
-            wii_twist.linear.y  = -state->nunchuk_joystick_zeroed[0] * params.base_linear_speed * turbo_linear;
+            wii_twist.linear.y  = state->nunchuk_joystick_zeroed[0] * params.base_linear_speed * turbo_linear;
             
             //controll for the camera
-            //down is positive in twist
+            //down is positive in twist 
+            //the zeroed one jumped to 1000 because the wimote library is broken
             if(state->nunchuk_buttons[MSG_BTN_C])
             {
-                wii_twist.angular.z = (state->nunchuk_acceleration_zeroed.x)/10 * params.base_rot_speed * turbo_angular;
-                wii_twist.angular.y = -(state->nunchuk_acceleration_zeroed.y)/10 * params.base_rot_speed * turbo_angular;
+                wii_twist.angular.z = -(state->nunchuk_acceleration_raw.x - 127)/50 * params.base_rot_speed * turbo_angular;
+                wii_twist.angular.y = -(state->nunchuk_acceleration_raw.y - 127)/50 * params.base_rot_speed * turbo_angular;
             }
             else if(state->buttons[MSG_BTN_B])
             {
@@ -220,11 +224,11 @@ void wiimote_callback(const wiimote::State::ConstPtr& state)
             }
             if(state->buttons[MSG_BTN_UP])
             {
-                wii_twist.linear.y = -params.base_linear_speed * turbo_angular * params.d_pad_percent/100;
+                wii_twist.linear.y = params.base_linear_speed * turbo_angular * params.d_pad_percent/100;
             }
             else if(state->buttons[MSG_BTN_DOWN])
             {
-                wii_twist.linear.y = params.base_linear_speed * turbo_angular * params.d_pad_percent/100;
+                wii_twist.linear.y = -params.base_linear_speed * turbo_angular * params.d_pad_percent/100;
             }
           
             
@@ -264,7 +268,7 @@ void wiimote_callback(const wiimote::State::ConstPtr& state)
 }
 
 //controll handels for classic controller
-void classic_callback(const joy::Joy::ConstPtr& joy)
+void classic_callback(const sensor_msgs::Joy::ConstPtr& joy)
 {
     //reset timeout
     classic_connected = true;
@@ -347,8 +351,8 @@ void classic_callback(const joy::Joy::ConstPtr& joy)
 
         
         //compute controlls
-        wii_twist.linear.x  = joy->axes[0] * params.base_linear_speed * turbo_linear;
-        wii_twist.linear.y  = joy->axes[1] * params.base_linear_speed * turbo_linear;
+        wii_twist.linear.x  = joy->axes[1] * params.base_linear_speed * turbo_linear;
+        wii_twist.linear.y  = joy->axes[0] * params.base_linear_speed * turbo_linear;
         
         //controll for the camera
         wii_twist.angular.z  = joy->axes[2] * params.base_linear_speed * turbo_linear;

@@ -68,9 +68,24 @@ int main(int argc, char **argv)
     f = boost::bind(&setparamsCallback, _1, _2);
     srv.setCallback(f);
     
+    
     //Initialize serial port
     motor_port.serial_open(params.serial_port.c_str(), 19200);
-            
+    
+    
+    //create brodcaster
+    tf::TransformBroadcaster odom_broadcaster;
+    
+    //initalize odometry
+    g_odom_x = 0.0;
+    g_odom_y = 0.0;
+    g_odom_th = 0.0;
+    
+    g_vx = 0.0;
+    g_vy = 0.0;
+    g_v_theta = 0.0;
+    
+    
     //get twist topic name
     twist_topic = node.resolveName("twist");
 
@@ -81,13 +96,16 @@ int main(int argc, char **argv)
                  "\t$ ./hardware_interface twist:=<image topic> [transport]");
     }
     
-
+    
     
     //create twist subscription
     twist_sub = node.subscribe( twist_topic , 1, motionCallback  );
     
     //advertise publishers
     sensor_pub = node.advertise<hardware_interface::BaseData>("hardware_interface/sensor_data", 5);
+    
+    odom_pub = node.advertise<nav_msgs::Odometry>("/odom", 1000);
+    
     
     //collect motor base sensor data at this rate
     ros::Rate loop_rate(SENSOR_RATE);
@@ -108,6 +126,14 @@ int main(int argc, char **argv)
         
         //collect and publish sensor data
         publishSensorData();
+        
+        //publish odometry with no movement
+        updateOdomMsg(g_vx, g_vy, g_v_theta);
+        
+        //send the transform
+        odom_broadcaster.sendTransform(odom_trans);
+        //publish odom message
+        odom_pub.publish(odom_msg);
         
         //wait for next spin
         loop_rate.sleep();
@@ -178,8 +204,98 @@ bool setVelocity(double x_base, double y_base, double theta_base)
                 //}
         }
         
+        //send odometry
+        if(success)
+        {
+            //set global trackers
+            g_vx = x_base * speed_scaler;
+            g_vy = y_base * speed_scaler;
+            g_v_theta = theta_base * speed_scaler;
+            
+            //use scaled speeds
+            updateOdomMsg(g_vx, g_vy, g_v_theta);
+        }
+        
         return success;
 }
+
+// update current position and Odometry message
+void updateOdomMsg(double x_base, double y_base, double theta_base)
+{
+   
+    //Time
+    ros::Time current_time = ros::Time::now();
+    double dt = (current_time - g_odom_last_time).toSec();
+    g_odom_last_time = current_time;
+    
+    //Velocity
+    double vx = 0.0;
+    double vy = 0.0;
+    double vth = 0.0;
+    
+    if(motors_enabled_)
+    {
+        vx = x_base;
+        vy = y_base;
+        vth = theta_base;
+    }
+    
+    //Theta
+    double delta_th = vth * dt;
+    g_odom_th += delta_th;
+    
+    //X and Y
+    double delta_x = (vx * cos(g_odom_th) - vy * sin(g_odom_th)) * dt;
+    double delta_y = (vx * sin(g_odom_th) + vy * cos(g_odom_th)) * dt;
+    g_odom_x += delta_x;
+    g_odom_y += delta_y;
+    
+    //Quaternion
+    geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromYaw(g_odom_th);
+    
+    //Update transform_broadcaster
+    odom_trans.header.stamp = current_time;
+    odom_trans.header.frame_id = "odom";
+    odom_trans.child_frame_id = "base_footprint";
+
+    odom_trans.transform.translation.x = g_odom_x;
+    odom_trans.transform.translation.y = g_odom_y;
+    odom_trans.transform.translation.z = 0.0;
+    odom_trans.transform.rotation = odom_quat;
+    
+    
+    
+    
+    //Covariance
+    double covariance[36] = {ODOM_STATIC_COVARIANCE, 0, 0, 0, 0, 0,
+                             0, ODOM_STATIC_COVARIANCE, 0, 0, 0, 0,
+                             0, 0, ODOM_STATIC_COVARIANCE, 0, 0, 0,
+                             0, 0, 0, ODOM_STATIC_COVARIANCE, 0, 0,
+                             0, 0, 0, 0, ODOM_STATIC_COVARIANCE, 0,
+                             0, 0, 0, 0, 0, ODOM_STATIC_COVARIANCE};
+    
+    //Update message
+    odom_msg.header.stamp = current_time;
+    odom_msg.header.frame_id = "odom";
+    odom_msg.pose.pose.position.x = g_odom_x;
+    odom_msg.pose.pose.position.y = g_odom_y;
+    odom_msg.pose.pose.position.z = 0.0;
+    odom_msg.pose.pose.orientation = odom_quat;
+    odom_msg.child_frame_id = "base_footprint";
+    odom_msg.twist.twist.linear.x = vx;
+    odom_msg.twist.twist.linear.y = vy;
+    odom_msg.twist.twist.angular.z = vth;
+    for(int i=0; i<36; ++i)
+    {
+        odom_msg.pose.covariance[i] = covariance[i];
+        odom_msg.twist.covariance[i] = covariance[i];
+    }
+    
+
+    
+    return;
+}
+
 
 //sets the specified motors speed in tics/sec 
 //returns true if success
@@ -278,4 +394,7 @@ void publishSensorData()
     sensor_pub.publish(msg);
     
 }
+
+
+
 

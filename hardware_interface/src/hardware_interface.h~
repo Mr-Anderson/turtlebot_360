@@ -17,6 +17,8 @@
 ***********************************************************/
 #include <geometry_msgs/Twist.h>
 #include <hardware_interface/BaseData.h>
+#include <nav_msgs/Odometry.h>
+#include <tf/transform_broadcaster.h>
 
 /***********************************************************
 * Other includes
@@ -32,6 +34,7 @@
 ***********************************************************/
 //rate for comunicating with hardware hertz
 #define SENSOR_RATE 30
+#define ODOM_STATIC_COVARIANCE 100.0
 
 /***********************************************************
 * Global variables
@@ -39,6 +42,19 @@
 bool watchdog_tripped_ = false;
 ros::Time watchdog_timer_;
 bool motors_enabled_ = false;
+serial_port motor_port;
+
+//odometry stuff
+ros::Time g_odom_last_time;
+double g_odom_x;
+double g_odom_y;
+double g_odom_th;
+
+double g_vx;
+double g_vy;
+double g_v_theta;
+
+geometry_msgs::TransformStamped odom_trans;
 
 /***********************************************************
 * Parameters
@@ -58,6 +74,7 @@ ros::Subscriber     twist_sub;
 ***********************************************************/
 
 ros::Publisher      sensor_pub;
+ros::Publisher      odom_pub;
 
 
 /***********************************************************
@@ -68,6 +85,7 @@ static bool setMotor(int &motor_num, double &ticks_per_sec);
 static bool killMotors();
 static bool initMotors();
 static void publishSensorData();
+static void updateOdomMsg(double, double, double);
 
 
 

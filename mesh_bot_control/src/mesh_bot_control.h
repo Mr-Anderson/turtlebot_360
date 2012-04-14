@@ -21,6 +21,7 @@
 #include <wiimote/RumbleControl.h>
 #include <wiimote/TimedSwitch.h>
 #include <joy/Joy.h>
+#include <sensor_msgs/Joy.h>
 #include <sound_play/SoundRequest.h>
 
 

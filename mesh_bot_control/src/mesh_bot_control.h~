@@ -69,7 +69,7 @@
 #define MSG_CLASSIC_BTN_ZL       13
 #define MSG_CLASSIC_BTN_ZR       14
 
-#define TIMEOUT_TIME             1
+#define TIMEOUT_TIME             5
 
 
 /***********************************************************

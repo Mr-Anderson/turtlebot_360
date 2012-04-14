@@ -2,7 +2,7 @@
 
     <!-- Define arguments and defaults  -->
     <arg name="usb" default="0" />
-    <arg name="display" default="1" />
+    <arg name="display" default="0" />
     <arg name="robot" default="1" />
     <arg name="kinect" default="0" />
     <arg name="joint_gui" default="1" />
@@ -49,6 +49,10 @@
     
     <!-- run motor drivers    -->
     <node pkg="hardware_interface" type="hardware_interface" name="hardware_interface" args="twist:=cmd_vel" />
+    
+    <!-- launch the dynamic reconfigure gui  -->
+    <node pkg="dynamic_reconfigure" type="reconfigure_gui" name="reconfigure_gui" if="$(arg config)" />
+    
     
     <!-- launch debugging displays -->
     <group if="$(arg display)" >
