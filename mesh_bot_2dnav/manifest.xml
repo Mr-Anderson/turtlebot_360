@@ -1,0 +1,17 @@
+<package>
+  <description brief="mesh_bot_2dnav">
+
+     mesh_bot_2dnav
+
+  </description>
+  <author>James Anderson</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/mesh_bot_2dnav</url>
+  <depend package="mesh_bot_control"/>
+  <depend package="hardware_interface"/>
+  <depend package="mesh_bot_description"/>
+
+</package>
+
+
