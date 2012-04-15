@@ -1,0 +1,16 @@
+<launch>
+
+  <!-- Run the map server -->
+  <arg name="map_file" default="$(find mesh_bot_2dnav)/maps/willow-2010-2-18-0.10.yaml"/>
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)"/>
+
+  <!--- Run gmapping -->
+  <include file="$(find mesh_bot_2dnav)/launch/m.launch" >
+    <arg name="scan_topic" value=scan_filtered" />
+  </include>
+  
+  <!-- Run move base-->
+  <include file="$(find mesh_bot_2dnav)/launch/mesh_bot_move_base.launch" />
+
+
+</launch>
