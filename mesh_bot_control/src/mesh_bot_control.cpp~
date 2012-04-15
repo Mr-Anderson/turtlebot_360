@@ -153,20 +153,36 @@ void wiimote_callback(const wiimote::State::ConstPtr& state)
 
             
             //compute controlls
-            wii_twist.linear.x  = state->nunchuk_joystick_zeroed[1] * params.base_linear_speed * turbo_linear;
-            wii_twist.linear.y  = state->nunchuk_joystick_zeroed[0] * params.base_linear_speed * turbo_linear;
+            if(fabs(state->nunchuk_joystick_zeroed[1]) >= 0.01)
+            {
+                wii_twist.linear.x  = state->nunchuk_joystick_zeroed[1] * params.base_linear_speed * turbo_linear;
+            }
+            else
+            {
+                wii_twist.linear.x = 0;
+            }
+            
+            if(fabs(state->nunchuk_joystick_zeroed[0]) >= 0.01)
+            {
+                wii_twist.linear.y  = state->nunchuk_joystick_zeroed[0] * params.base_linear_speed * turbo_linear;
+            }
+            else
+            {
+                wii_twist.linear.y = 0;
+            }
+            
             
             //controll for the camera
             //down is positive in twist 
             //the zeroed one jumped to 1000 because the wimote library is broken
             if(state->nunchuk_buttons[MSG_BTN_C])
             {
-                wii_twist.angular.z = (state->nunchuk_acceleration_raw.x - 127)/50 * params.base_rot_speed * turbo_angular;
+                wii_twist.angular.z = -(state->nunchuk_acceleration_raw.x - 127)/50 * params.base_rot_speed * turbo_angular;
                 wii_twist.angular.y = (state->nunchuk_acceleration_raw.y - 127)/50 * params.base_rot_speed * turbo_angular;
             }
             else if(state->buttons[MSG_BTN_B])
             {
-                wii_twist.angular.z = (state->linear_acceleration_zeroed.x)/10 * params.base_rot_speed * turbo_angular;
+                wii_twist.angular.z = -(state->linear_acceleration_zeroed.x)/10 * params.base_rot_speed * turbo_angular;
                 wii_twist.angular.y = (state->linear_acceleration_zeroed.y)/10 * params.base_rot_speed * turbo_angular;
             }
             else
@@ -207,8 +223,8 @@ void wiimote_callback(const wiimote::State::ConstPtr& state)
             //camera control b and tilt
             if(state->buttons[MSG_BTN_B])
             {
-                wii_twist.angular.z = (state->linear_acceleration_zeroed.x)/10 * params.base_rot_speed * turbo_angular;
-                wii_twist.angular.y = -(state->linear_acceleration_zeroed.y)/10 * params.base_rot_speed * turbo_angular;
+                wii_twist.angular.z = -(state->linear_acceleration_zeroed.x)/10 * params.base_rot_speed * turbo_angular;
+                wii_twist.angular.y = (state->linear_acceleration_zeroed.y)/10 * params.base_rot_speed * turbo_angular;
             }
             
             
@@ -350,23 +366,41 @@ void classic_callback(const sensor_msgs::Joy::ConstPtr& joy)
         }
 
         //compute controlls
-        if(!(abs(joy->axes[1]) > .1))
+        if(fabs(joy->axes[1]) > 0.01)
         {        
             wii_twist.linear.x  = joy->axes[1] * params.base_linear_speed * turbo_linear;
         }
-        if(!(abs(joy->axes[0]) > .1))
+        else
+        {
+            wii_twist.linear.x = 0;
+        }
+        
+        if(fabs(joy->axes[0]) > 0.01)
         { 
             wii_twist.linear.y  = joy->axes[0] * params.base_linear_speed * turbo_linear;
         }
+        else
+        {
+            wii_twist.linear.y = 0;
+        }
         
         //controll for the camera
-        if(!(abs(joy->axes[2]) > .1))
+        if(fabs(joy->axes[2]) > 0.01)
         { 
             wii_twist.angular.z  = joy->axes[2] * params.base_linear_speed * turbo_linear;
         }
-        if(!(abs(joy->axes[3]) > .1))
+        else
+        {
+            wii_twist.angular.z = 0;
+        }
+        
+        if(fabs(joy->axes[3]) > 0.01)
         { 
-            wii_twist.angular.y  = -joy->axes[3] * params.base_linear_speed *3 * turbo_linear;
+            wii_twist.angular.y  = -joy->axes[3] * params.base_linear_speed * turbo_linear;
+        }
+        else
+        {
+            wii_twist.angular.y = 0;
         }
     }
     
@@ -483,7 +517,7 @@ int main(int argc, char **argv)
     
     wiimote_rum_pub = n.advertise<wiimote::RumbleControl>("wiimote/rumble" ,100);
 
-    motor_pub = n.advertise<geometry_msgs::Twist>("cmd_vel" ,100);
+    motor_pub = n.advertise<geometry_msgs::Twist>("con_vel" ,100);
     
     sound_pub = n.advertise<sound_play::SoundRequest>("robotsound" ,100);
     
@@ -765,8 +799,8 @@ void kinect_tilt()
     state.header.seq = joint_state_seq;
     state.header.stamp = ros::Time::now();
     state.name.push_back( params.kinect_tilt_joint);
-    state.position.push_back( -kinect_tilt_ang_ * (3.14/360));
-    state.velocity.push_back( -kinect_tilt_vel_ * (3.14/360));
+    state.position.push_back( -kinect_tilt_ang_ * (3.14/180));
+    state.velocity.push_back( -kinect_tilt_vel_ * (3.14/180));
     
     joint_state_pub.publish(state);
     

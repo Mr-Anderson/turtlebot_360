@@ -324,7 +324,7 @@ namespace mesh_bot_control
 //#line 21 "../cfg/mesh_bot_control.cfg"
       __max__.minus_sound = "";
 //#line 21 "../cfg/mesh_bot_control.cfg"
-      __default__.minus_sound = "/home/robot/Documents/Joemegatron_IGVC_2011/sounds/Ahooga_Car_Horn.wav";
+      __default__.minus_sound = "~/Documents/Joemegatron_IGVC_2011/sounds/Ahooga_Car_Horn.wav";
 //#line 21 "../cfg/mesh_bot_control.cfg"
       __param_descriptions__.push_back(mesh_bot_control_ParamsConfig::AbstractParamDescriptionConstPtr(new mesh_bot_control_ParamsConfig::ParamDescription<std::string>("minus_sound", "str", 0, "sound to play when minus button is pressed", "", &mesh_bot_control_ParamsConfig::minus_sound)));
 //#line 22 "../cfg/mesh_bot_control.cfg"
@@ -332,7 +332,7 @@ namespace mesh_bot_control
 //#line 22 "../cfg/mesh_bot_control.cfg"
       __max__.waypoint_sound = "";
 //#line 22 "../cfg/mesh_bot_control.cfg"
-      __default__.waypoint_sound = "/home/robot/Documents/Joemegatron_IGVC_2011/sounds/Ahooga_Car_Horn.wav";
+      __default__.waypoint_sound = "~/Documents/Joemegatron_IGVC_2011/sounds/Ahooga_Car_Horn.wav";
 //#line 22 "../cfg/mesh_bot_control.cfg"
       __param_descriptions__.push_back(mesh_bot_control_ParamsConfig::AbstractParamDescriptionConstPtr(new mesh_bot_control_ParamsConfig::ParamDescription<std::string>("waypoint_sound", "str", 0, "sound to play when minus button is pressed", "", &mesh_bot_control_ParamsConfig::waypoint_sound)));
 //#line 23 "../cfg/mesh_bot_control.cfg"

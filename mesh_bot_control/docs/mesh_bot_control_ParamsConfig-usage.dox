@@ -9,8 +9,8 @@
   <param name="kinect_reset_ang" type="double" value="0.0" />
   <param name="plus_mesage" type="str" value="Pardon me. coming through." />
   <param name="kinect_tilt_joint" type="str" value="base_kinect_joint" />
-  <param name="minus_sound" type="str" value="/home/robot/Documents/Joemegatron_IGVC_2011/sounds/Ahooga_Car_Horn.wav" />
-  <param name="waypoint_sound" type="str" value="/home/robot/Documents/Joemegatron_IGVC_2011/sounds/Ahooga_Car_Horn.wav" />
+  <param name="minus_sound" type="str" value="~/Documents/Joemegatron_IGVC_2011/sounds/Ahooga_Car_Horn.wav" />
+  <param name="waypoint_sound" type="str" value="~/Documents/Joemegatron_IGVC_2011/sounds/Ahooga_Car_Horn.wav" />
   <param name="done_sound" type="str" value="/home/robot/Documents/Joemegatron_IGVC_2011/sounds/Ahooga_Car_Horn.wav" />
 </node>
 \endverbatim

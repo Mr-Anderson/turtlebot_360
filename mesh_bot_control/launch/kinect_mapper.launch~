@@ -4,7 +4,8 @@
     <arg name="usb" default="0" />
     <arg name="display" default="0" />
     <arg name="robot" default="1" />
-    <arg name="kinect" default="0" />
+    <arg name="kinect" default="1" />
+    <arg name="joint_gui" default="0" />
     <arg name="rviz" default="1" />
     <arg name="config" default="1" />
     

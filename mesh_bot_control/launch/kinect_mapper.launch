@@ -24,7 +24,7 @@
     
     
     <!-- launch control node    -->
-    <node pkg="mesh_bot_control" type="control" name="control"  required="true" >
+    <node pkg="mesh_bot_control" type="control" name="control"  required="true" args="nav_twist:=cmd_vel" >
         
         <!-- rosparam file="$(find mesh_bot_control)/yaml/Control.yaml" command="load" / -->
         
@@ -57,7 +57,7 @@
     <node pkg="sound_play" type="soundplay_node.py" name="sound_play" />
     
     <!-- run motor drivers    -->
-    <node pkg="hardware_interface" type="hardware_interface" name="hardware_interface" args="twist:=cmd_vel" />
+    <node pkg="hardware_interface" type="hardware_interface" name="hardware_interface" args="twist:=con_vel" />
     
     <!-- launch the dynamic reconfigure gui  -->
     <node pkg="dynamic_reconfigure" type="reconfigure_gui" name="reconfigure_gui" if="$(arg config)" />
