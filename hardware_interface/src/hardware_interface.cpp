@@ -163,14 +163,14 @@ bool setVelocity(double x_base, double y_base, double theta_base)
         //x is forward y is left z is counter clockwise
         //calculate velocity at each wheel
         //sqrt of 3/3 is .866025
-        wheel_speed[0] = (theta_base * params.base_radius) 
-                          + y_base;
-        wheel_speed[1] = (theta_base * params.base_radius) 
+        wheel_speed[0] = (-theta_base * params.base_radius) 
+                          - y_base;
+        wheel_speed[1] = (-theta_base * params.base_radius) 
                           - (.866025 * x_base) 
-                          - (.5 * y_base);
-        wheel_speed[2] = (theta_base * params.base_radius) 
+                          + (.5 * y_base);
+        wheel_speed[2] = (-theta_base * params.base_radius) 
                           + (.866025 * x_base) 
-                          - (.5 * y_base);
+                          + (.5 * y_base);
         
         //display wheel velocitys
 //        ROS_INFO("Driving Motors 0:%f 1:%f 2:%f m/s", 
@@ -182,6 +182,9 @@ bool setVelocity(double x_base, double y_base, double theta_base)
         {
             //calculate rotation speed of each wheel
             wheel_speed[i] /= params.wheel_radius;
+            
+            //divide by 2 pi
+            wheel_speed[i] /= ( 3.14159);
             
             //calculate ticks per second of each wheel
             wheel_speed[i] *= params.motor_res;
@@ -246,6 +249,7 @@ void updateOdomMsg(double x_base, double y_base, double theta_base)
     ros::Time current_time = ros::Time::now();
     double dt = (current_time - g_odom_last_time).toSec();
     g_odom_last_time = current_time;
+    
     
     //Velocity
     double vx = 0.0;

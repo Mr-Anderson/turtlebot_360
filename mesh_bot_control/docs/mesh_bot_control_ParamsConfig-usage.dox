@@ -1,10 +1,10 @@
 \subsubsection usage Usage
 \verbatim
 <node name="dynamic_reconfigure_node" pkg="mesh_bot_control" type="dynamic_reconfigure_node">
-  <param name="base_linear_speed" type="double" value="0.05" />
-  <param name="turbo_linear" type="double" value="0.1" />
-  <param name="base_rot_speed" type="double" value="0.3" />
-  <param name="turbo_angular" type="double" value="0.6" />
+  <param name="base_linear_speed" type="double" value="0.15" />
+  <param name="turbo_linear" type="double" value="0.3" />
+  <param name="base_rot_speed" type="double" value="0.6" />
+  <param name="turbo_angular" type="double" value="1.2" />
   <param name="d_pad_percent" type="double" value="50.0" />
   <param name="kinect_reset_ang" type="double" value="0.0" />
   <param name="plus_mesage" type="str" value="Pardon me. coming through." />

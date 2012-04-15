@@ -310,7 +310,7 @@ namespace hardware_interface
 //#line 21 "../cfg/hardware_interface.cfg"
       __max__.wheel_radius = 1.0;
 //#line 21 "../cfg/hardware_interface.cfg"
-      __default__.wheel_radius = 0.1016;
+      __default__.wheel_radius = 0.0508;
 //#line 21 "../cfg/hardware_interface.cfg"
       __param_descriptions__.push_back(hardware_interface_paramsConfig::AbstractParamDescriptionConstPtr(new hardware_interface_paramsConfig::ParamDescription<double>("wheel_radius", "double", 0, "Radius of the robot wheels in meters", "", &hardware_interface_paramsConfig::wheel_radius)));
 //#line 22 "../cfg/hardware_interface.cfg"
