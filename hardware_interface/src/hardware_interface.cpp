@@ -398,12 +398,19 @@ bool initMotors()
     //Test motor
     serial_cmd[0] = 0x24;
     serial_cmd[1] = 0x03;
-    serial_cmd[2] = 0x01;
-    serial_cmd[3] = 0x04;
+    serial_cmd[2] = 0x00;
+    serial_cmd[3] = 0x05;
     serial_cmd[4] = 0x01;
     serial_cmd[5] = 0x00;
     motor_port.serial_write(serial_cmd, 6);
 
+    serial_cmd[3] = 0x06;
+    serial_cmd[4] = 30;
+    motor_port.serial_write(serial_cmd, 6);
+    
+    serial_cmd[3] = 0x07;
+    serial_cmd[4] = 100;
+    motor_port.serial_write(serial_cmd, 6);
     return true;
 }
 
