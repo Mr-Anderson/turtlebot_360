@@ -9,13 +9,20 @@
     <arg name="joint_gui" default="0" />
     <arg name="rviz" default="1" />
     <arg name="config" default="1" />
-    <arg name="mesh_bot_addr" default="10.0.1.204" />
-    <arg name="mesh_bot_user" default="robot" />
-    <arg name="mesh_bot_psw" default="?" />
+    <arg name="machine" default="remote"/>
+    <arg name="local_addr" default="james-laptop" />
+    <arg name="local_user" default="james" />
+    <arg name="remote_user" default="james" />
+    <arg name="remote_addr" default="mr-anderson" />
     
+    <env name="ROS_MASTER_URI" value="http://$(arg remote_addr):11311" />
     
     <!-- Define machines-->
-    <machine name="mesh_bot" address="$(arg mesh_bot_addr)" user="$(arg mesh_bot_user)" />
+    <machine name="remote" address="$(arg remote_addr)" user="$(arg remote_user)" />
+    
+    <!-- Define machines-->
+    <machine name="local" address="$(arg local_addr)" user="$(arg local_user)" />
+        
     
     <!-- launch on local -->
     <group>
@@ -24,7 +31,10 @@
         <node name="rviz" pkg="rviz" type="rviz" args="-d $(find mesh_bot_control)/vcg/mesh_bot.vcg" if="$(arg rviz)"/>
         
         <!-- launch soud play for speach syth -->
-        <node pkg="sound_play" type="soundplay_node.py" name="sound_play_local" machine="mesh_bot"/>
+        <node pkg="sound_play" type="soundplay_node.py" name="sound_play_local" />
+        
+        <!-- launch wiimote node -->
+        <node pkg="wiimote" type="wiimote_node.py" name="wiimote" respawn="true" />
         
         
     </group>
@@ -36,15 +46,17 @@
         <!-- launch kinect drivers    -->
         <group if="$(arg kinect)">
         
-            <include file="$(find mesh_bot_control)/launch/kinect.launch" />
+            <include file="$(find mesh_bot_control)/launch/kinect.launch" >
+                <arg name="machine" value="$(arg machine)" />
+            </include>
             
-            <node pkg="kinect_aux" type="kinect_aux_node" name="kinect_aux_node" machine="mesh_bot"/>
+            <node pkg="kinect_aux" type="kinect_aux_node" name="kinect_aux_node" machine="$(arg machine)"/>
             
         </group>
         
         
         <!-- launch control node    -->
-        <node pkg="mesh_bot_control" type="control" name="control"  required="true" args="nav_twist:=cmd_vel" machine="mesh_bot">
+        <node pkg="mesh_bot_control" type="control" name="control"  required="true" args="nav_twist:=cmd_vel" machine="$(arg machine)">
             
             <!-- rosparam file="$(find mesh_bot_control)/yaml/Control.yaml" command="load" / -->
             
@@ -58,26 +70,23 @@
         
         
         <!-- lauch the joint state publisher and robot state publisher -->
-        <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" machine="mesh_bot">
+        <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" machine="$(arg machine)">
         
             <rosparam param="source_list">['kinect_state']</rosparam>
         
         </node>
         
         <!--robot state publisher-->
-        <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" machine="mesh_bot"/>
-        
-        <!-- launch wiimote node -->
-        <node pkg="wiimote" type="wiimote_node.py" name="wiimote" respawn="true" machine="mesh_bot"/>
+        <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" machine="$(arg machine)"/>
         
         <!-- launch soud play for speach syth -->
-        <node pkg="sound_play" type="soundplay_node.py" name="sound_play_robot" machine="mesh_bot"/>
+        <node pkg="sound_play" type="soundplay_node.py" name="sound_play_robot" machine="$(arg machine)"/>
         
         <!-- run motor drivers    -->
-        <node pkg="hardware_interface" type="hardware_interface" name="hardware_interface" args="twist:=con_vel" machine="mesh_bot"/>
+        <node pkg="hardware_interface" type="hardware_interface" name="hardware_interface" args="twist:=con_vel" machine="$(arg machine)"/>
         
         <!-- launch the dynamic reconfigure gui  -->
-        <node pkg="dynamic_reconfigure" type="reconfigure_gui" name="reconfigure_gui" if="$(arg config)" machine="mesh_bot"/>
+        <node pkg="dynamic_reconfigure" type="reconfigure_gui" name="reconfigure_gui" if="$(arg config)" machine="$(arg machine)"/>
         
     </group>
     
