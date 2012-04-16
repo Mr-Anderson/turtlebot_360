@@ -13,12 +13,6 @@
     <arg name="remote_addr" default="mr-anderson" />
     
     <env name="ROS_MASTER_URI" value="http://$(arg remote_addr):11311" />
-    
-    <!-- Define machines-->
-    <machine name="remote" address="$(arg remote_addr)" user="$(arg remote_user)" />
-    
-    <!-- Define machines-->
-    <machine name="local" address="$(arg local_addr)" user="$(arg local_user)" />
         
     
     <!-- launch on local -->
