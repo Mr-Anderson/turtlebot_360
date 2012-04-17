@@ -10,9 +10,9 @@
     <arg name="rviz" default="1" />
     <arg name="config" default="1" />
     <arg name="wii" default="1"/>
-    <arg name="remote_addr" default="mr-anderson" />
+    <arg name="robot_addr" default="mr-anderson" />
     
-    <env name="ROS_MASTER_URI" value="http://$(arg remote_addr):11311" />
+    <env name="ROS_MASTER_URI" value="http://$(arg robot_addr):11311" />
         
     
     <!-- launch on local -->

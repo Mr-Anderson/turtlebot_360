@@ -4,6 +4,7 @@
     <arg name="usb" default="0" />
     <arg name="robot" default="1" />
     <arg name="kinect" default="1" />
+    <arg name="sound" default="1" />
     <arg name="joint_gui" default="0" />
     <arg name="rviz" default="1" />
     <arg name="config" default="1" />
@@ -47,7 +48,7 @@
         <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
         
         <!-- launch soud play for speach syth -->
-        <node pkg="sound_play" type="soundplay_node.py" name="sound_play_robot" />
+        <node pkg="sound_play" type="soundplay_node.py" name="sound_play_robot" if="$(arg sound)"/>
         
         <!-- run motor drivers    -->
         <node pkg="hardware_interface" type="hardware_interface" name="hardware_interface" args="twist:=con_vel" />

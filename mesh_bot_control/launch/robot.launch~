@@ -4,6 +4,7 @@
     <arg name="usb" default="0" />
     <arg name="robot" default="1" />
     <arg name="kinect" default="1" />
+    <arg name="sound" default="1" />
     <arg name="joint_gui" default="0" />
     <arg name="rviz" default="1" />
     <arg name="config" default="1" />
@@ -15,9 +16,7 @@
         <!-- launch kinect drivers    -->
         <group if="$(arg kinect)">
         
-            <include file="$(find mesh_bot_control)/launch/kinect.launch" >
-                <arg name="machine" value="$(arg machine)" />
-            </include>
+            <include file="$(find mesh_bot_control)/launch/kinect.launch" />
             
             <node pkg="kinect_aux" type="kinect_aux_node" name="kinect_aux_node" />
             
@@ -49,7 +48,7 @@
         <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
         
         <!-- launch soud play for speach syth -->
-        <node pkg="sound_play" type="soundplay_node.py" name="sound_play_robot" />
+        <node pkg="sound_play" type="soundplay_node.py" name="sound_play_robot" if="$(sound)"/>
         
         <!-- run motor drivers    -->
         <node pkg="hardware_interface" type="hardware_interface" name="hardware_interface" args="twist:=con_vel" />
