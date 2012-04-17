@@ -1,0 +1,16 @@
+\subsubsection parameters ROS parameters
+
+Reads and maintains the following parameters on the ROS server
+
+- \b "~base_linear_speed" : \b [double] max robot speed in lineardirection min: 0.0, default: 0.15, max: 10.0
+- \b "~turbo_linear" : \b [double] multiplyer of turbo button y min: 0.0, default: 0.3, max: 5.0
+- \b "~base_rot_speed" : \b [double] max robot speed in angular direction min: 0.0, default: 0.6, max: 4.0
+- \b "~turbo_angular" : \b [double] multiplyer of turbo button x min: 0.0, default: 1.2, max: 5.0
+- \b "~d_pad_percent" : \b [double] the percent that the dpad is scaled down min: 0.0, default: 50.0, max: 100.0
+- \b "~kinect_reset_ang" : \b [double] angle to reset the kinect to min: -30.0, default: 0.0, max: 30.0
+- \b "~plus_mesage" : \b [str] phrase to say when plus button is pressed min: , default: hello world my name is turtle bot 360. . . . behind me are my creators James anderson and adam honse, max: 
+- \b "~kinect_tilt_joint" : \b [str] name of the kinect tilt joint min: , default: base_kinect_joint, max: 
+- \b "~minus_sound" : \b [str] sound to play when minus button is pressed min: , default: ~/Documents/Joemegatron_IGVC_2011/sounds/Ahooga_Car_Horn.wav, max: 
+- \b "~waypoint_sound" : \b [str] sound to play when minus button is pressed min: , default: ~/Documents/Joemegatron_IGVC_2011/sounds/Ahooga_Car_Horn.wav, max: 
+- \b "~done_sound" : \b [str] sound to play when minus button is pressed min: , default: /home/robot/Documents/Joemegatron_IGVC_2011/sounds/Ahooga_Car_Horn.wav, max: 
+

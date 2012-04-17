@@ -1,0 +1,26 @@
+#! /usr/bin/env python
+# Forearm camera configuration
+
+PACKAGE='turtlebot_360_control'
+import roslib; roslib.load_manifest(PACKAGE)
+
+from math import pi
+
+from dynamic_reconfigure.parameter_generator import *
+
+gen = ParameterGenerator()
+#       Name                    Type      Reconfiguration level             Description                      Default    Min   Max
+gen.add("base_linear_speed",    double_t, 0,    "max robot speed in lineardirection",                       .15,         0,    10)
+gen.add("turbo_linear",         double_t, 0,    "multiplyer of turbo button y",                              .3,         0,     5)
+gen.add("base_rot_speed",       double_t, 0,    "max robot speed in angular direction",                      .6,         0,     4)
+gen.add("turbo_angular",        double_t, 0,    "multiplyer of turbo button x",                             1.2,         0,     5)
+gen.add("d_pad_percent",        double_t, 0,    "the percent that the dpad is scaled down",        50,        0,       100)
+gen.add("kinect_reset_ang",     double_t, 0,    "angle to reset the kinect to",        0,        -30,    30)
+gen.add("plus_mesage",          str_t, 0,       "phrase to say when plus button is pressed",       "Pardon me. coming through.")
+gen.add("kinect_tilt_joint",    str_t, 0,       "name of the kinect tilt joint",      "base_kinect_joint")
+gen.add("minus_sound",          str_t, 0,       "sound to play when minus button is pressed",      "~/Documents/Joemegatron_IGVC_2011/sounds/Ahooga_Car_Horn.wav")
+gen.add("waypoint_sound",          str_t, 0,       "sound to play when minus button is pressed",      "~/Documents/Joemegatron_IGVC_2011/sounds/Ahooga_Car_Horn.wav")
+gen.add("done_sound",          str_t, 0,       "sound to play when minus button is pressed",      "/home/robot/Documents/Joemegatron_IGVC_2011/sounds/Ahooga_Car_Horn.wav")
+
+exit(gen.generate(PACKAGE, "dynamic_reconfigure_node", "turtlebot_360_control_Params"))
+

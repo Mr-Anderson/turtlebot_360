@@ -1,0 +1,17 @@
+<package>
+  <description brief="turtlebot_360_2dnav">
+
+     turtlebot_360_2dnav
+
+  </description>
+  <author>James Anderson</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/turtlebot_360_2dnav</url>
+  <depend package="turtlebot_360_control"/>
+  <depend package="turtlebot_360_hardware_interface"/>
+  <depend package="turtlebot_360_description"/>
+
+</package>
+
+

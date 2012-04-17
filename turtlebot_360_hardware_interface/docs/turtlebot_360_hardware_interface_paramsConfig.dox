@@ -1,0 +1,17 @@
+\subsubsection parameters ROS parameters
+
+Reads and maintains the following parameters on the ROS server
+
+- \b "~watchdog_timeout" : \b [double] The time in seconds between watchdog timeouts min: 0.0, default: 5.0, max: 10.0
+- \b "~max_accel" : \b [double] Top motor acceleration in (ticks/second)/second min: 0.0, default: 20.0, max: 800.0
+- \b "~max_speed" : \b [double] Top motor speed in ticks/second min: 0.0, default: 100.0, max: 800.0
+- \b "~min_speed" : \b [double] Stop motor threshold speed in ticks/second min: 0.0, default: 5.0, max: 800.0
+- \b "~motor_res" : \b [double] Motor resolution in ticks/revolution min: 0.0, default: 200.0, max: 500.0
+- \b "~base_radius" : \b [double] Radius of the robot base in meters min: 0.0, default: 0.177, max: 1.0
+- \b "~wheel_radius" : \b [double] Radius of the robot wheels in meters min: 0.0, default: 0.0508, max: 1.0
+- \b "~motor1_i2c_addr" : \b [int] I2C address of motor 1 controller min: 1, default: 3, max: 127
+- \b "~motor2_i2c_addr" : \b [int] I2C address of motor 2 controller min: 1, default: 1, max: 127
+- \b "~motor3_i2c_addr" : \b [int] I2C address of motor 3 controller min: 1, default: 2, max: 127
+- \b "~tilt_enable" : \b [bool] Enable control of Kinect tilt angle min: False, default: False, max: True
+- \b "~serial_port" : \b [str] Serial port for motor controller min: , default: /dev/ttyUSB0, max: 
+

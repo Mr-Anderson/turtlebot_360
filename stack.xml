@@ -1,9 +1,9 @@
 <stack>
-  <description brief="mesh_mapper">mesh_mapper</description>
+  <description brief="mesh_mapper">turtlebot_360</description>
   <author>Maintained by James Anderson</author>
   <license>BSD</license>  
   <review status="unreviewed" notes=""/>
-  <url>http://ros.org/wiki/mesh_mapper</url>
+  <url>http://ros.org/wiki/turtlebot_360</url>
   
   <depend stack="ros" />
   <depend stack="vision_opencv" />

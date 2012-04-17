@@ -1,0 +1,16 @@
+<launch>
+
+  <!-- Run the map server -->
+  <arg name="map_file" default="$(find turtlebot_360_2dnav)/maps/willow-2010-2-18-0.10.yaml"/>
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)"/>
+
+  <!--- Run AMCL -->
+  <include file="$(find turtlebot_360_2dnav)/config/amcl_turtlebot_360.launch" >
+    <arg name="scan_topic" value="scan" />
+  </include>
+  
+  <!-- Run move base-->
+  <include file="$(find turtlebot_360_2dnav)/config/turtlebot_360_move_base.launch" />
+
+
+</launch>

@@ -1,0 +1,13 @@
+<launch>
+
+    <!--- Run gmapping -->
+  <include file="$(find turtlebot_360_2dnav)/config/gmapping_turtlebot_360.launch" >
+    <arg name="scan_topic" value="scan" />
+    
+  </include>
+  
+  <!-- Run move base-->
+  <include file="$(find turtlebot_360_2dnav)/config/turtlebot_360_move_base.launch" />
+
+
+</launch>

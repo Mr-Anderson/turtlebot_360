@@ -1,0 +1,29 @@
+<launch>
+    
+    <!-- Define arguments and defaults  -->
+    <arg name="usb" default="0" />
+    <arg name="robot" default="1" />
+    <arg name="kinect" default="1" />
+    <arg name="sound" default="1" />
+    <arg name="joint_gui" default="0" />
+    <arg name="rviz" default="1" />
+    <arg name="config" default="1" />
+
+    <!-- launch on robot -->
+    <group >
+    
+    
+        <!-- include launch files   -->
+        
+        <include file="$(find turtlebot_360_control)/launch/robot.launch">
+            <arg name="sound" value="false" />
+        </include>
+        
+        <include file="$(find turtlebot_360_control)/launch/desktop.launch" />
+        
+        <include file="$(find turtlebot_360_control)/launch/turtlebot_360_gmapping.launch" />
+            
+            
+    </group>
+    
+</launch>

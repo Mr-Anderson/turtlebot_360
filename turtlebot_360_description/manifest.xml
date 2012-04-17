@@ -1,0 +1,14 @@
+<package>
+  <description brief="turtlebot_360_description">
+
+     turtlebot_360_description
+
+  </description>
+  <author>James Anderson</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/turtlebot_360_description</url>
+
+</package>
+
+

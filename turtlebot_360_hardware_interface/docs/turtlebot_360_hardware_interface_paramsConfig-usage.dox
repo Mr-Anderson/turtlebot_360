@@ -1,0 +1,18 @@
+\subsubsection usage Usage
+\verbatim
+<node name="dynamic_reconfigure_node" pkg="turtlebot_360_hardware_interface" type="dynamic_reconfigure_node">
+  <param name="watchdog_timeout" type="double" value="5.0" />
+  <param name="max_accel" type="double" value="20.0" />
+  <param name="max_speed" type="double" value="100.0" />
+  <param name="min_speed" type="double" value="5.0" />
+  <param name="motor_res" type="double" value="200.0" />
+  <param name="base_radius" type="double" value="0.177" />
+  <param name="wheel_radius" type="double" value="0.0508" />
+  <param name="motor1_i2c_addr" type="int" value="3" />
+  <param name="motor2_i2c_addr" type="int" value="1" />
+  <param name="motor3_i2c_addr" type="int" value="2" />
+  <param name="tilt_enable" type="bool" value="False" />
+  <param name="serial_port" type="str" value="/dev/ttyUSB0" />
+</node>
+\endverbatim
+

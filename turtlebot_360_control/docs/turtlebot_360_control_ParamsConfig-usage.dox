@@ -1,0 +1,17 @@
+\subsubsection usage Usage
+\verbatim
+<node name="dynamic_reconfigure_node" pkg="turtlebot_360_control" type="dynamic_reconfigure_node">
+  <param name="base_linear_speed" type="double" value="0.15" />
+  <param name="turbo_linear" type="double" value="0.3" />
+  <param name="base_rot_speed" type="double" value="0.6" />
+  <param name="turbo_angular" type="double" value="1.2" />
+  <param name="d_pad_percent" type="double" value="50.0" />
+  <param name="kinect_reset_ang" type="double" value="0.0" />
+  <param name="plus_mesage" type="str" value="hello world my name is turtle bot 360. . . . behind me are my creators James anderson and adam honse" />
+  <param name="kinect_tilt_joint" type="str" value="base_kinect_joint" />
+  <param name="minus_sound" type="str" value="~/Documents/Joemegatron_IGVC_2011/sounds/Ahooga_Car_Horn.wav" />
+  <param name="waypoint_sound" type="str" value="~/Documents/Joemegatron_IGVC_2011/sounds/Ahooga_Car_Horn.wav" />
+  <param name="done_sound" type="str" value="/home/robot/Documents/Joemegatron_IGVC_2011/sounds/Ahooga_Car_Horn.wav" />
+</node>
+\endverbatim
+
