@@ -158,7 +158,6 @@ bool setVelocity(double x_base, double y_base, double theta_base)
         //wheel speed 
         double wheel_speed[3];
         double speed_scaler = 1;
-        bool scaled = false;
         bool success = true;
         
         //x is forward y is left z is counter clockwise
@@ -181,8 +180,6 @@ bool setVelocity(double x_base, double y_base, double theta_base)
         
         for(int i = 0; i < 3; i++)
         {
-            double speed_scaler_temp = 1;
-            
             //calculate rotation speed of each wheel
             wheel_speed[i] /= params.wheel_radius;
             
@@ -193,39 +190,24 @@ bool setVelocity(double x_base, double y_base, double theta_base)
             wheel_speed[i] *= params.motor_res;
             
             //find max accelrated speed
-            double max_speed_var = (params.max_accel * (ros::Time::now() - vel_last_time_).toSec());
-            double max_speed_temp = fabs(last_wheel_speed_[i]) + max_speed_var;
-            double min_speed_temp = fabs(last_wheel_speed_[i]) - max_speed_var;
+            double max_speed_temp = (params.max_accel * (ros::Time::now() - vel_last_time_).toSec()) + abs(last_wheel_speed_[i]);
             
             if(max_speed_temp > params.max_speed)
             {
                 max_speed_temp = params.max_speed;
             }
             
-            if ( wheel_speed[i] != 0)
-            {
-                //see if we need to scale back motors
-                if((fabs(wheel_speed[i])  * speed_scaler) > max_speed_temp )
-                { 
-                    speed_scaler_temp = max_speed_temp / (fabs(wheel_speed[i]) * speed_scaler);
-                }
-                else if((fabs(wheel_speed[i]) * speed_scaler) < min_speed_temp )
-                {
-                    speed_scaler_temp = min_speed_temp / (fabs(wheel_speed[i]) * speed_scaler);
-                }
+            //see if we need to scale back motors
+            if(abs(wheel_speed[i]) > max_speed_temp)
+            { 
+                double speed_scaler_temp = max_speed_temp / abs(wheel_speed[i]);
                 
-                if(speed_scaler_temp != 1)
+                if (speed_scaler_temp < speed_scaler ) 
                 {
-                    //find best 
                     speed_scaler = speed_scaler_temp;
                 }
-                    
             }
-            
-
-            
         }
-        
         
         vel_last_time_ = ros::Time::now();
         
@@ -416,12 +398,19 @@ bool initMotors()
     //Test motor
     serial_cmd[0] = 0x24;
     serial_cmd[1] = 0x03;
-    serial_cmd[2] = 0x01;
-    serial_cmd[3] = 0x04;
+    serial_cmd[2] = 0x00;
+    serial_cmd[3] = 0x05;
     serial_cmd[4] = 0x01;
     serial_cmd[5] = 0x00;
     motor_port.serial_write(serial_cmd, 6);
 
+    serial_cmd[3] = 0x06;
+    serial_cmd[4] = 30;
+    motor_port.serial_write(serial_cmd, 6);
+    
+    serial_cmd[3] = 0x07;
+    serial_cmd[4] = 100;
+    motor_port.serial_write(serial_cmd, 6);
     return true;
 }
 

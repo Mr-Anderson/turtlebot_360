@@ -35,6 +35,7 @@
 //rate for comunicating with hardware hertz
 #define SENSOR_RATE 30
 #define ODOM_STATIC_COVARIANCE 100.0
+#define AVG_CMD 5.0
 
 /***********************************************************
 * Global variables
@@ -43,6 +44,10 @@ bool watchdog_tripped_ = false;
 ros::Time watchdog_timer_;
 bool motors_enabled_ = false;
 serial_port motor_port;
+
+//variables for max accel
+ros::Time vel_last_time_;
+double last_wheel_speed_[3];
 
 //odometry stuff
 ros::Time g_odom_last_time;
@@ -58,6 +63,10 @@ geometry_msgs::TransformStamped odom_trans;
 
 //create message
 nav_msgs::Odometry odom_msg;
+
+avg_cmd_x[AVG_CMD] = {0,0,0,0}; 
+avg_cmd_y[AVG_CMD] = {0,0,0,0};
+avg_cmd_th[AVG_CMD] = {0,0,0,0};
 
 /***********************************************************
 * Parameters

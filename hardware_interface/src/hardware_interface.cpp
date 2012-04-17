@@ -127,7 +127,7 @@ int main(int argc, char **argv)
         {
             //have not receved a new message so stop robot
             ROS_WARN("Watchdog timed out!");
-            killMotors();
+            //killMotors();
             motors_enabled_ = false;
         }
         
