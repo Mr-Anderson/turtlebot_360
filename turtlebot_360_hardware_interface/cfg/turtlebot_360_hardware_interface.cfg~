@@ -13,8 +13,8 @@ gen = ParameterGenerator()
 
 #       Name                    Type      Reconfiguration level    Description                                        Default    Min   Max
 gen.add("watchdog_timeout",     double_t, 0,                       "The time in seconds between watchdog timeouts",   5,         0,    10)
-gen.add("max_accel",            double_t, 0,                       "Top motor acceleration in (ticks/second)/second",                        15,       0,    800)
-gen.add("max_speed",            double_t, 0,                       "Top motor speed in ticks/second",                 80,       0,    800)
+gen.add("max_accel",            double_t, 0,                       "Top motor acceleration in (ticks/second)/second",                        20,       0,    800)
+gen.add("max_speed",            double_t, 0,                       "Top motor speed in ticks/second",                 100,       0,    800)
 gen.add("min_speed",            double_t, 0,                       "Stop motor threshold speed in ticks/second",      5,         0,    800)
 gen.add("motor_res",            double_t, 0,                       "Motor resolution in ticks/revolution",            200,       0,    500)
 gen.add("base_radius",          double_t, 0,                       "Radius of the robot base in meters",              0.177,      0,    1)
