@@ -405,11 +405,11 @@ bool initMotors()
     motor_port.serial_write(serial_cmd, 6);
 
     serial_cmd[3] = 0x06;
-    serial_cmd[4] = 30;
+    serial_cmd[4] = 10;
     motor_port.serial_write(serial_cmd, 6);
     
     serial_cmd[3] = 0x07;
-    serial_cmd[4] = 100;
+    serial_cmd[4] = 50;
     motor_port.serial_write(serial_cmd, 6);
     return true;
 }

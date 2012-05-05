@@ -7,6 +7,7 @@
   <param name="turbo_angular" type="double" value="1.2" />
   <param name="d_pad_percent" type="double" value="50.0" />
   <param name="kinect_reset_ang" type="double" value="0.0" />
+  <param name="kinect_tilt" type="bool" value="True" />
   <param name="plus_mesage" type="str" value="hello world my name is turtle bot 360. . . . behind me are my creators James anderson and adam honse" />
   <param name="kinect_tilt_joint" type="str" value="base_kinect_joint" />
   <param name="minus_sound" type="str" value="~/Documents/Joemegatron_IGVC_2011/sounds/Ahooga_Car_Horn.wav" />

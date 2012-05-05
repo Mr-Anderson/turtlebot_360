@@ -270,7 +270,7 @@ namespace turtlebot_360_hardware_interface
 //#line 16 "../cfg/turtlebot_360_hardware_interface.cfg"
       __max__.max_accel = 800.0;
 //#line 16 "../cfg/turtlebot_360_hardware_interface.cfg"
-      __default__.max_accel = 20.0;
+      __default__.max_accel = 15.0;
 //#line 16 "../cfg/turtlebot_360_hardware_interface.cfg"
       __param_descriptions__.push_back(turtlebot_360_hardware_interface_paramsConfig::AbstractParamDescriptionConstPtr(new turtlebot_360_hardware_interface_paramsConfig::ParamDescription<double>("max_accel", "double", 0, "Top motor acceleration in (ticks/second)/second", "", &turtlebot_360_hardware_interface_paramsConfig::max_accel)));
 //#line 17 "../cfg/turtlebot_360_hardware_interface.cfg"
@@ -278,7 +278,7 @@ namespace turtlebot_360_hardware_interface
 //#line 17 "../cfg/turtlebot_360_hardware_interface.cfg"
       __max__.max_speed = 800.0;
 //#line 17 "../cfg/turtlebot_360_hardware_interface.cfg"
-      __default__.max_speed = 100.0;
+      __default__.max_speed = 80.0;
 //#line 17 "../cfg/turtlebot_360_hardware_interface.cfg"
       __param_descriptions__.push_back(turtlebot_360_hardware_interface_paramsConfig::AbstractParamDescriptionConstPtr(new turtlebot_360_hardware_interface_paramsConfig::ParamDescription<double>("max_speed", "double", 0, "Top motor speed in ticks/second", "", &turtlebot_360_hardware_interface_paramsConfig::max_speed)));
 //#line 18 "../cfg/turtlebot_360_hardware_interface.cfg"

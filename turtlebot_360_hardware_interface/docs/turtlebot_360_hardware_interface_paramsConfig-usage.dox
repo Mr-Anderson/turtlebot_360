@@ -2,8 +2,8 @@
 \verbatim
 <node name="dynamic_reconfigure_node" pkg="turtlebot_360_hardware_interface" type="dynamic_reconfigure_node">
   <param name="watchdog_timeout" type="double" value="5.0" />
-  <param name="max_accel" type="double" value="20.0" />
-  <param name="max_speed" type="double" value="100.0" />
+  <param name="max_accel" type="double" value="15.0" />
+  <param name="max_speed" type="double" value="80.0" />
   <param name="min_speed" type="double" value="5.0" />
   <param name="motor_res" type="double" value="200.0" />
   <param name="base_radius" type="double" value="0.177" />

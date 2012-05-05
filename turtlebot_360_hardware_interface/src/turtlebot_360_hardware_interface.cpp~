@@ -264,7 +264,7 @@ void updateOdomMsg(double x_base, double y_base, double theta_base)
     }
     
     //Theta
-    double delta_th = vth * dt;
+    double delta_th = vth * 2 *dt ;
     g_odom_th += delta_th;
     
     //X and Y
@@ -274,7 +274,7 @@ void updateOdomMsg(double x_base, double y_base, double theta_base)
     g_odom_y += delta_y;
     
     //Quaternion
-    geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromYaw(g_odom_th);
+    geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromYaw(g_odom_th );
     
     //Update transform_broadcaster
     odom_trans.header.stamp = current_time;

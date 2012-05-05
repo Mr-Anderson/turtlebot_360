@@ -766,45 +766,49 @@ void kinect_led(unsigned int led)
 
 void kinect_tilt()
 {
-    if( (kinect_tilt_pre_ != kinect_tilt_ang_) || (kinect_tilt_vel_ != 0) )
+    if(params.kinect_tilt)
     {
-        double new_angle = kinect_tilt_ang_ + ((ros::Time::now()-kinect_last_publish).toSec() * kinect_tilt_vel_);
-        
-        if(new_angle < -31)
+        if( (kinect_tilt_pre_ != kinect_tilt_ang_) || (kinect_tilt_vel_ != 0) )
         {
-            new_angle = -31;
+            
+            double new_angle = kinect_tilt_ang_ + ((ros::Time::now()-kinect_last_publish).toSec() * kinect_tilt_vel_);
+            
+            if(new_angle < -31)
+            {
+                new_angle = -31;
+            }
+            else if(new_angle > 31)
+            {
+                new_angle = 31;
+            }
+            
+            kinect_tilt_pre_ = new_angle;
+            kinect_tilt_ang_ = new_angle;
+            kinect_last_publish = ros::Time::now();
+            
+            std_msgs::Float64 msg;
+            
+            msg.data = new_angle;
+            
+
+            kinect_tilt_pub.publish(msg);
+            
         }
-        else if(new_angle > 31)
-        {
-            new_angle = 31;
-        }
-        
-        kinect_tilt_pre_ = new_angle;
-        kinect_tilt_ang_ = new_angle;
-        kinect_last_publish = ros::Time::now();
-        
-        std_msgs::Float64 msg;
-        
-        msg.data = new_angle;
-        
-        kinect_tilt_pub.publish(msg);
         
         
+        //joint state publisher
+        sensor_msgs::JointState state;
+        
+        state.header.seq = joint_state_seq;
+        state.header.stamp = ros::Time::now();
+        state.name.push_back( params.kinect_tilt_joint);
+        state.position.push_back( -kinect_tilt_ang_ * (3.14/180));
+        state.velocity.push_back( -kinect_tilt_vel_ * (3.14/180));
+        
+        joint_state_pub.publish(state);
+        
+        joint_state_seq++;
     }
-    
-    
-    //joint state publisher
-    sensor_msgs::JointState state;
-    
-    state.header.seq = joint_state_seq;
-    state.header.stamp = ros::Time::now();
-    state.name.push_back( params.kinect_tilt_joint);
-    state.position.push_back( -kinect_tilt_ang_ * (3.14/180));
-    state.velocity.push_back( -kinect_tilt_vel_ * (3.14/180));
-    
-    joint_state_pub.publish(state);
-    
-    joint_state_seq++;
     
 }
 

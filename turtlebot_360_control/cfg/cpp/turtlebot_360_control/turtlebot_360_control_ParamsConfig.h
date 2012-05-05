@@ -146,14 +146,16 @@ namespace turtlebot_360_control
 //#line 18 "../cfg/turtlebot_360_control.cfg"
       double kinect_reset_ang;
 //#line 19 "../cfg/turtlebot_360_control.cfg"
-      std::string plus_mesage;
+      bool kinect_tilt;
 //#line 20 "../cfg/turtlebot_360_control.cfg"
-      std::string kinect_tilt_joint;
+      std::string plus_mesage;
 //#line 21 "../cfg/turtlebot_360_control.cfg"
-      std::string minus_sound;
+      std::string kinect_tilt_joint;
 //#line 22 "../cfg/turtlebot_360_control.cfg"
-      std::string waypoint_sound;
+      std::string minus_sound;
 //#line 23 "../cfg/turtlebot_360_control.cfg"
+      std::string waypoint_sound;
+//#line 24 "../cfg/turtlebot_360_control.cfg"
       std::string done_sound;
 //#line 138 "/opt/ros/electric/stacks/driver_common/dynamic_reconfigure/templates/ConfigType.h"
 
@@ -304,44 +306,52 @@ namespace turtlebot_360_control
 //#line 18 "../cfg/turtlebot_360_control.cfg"
       __param_descriptions__.push_back(turtlebot_360_control_ParamsConfig::AbstractParamDescriptionConstPtr(new turtlebot_360_control_ParamsConfig::ParamDescription<double>("kinect_reset_ang", "double", 0, "angle to reset the kinect to", "", &turtlebot_360_control_ParamsConfig::kinect_reset_ang)));
 //#line 19 "../cfg/turtlebot_360_control.cfg"
+      __min__.kinect_tilt = 0;
+//#line 19 "../cfg/turtlebot_360_control.cfg"
+      __max__.kinect_tilt = 1;
+//#line 19 "../cfg/turtlebot_360_control.cfg"
+      __default__.kinect_tilt = 1;
+//#line 19 "../cfg/turtlebot_360_control.cfg"
+      __param_descriptions__.push_back(turtlebot_360_control_ParamsConfig::AbstractParamDescriptionConstPtr(new turtlebot_360_control_ParamsConfig::ParamDescription<bool>("kinect_tilt", "bool", 0, "allow tilting of kinect", "", &turtlebot_360_control_ParamsConfig::kinect_tilt)));
+//#line 20 "../cfg/turtlebot_360_control.cfg"
       __min__.plus_mesage = "";
-//#line 19 "../cfg/turtlebot_360_control.cfg"
+//#line 20 "../cfg/turtlebot_360_control.cfg"
       __max__.plus_mesage = "";
-//#line 19 "../cfg/turtlebot_360_control.cfg"
+//#line 20 "../cfg/turtlebot_360_control.cfg"
       __default__.plus_mesage = "hello world my name is turtle bot 360. . . . behind me are my creators James anderson and adam honse";
-//#line 19 "../cfg/turtlebot_360_control.cfg"
+//#line 20 "../cfg/turtlebot_360_control.cfg"
       __param_descriptions__.push_back(turtlebot_360_control_ParamsConfig::AbstractParamDescriptionConstPtr(new turtlebot_360_control_ParamsConfig::ParamDescription<std::string>("plus_mesage", "str", 0, "phrase to say when plus button is pressed", "", &turtlebot_360_control_ParamsConfig::plus_mesage)));
-//#line 20 "../cfg/turtlebot_360_control.cfg"
+//#line 21 "../cfg/turtlebot_360_control.cfg"
       __min__.kinect_tilt_joint = "";
-//#line 20 "../cfg/turtlebot_360_control.cfg"
+//#line 21 "../cfg/turtlebot_360_control.cfg"
       __max__.kinect_tilt_joint = "";
-//#line 20 "../cfg/turtlebot_360_control.cfg"
+//#line 21 "../cfg/turtlebot_360_control.cfg"
       __default__.kinect_tilt_joint = "base_kinect_joint";
-//#line 20 "../cfg/turtlebot_360_control.cfg"
+//#line 21 "../cfg/turtlebot_360_control.cfg"
       __param_descriptions__.push_back(turtlebot_360_control_ParamsConfig::AbstractParamDescriptionConstPtr(new turtlebot_360_control_ParamsConfig::ParamDescription<std::string>("kinect_tilt_joint", "str", 0, "name of the kinect tilt joint", "", &turtlebot_360_control_ParamsConfig::kinect_tilt_joint)));
-//#line 21 "../cfg/turtlebot_360_control.cfg"
+//#line 22 "../cfg/turtlebot_360_control.cfg"
       __min__.minus_sound = "";
-//#line 21 "../cfg/turtlebot_360_control.cfg"
+//#line 22 "../cfg/turtlebot_360_control.cfg"
       __max__.minus_sound = "";
-//#line 21 "../cfg/turtlebot_360_control.cfg"
+//#line 22 "../cfg/turtlebot_360_control.cfg"
       __default__.minus_sound = "~/Documents/Joemegatron_IGVC_2011/sounds/Ahooga_Car_Horn.wav";
-//#line 21 "../cfg/turtlebot_360_control.cfg"
+//#line 22 "../cfg/turtlebot_360_control.cfg"
       __param_descriptions__.push_back(turtlebot_360_control_ParamsConfig::AbstractParamDescriptionConstPtr(new turtlebot_360_control_ParamsConfig::ParamDescription<std::string>("minus_sound", "str", 0, "sound to play when minus button is pressed", "", &turtlebot_360_control_ParamsConfig::minus_sound)));
-//#line 22 "../cfg/turtlebot_360_control.cfg"
+//#line 23 "../cfg/turtlebot_360_control.cfg"
       __min__.waypoint_sound = "";
-//#line 22 "../cfg/turtlebot_360_control.cfg"
+//#line 23 "../cfg/turtlebot_360_control.cfg"
       __max__.waypoint_sound = "";
-//#line 22 "../cfg/turtlebot_360_control.cfg"
+//#line 23 "../cfg/turtlebot_360_control.cfg"
       __default__.waypoint_sound = "~/Documents/Joemegatron_IGVC_2011/sounds/Ahooga_Car_Horn.wav";
-//#line 22 "../cfg/turtlebot_360_control.cfg"
+//#line 23 "../cfg/turtlebot_360_control.cfg"
       __param_descriptions__.push_back(turtlebot_360_control_ParamsConfig::AbstractParamDescriptionConstPtr(new turtlebot_360_control_ParamsConfig::ParamDescription<std::string>("waypoint_sound", "str", 0, "sound to play when minus button is pressed", "", &turtlebot_360_control_ParamsConfig::waypoint_sound)));
-//#line 23 "../cfg/turtlebot_360_control.cfg"
+//#line 24 "../cfg/turtlebot_360_control.cfg"
       __min__.done_sound = "";
-//#line 23 "../cfg/turtlebot_360_control.cfg"
+//#line 24 "../cfg/turtlebot_360_control.cfg"
       __max__.done_sound = "";
-//#line 23 "../cfg/turtlebot_360_control.cfg"
+//#line 24 "../cfg/turtlebot_360_control.cfg"
       __default__.done_sound = "/home/robot/Documents/Joemegatron_IGVC_2011/sounds/Ahooga_Car_Horn.wav";
-//#line 23 "../cfg/turtlebot_360_control.cfg"
+//#line 24 "../cfg/turtlebot_360_control.cfg"
       __param_descriptions__.push_back(turtlebot_360_control_ParamsConfig::AbstractParamDescriptionConstPtr(new turtlebot_360_control_ParamsConfig::ParamDescription<std::string>("done_sound", "str", 0, "sound to play when minus button is pressed", "", &turtlebot_360_control_ParamsConfig::done_sound)));
 //#line 239 "/opt/ros/electric/stacks/driver_common/dynamic_reconfigure/templates/ConfigType.h"
     
