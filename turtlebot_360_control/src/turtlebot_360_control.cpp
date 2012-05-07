@@ -25,16 +25,16 @@ void wiimote_callback(const wiimote::State::ConstPtr& state)
     {
         ROS_INFO("Control: Wiimote Conected");
         
-        wiimote::RumbleControl rumble;
+        //wiimote::RumbleControl rumble;
         //makes wiimote rumble 3 times
-        rumble.rumble.switch_mode = rumble.rumble.REPEAT;
-        rumble.rumble.num_cycles = 3;
-        rumble.rumble.set_pulse_pattern_size(2); 
-        rumble.rumble.pulse_pattern[0] = .25;
-        rumble.rumble.pulse_pattern[1] = .5;
+        //rumble.rumble.switch_mode = rumble.rumble.REPEAT;
+        //rumble.rumble.num_cycles = 3;
+        //rumble.rumble.set_pulse_pattern_size(2); 
+        //rumble.rumble.pulse_pattern[0] = .25;
+        //rumble.rumble.pulse_pattern[1] = .5;
         
         ros::Duration(3).sleep();
-        wiimote_rum_pub.publish(rumble);
+        //wiimote_rum_pub.publish(rumble);
         
         say("wiimote connected. turtle bot 3 60 standing by");
         
@@ -513,9 +513,9 @@ int main(int argc, char **argv)
     
     
     //create publications
-    wiimote_led_pub = n.advertise<wiimote::LEDControl>("wiimote/leds" ,100);
+    //wiimote_led_pub = n.advertise<wiimote::LEDControl>("wiimote/leds" ,100);
     
-    wiimote_rum_pub = n.advertise<wiimote::RumbleControl>("wiimote/rumble" ,100);
+    //wiimote_rum_pub = n.advertise<wiimote::RumbleControl>("wiimote/rumble" ,100);
 
     motor_pub = n.advertise<geometry_msgs::Twist>("con_vel" ,100);
     
@@ -609,7 +609,7 @@ bool check_togg(bool button_state, int button_position)
 void change_mode(Mode new_mode)
 {
     
-    wiimote::LEDControl led;
+    //wiimote::LEDControl led;
     sound_play::SoundRequest sound;
     
     mode_ = new_mode;
@@ -633,10 +633,10 @@ void change_mode(Mode new_mode)
         
         int lights[] ={0,1,1,0};
 
-        led.set_timed_switch_array_size(4);
+        //led.set_timed_switch_array_size(4);
         for(int i=0; i < 4 ;i++)
         {
-            led.timed_switch_array[i].switch_mode = lights[i];
+            //led.timed_switch_array[i].switch_mode = lights[i];
             
         }
         
@@ -680,10 +680,10 @@ void change_mode(Mode new_mode)
         //turn on light 1
         int lights[] ={1,0,0,0};
 
-        led.set_timed_switch_array_size(4);
+        //led.set_timed_switch_array_size(4);
         for(int i=0; i < 4 ;i++)
         {
-            led.timed_switch_array[i].switch_mode = lights[i];
+            //led.timed_switch_array[i].switch_mode = lights[i];
             
         }
         
@@ -705,16 +705,16 @@ void change_mode(Mode new_mode)
         //turn on light 2
         int lights[] ={0,1,0,0};
 
-        led.set_timed_switch_array_size(4);
+        //led.set_timed_switch_array_size(4);
         for(int i=0; i < 4 ;i++)
         {
-            led.timed_switch_array[i].switch_mode = lights[i];
+            //led.timed_switch_array[i].switch_mode = lights[i];
         }
         
     }
     
     
-    wiimote_led_pub.publish(led);
+    //wiimote_led_pub.publish(led);
     
 }
 

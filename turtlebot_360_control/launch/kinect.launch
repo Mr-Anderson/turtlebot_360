@@ -14,8 +14,6 @@
     <param name="debayering" value="2" />
     <param name="depth_time_offset" value="-0.055" />
     <param name="image_time_offset" value="0" />
-
-    <rosparam command="load" file="$(find openni_camera)/info/openni_params.yaml" />
   </node>
 
   <!-- throttling -->

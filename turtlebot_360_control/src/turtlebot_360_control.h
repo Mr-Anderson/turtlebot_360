@@ -17,10 +17,7 @@
 ***********************************************************/
 #include <geometry_msgs/Twist.h>
 #include <wiimote/State.h>
-#include <wiimote/LEDControl.h>
-#include <wiimote/RumbleControl.h>
 #include <wiimote/TimedSwitch.h>
-#include <joy/Joy.h>
 #include <sensor_msgs/Joy.h>
 #include <sound_play/SoundRequest.h>
 #include <std_msgs/UInt16.h>
